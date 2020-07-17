@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect,useRef } from 'react'
 import {useFrame, useThree, extend} from 'react-three-fiber'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
@@ -6,12 +6,19 @@ import { TransformControls } from "three/examples/jsm/controls/TransformControls
 extend({ OrbitControls,TransformControls });
 
 const CameraControls = (props)=>{
+  let start=true
     const {
       camera,
+      scene,
       gl:{domElement},
     } = useThree();
     const orbit = useRef()
     const transform = useRef()
+    useEffect(()=>{
+      props.setCamera(camera)
+      props.setScene(scene)
+      props.setOrbit(orbit.current)
+    },[camera, props, scene])
 
     useFrame((state)=>orbit.current.update())
     useFrame((state)=>{

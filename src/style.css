@@ -10,14 +10,35 @@ body,
   margin: 0;
   padding: 0;
 }
-
 body {
   background: aquamarine;
 }
+.vertical {
+  display: flex;
+  flex-direction: column;
+}
+.horizontal {
+  display: flex;
+  flex-direction: row;
+}
 
-#threejs {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
+#sceneManager {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: 100px;
+  overflow: scroll;
+  background: gray;
+}
+.objectIcon {
+  text-align: center;
+  border-style: solid;
+  border-radius: 25px;
+}
+.objectIcon img {
+  margin-bottom: 0;
+}
+.objectIcon p {
+  margin-top: 0;
+  color: white;
 }

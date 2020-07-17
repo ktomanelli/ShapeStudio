@@ -1,30 +1,42 @@
 import React,{useState} from 'react';
 import {useThree} from 'react-three-fiber'
+import './style.css'
+
 
 import Header from './Components/Header'
 import Viewer from './Components/Viewer'
 import Sidebar from './Components/Sidebar'
 import SceneManager from './Components/SceneManager'
-// import { TransformControls } from './../node_modules/three/examples/jsm/controls/TransformControls.js'
-// import { OrbitControls } from './../node_modules/three/examples/jsm/controls/OrbitControls.js'
+
 const App=()=>{
 
   const [active,setActive] = useState(null)
-  const {
-    scene,
-    camera,
-    // gl:{domElement},
-  } = useThree();
+  const [scene,setScene] = useState(useThree().scene)
+  const [camera,setCamera] = useState(null)
+  const [orbit,setOrbit] = useState(null)
 
   return(
-    <div>
-      test
-      {/* <Header /> */}
-      <div id='viewer'>
-        <Viewer active={active} setActive={setActive} camera={camera}/>
+    <div id='app'>
+      <Header />
+      <div className='horizontal'>
+        <div className='vertical'>
+          <div id='viewer'>
+            <Viewer id='threejs' 
+              active={active} 
+              camera={camera} 
+              orbit={orbit}
+              setActive={setActive} 
+              setCamera={setCamera} 
+              setScene={setScene}
+              setOrbit={setOrbit}/>
+          </div>
+          <div id='bottomBar'>
+          SceneManager
+          <SceneManager scene={scene} setActive={setActive}/>
+          </div>
+        </div>
+        {active?<Sidebar active={active} />:''}
       </div>
-      {/* <Sidebar />
-      <SceneManager /> */}
     </div>
   )
 }
