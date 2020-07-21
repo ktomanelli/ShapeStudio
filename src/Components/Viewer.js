@@ -20,12 +20,29 @@ const Viewer = (props)=>{
       case "c":
       setTransformMode('rotate')
       break;
+      case 'Backspace':
+        const shape = props.active
+        console.log('delete!!')
+        if(shape.geometry){
+          shape.geometry.dispose()
+          shape.geometry = undefined
+        }
+        if(shape.material){
+          shape.material.dispose()
+          shape.material=undefined
+        }
+        if(shape.texture){
+          shape.texture.dispose()
+          shape.texture = undefined;
+        }
+        props.scene.remove(props.active)
+        props.setActive(null)
+        break;
       default:
       console.log(e.key)
       break;
     }
   }
-console.log('newShapes',props.newShapes)
     return (
       <Canvas style={{height:window.innerHeight,width:window.innerWidth}} onKeyDown={handleKeyPress} onPointerMissed={e=>props.setActive(null)}>
       <gridHelper args={['100','100']}/>

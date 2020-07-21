@@ -13,6 +13,7 @@ const App=()=>{
   const [active,setActive] = useState(null)
   const [scene,setScene] = useState(useThree().scene)
   const [camera,setCamera] = useState(null)
+  const [controls,setControls] = useState(null)
   const [orbit,setOrbit] = useState(null)
   const [open,setOpen] = useState(false)
   const [newShapes,setNewShapes] = useState([])
@@ -36,9 +37,12 @@ const App=()=>{
           <div id='viewer'>
             <Viewer id='threejs' 
               active={active} 
+              scene={scene}
               camera={camera} 
               orbit={orbit}
+              controls={controls}
               newShapes={newShapes}
+              setControls={setControls}
               setActive={setActive} 
               setCamera={setCamera} 
               setScene={setScene}
