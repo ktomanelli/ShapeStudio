@@ -11,7 +11,7 @@ body,
   padding: 0;
 }
 body {
-  background: aquamarine;
+  background: #a1e5ab;
 }
 .vertical {
   display: flex;
@@ -22,6 +22,29 @@ body {
   flex-direction: row;
 }
 
+#header {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  background-color: #0a2463;
+}
+#menu {
+  list-style-type: none;
+}
+.iconList {
+  list-style-type: none;
+}
+.icon {
+  width: 2%;
+}
+#outlined-basic {
+  margin: 1%;
+}
+#bottomBar {
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+}
 #sceneManager {
   display: grid;
   grid-template-columns: repeat(8, 1fr);

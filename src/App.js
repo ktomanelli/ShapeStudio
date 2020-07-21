@@ -1,11 +1,11 @@
 import React,{useState} from 'react';
 import {useThree} from 'react-three-fiber'
 import './style.css'
+import Drawer from '@material-ui/core/Drawer';
 
-
-import Header from './Components/Header'
+import Header from './Components/Header/Header'
 import Viewer from './Components/Viewer'
-import Sidebar from './Components/Sidebar'
+import Sidebar from './Components/Sidebar/Sidebar'
 import SceneManager from './Components/SceneManager'
 
 const App=()=>{
@@ -14,6 +14,16 @@ const App=()=>{
   const [scene,setScene] = useState(useThree().scene)
   const [camera,setCamera] = useState(null)
   const [orbit,setOrbit] = useState(null)
+  const [open,setOpen] = useState(false)
+  const [newShapes,setNewShapes] = useState([])
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   return(
     <div id='app'>
@@ -25,17 +35,21 @@ const App=()=>{
               active={active} 
               camera={camera} 
               orbit={orbit}
+              newShape={newShapes}
               setActive={setActive} 
               setCamera={setCamera} 
               setScene={setScene}
-              setOrbit={setOrbit}/>
+              setOrbit={setOrbit}
+              setNewShapes={setNewShapes}/>
           </div>
           <div id='bottomBar'>
           SceneManager
           <SceneManager scene={scene} setActive={setActive}/>
           </div>
         </div>
-        {active?<Sidebar active={active} />:''}
+        <Drawer variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
+          <Sidebar active={active}/>
+        </Drawer>
       </div>
     </div>
   )

@@ -5,8 +5,7 @@ import QuickAccessBar from './QuickAccessBar'
 const Header=()=>{
 
     return(
-        <div>
-            this is the Header
+        <div id='header'>
         <MenuBar/>
         <QuickAccessBar />
         </div>
