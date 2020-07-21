@@ -25,14 +25,14 @@ const Viewer = (props)=>{
       break;
     }
   }
-
+console.log('newShapes',props.newShapes)
     return (
       <Canvas style={{height:window.innerHeight,width:window.innerWidth}} onKeyDown={handleKeyPress} onPointerMissed={e=>props.setActive(null)}>
       <gridHelper args={['100','100']}/>
       <CameraControls mode={transformMode} active={props.active} setScene={props.setScene} setCamera={props.setCamera} setOrbit={props.setOrbit}/>
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-      <Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>
+      {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>:''}
       </Canvas>
     )
 }

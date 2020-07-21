@@ -27,7 +27,10 @@ const App=()=>{
 
   return(
     <div id='app'>
-      <Header />
+      <Header 
+      newShapes={newShapes}
+      setNewShapes={setNewShapes}
+      />
       <div className='horizontal'>
         <div className='vertical'>
           <div id='viewer'>
@@ -35,7 +38,7 @@ const App=()=>{
               active={active} 
               camera={camera} 
               orbit={orbit}
-              newShape={newShapes}
+              newShapes={newShapes}
               setActive={setActive} 
               setCamera={setCamera} 
               setScene={setScene}
