@@ -6,7 +6,6 @@ import { TransformControls } from "three/examples/jsm/controls/TransformControls
 extend({ OrbitControls,TransformControls });
 
 const CameraControls = (props)=>{
-  let start=true
     const {
       camera,
       scene,

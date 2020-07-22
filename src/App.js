@@ -13,18 +13,8 @@ const App=()=>{
   const [active,setActive] = useState(null)
   const [scene,setScene] = useState(useThree().scene)
   const [camera,setCamera] = useState(null)
-  const [controls,setControls] = useState(null)
   const [orbit,setOrbit] = useState(null)
-  const [open,setOpen] = useState(false)
   const [newShapes,setNewShapes] = useState([])
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   return(
     <div id='app'>
@@ -40,9 +30,7 @@ const App=()=>{
               scene={scene}
               camera={camera} 
               orbit={orbit}
-              controls={controls}
               newShapes={newShapes}
-              setControls={setControls}
               setActive={setActive} 
               setCamera={setCamera} 
               setScene={setScene}
@@ -54,7 +42,7 @@ const App=()=>{
           <SceneManager scene={scene} setActive={setActive}/>
           </div>
         </div>
-        <Drawer variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
+        <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
           <Sidebar active={active}/>
         </Drawer>
       </div>

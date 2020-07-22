@@ -1,9 +1,7 @@
 import React, {useRef} from 'react'
-import { useFrame,useThree } from 'react-three-fiber'
 
 const Box=(props)=>{
     const mesh = useRef()
-    // useFrame(()=>(mesh.current.rotation.x=mesh.current.rotation.y += 0.01))
     const handleClick=(e)=>{
         props.setActive(mesh.current)
     }

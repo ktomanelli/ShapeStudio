@@ -1,5 +1,6 @@
-import React,{useState, useEffect} from 'react'
+import React from 'react'
 import Box from './Box'
+import Sphere from './Sphere'
 
 const Shapes=(props)=>{
 
@@ -10,8 +11,10 @@ const Shapes=(props)=>{
              switch(shape){
                 case 'box':
                     return <Box size={{l:1,w:1,h:1}} setActive={props.setActive} position={[-1.2, 0, 0]} />
+                case 'sphere':
+                    return  <Sphere />
                 default:
-                break
+                    return null
             }
         })
     }

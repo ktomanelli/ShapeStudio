@@ -8,6 +8,9 @@ const QuickAccessBar=(props)=>{
             case 'box':
                 props.setNewShapes([...props.newShapes, 'box'])
                 break;
+            case 'sphere':
+                props.setNewShapes([...props.newShapes, 'sphere'])
+                break;
             default:
                 break;
         }
@@ -16,7 +19,8 @@ const QuickAccessBar=(props)=>{
     return(
         <div>
             <ul className='iconList'>
-                <li onClick={e=>handleClick(e,'box')}><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} /></li>
+                <li onClick={e=>handleClick(e,'box')}><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} alt='box icon'/></li>
+                <li onClick={e=>handleClick(e,'sphere')}><img className='icon' src={'https://image.flaticon.com/icons/svg/274/274344.svg'} alt='sphere icon'/></li>
             </ul>
         </div>
     )

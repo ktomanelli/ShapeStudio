@@ -12,7 +12,7 @@ const SceneManager=(props)=>{
 
     return(
         <div id='sceneManager'>
-            {props.scene? displayObjects():''}
+            {props.scene ? displayObjects():''}
         </div>
     )
 

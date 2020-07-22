@@ -1,10 +1,8 @@
-import React, {useState, useEffect} from 'react'
-import {Canvas,useThree} from 'react-three-fiber'
+import React, {useState} from 'react'
+import {Canvas} from 'react-three-fiber'
 
-import Shapes from './Shapes'
-import Box from './Box'
+import Shapes from './Shapes/Shapes'
 import CameraControls from './CameraControls'
-import { GridHelper } from 'three'
 
 const Viewer = (props)=>{
   const [transformMode,setTransformMode] = useState('translate')

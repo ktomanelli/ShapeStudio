@@ -6,7 +6,7 @@ const SideBar=(props)=>{
 const getPosition=()=>{
 
     return(
-        <div>
+        <div id="sidebar">
             <h4>Position</h4>
             <SideBarInput active={props.active} property={props.active.position} val={'x'}/>
             <SideBarInput active={props.active} property={props.active.position} val={'y'}/>
