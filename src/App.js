@@ -19,6 +19,7 @@ const App=()=>{
   return(
     <div id='app'>
       <Header 
+      scene={scene}
       newShapes={newShapes}
       setNewShapes={setNewShapes}
       />

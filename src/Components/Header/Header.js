@@ -6,7 +6,7 @@ const Header=(props)=>{
 
     return(
         <div id='header'>
-        <MenuBar/>
+        <MenuBar scene={props.scene}/>
         <QuickAccessBar newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>
         </div>
     )
