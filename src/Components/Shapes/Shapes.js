@@ -10,9 +10,9 @@ const Shapes=(props)=>{
         return props.newShapes.map(shape=>{
              switch(shape){
                 case 'box':
-                    return <Box size={{l:1,w:1,h:1}} setActive={props.setActive} position={[-1.2, 0, 0]} />
+                    return <Box size={{l:1,w:1,h:1}} setActive={props.setActive} position={[0, 0, 0]} />
                 case 'sphere':
-                    return  <Sphere />
+                    return  <Sphere size={{r:1,w:32,h:32}} setActive={props.setActive}/>
                 default:
                     return null
             }

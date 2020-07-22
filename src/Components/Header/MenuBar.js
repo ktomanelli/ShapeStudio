@@ -5,7 +5,7 @@ const MenuBar=()=>{
     return(
         <div className="horizontal">
             <div>
-                Shape.Studio
+                <img src='' alt='Shape.Studio' />
                 </div>
             <ul id="menu" className="horizontal">
                 <li><Button color="Primary">File</Button></li>
