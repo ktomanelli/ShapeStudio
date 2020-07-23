@@ -6,19 +6,29 @@ import { TransformControls } from "three/examples/jsm/controls/TransformControls
 extend({ OrbitControls,TransformControls });
 
 const CameraControls = (props)=>{
+
     const {
-      camera,
       scene,
+      camera,
+      raycaster,
       gl:{domElement},
     } = useThree();
     const orbit = useRef()
     const transform = useRef()
-    useEffect(()=>{
-      props.setCamera(camera)
+    useEffect(()=>{        
       props.setScene(scene)
-      props.setOrbit(orbit.current)
-    },[camera, props, scene])
+      props.setCamera(camera)
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+    useEffect(()=>{
+      if(props.loaded){
+        props.setScene(props.loaded.scene)
+      }
+      props.setOrbit(orbit.current)
+    },[props])
+
+    useFrame(({gl})=>gl.render(props.scene,camera),1)    
     useFrame((state)=>orbit.current.update())
     useFrame((state)=>{
       if(transform.current){

@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import {Canvas} from 'react-three-fiber'
+import {Canvas,useFrame} from 'react-three-fiber'
 
-import Shapes from './Shapes/Shapes'
+import CustomCanvas from './CustomCanvas'
+import Scene from './Scene'
 import CameraControls from './CameraControls'
 
 const Viewer = (props)=>{
@@ -41,13 +42,32 @@ const Viewer = (props)=>{
       break;
     }
   }
+
     return (
-      <Canvas style={{height:window.innerHeight,width:window.innerWidth}} onKeyDown={handleKeyPress} onPointerMissed={e=>props.setActive(null)}>
-      <gridHelper args={['100','100']}/>
-      <CameraControls mode={transformMode} active={props.active} setScene={props.setScene} setCamera={props.setCamera} setOrbit={props.setOrbit}/>
-      <ambientLight />
-      <pointLight position={[10, 10, 10]} />
-      {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>:''}
+
+      <Canvas 
+      style={{height:window.innerHeight,width:window.innerWidth}} 
+      onKeyDown={handleKeyPress} 
+      onPointerMissed={e=>props.setActive(null)}
+      >
+        <Scene 
+        setActive={props.setActive} 
+        newShapes={props.newShapes} 
+        setNewShapes={props.setNewShapes}
+        />
+        <gridHelper args={['100','100']}/>
+        <raycaster/>
+        <CameraControls 
+        loaded={props.loaded} 
+        setLoaded={props.setLoaded} 
+        mode={transformMode} 
+        active={props.active} 
+        scene={props.scene} 
+        setScene={props.setScene} 
+        camera={props.camera} 
+        setCamera={props.setCamera} 
+        setOrbit={props.setOrbit}
+        />
       </Canvas>
     )
 }

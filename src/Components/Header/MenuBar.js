@@ -19,7 +19,7 @@ const MenuBar=(props)=>{
                 <li>
                     <div className=''>
                     <Button ref={anchorRef} onClick={handleToggle} color="Primary">File</Button>
-                    <Menu scene={props.scene}open={open} setOpen={setOpen} ref={anchorRef.current}/>
+                    <Menu setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene} open={open} setOpen={setOpen} ref={anchorRef.current}/>
                     </div>
                 </li>
                 <li><Button color="Primary">Edit</Button></li>

@@ -6,8 +6,9 @@ import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
-import {useLoader} from 'react-three-fiber'
+import * as THREE from 'three';
 
+const loader = new THREE.ObjectLoader();
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -44,16 +45,17 @@ const Menu = (props)=>{
         'content-type':'application/json',
         accept:'application/json'
       },
-      body:JSON.stringify({scene:JSON.stringify(props.scene.toJSON())})
+      body:JSON.stringify({scene:JSON.stringify(props.scene.toJSON()),camera:JSON.stringify(props.camera.toJSON())})
     })
   }
 const handleLoad=()=>{
-  // fetch('http://localhost:3000/scene/load')
-  // .then(r=>r.json())
-  // .then(data=>{
-  //   const loadedScene = loader.parse(data)
-  //   console.log(loadedScene)
-  // })
+  fetch('http://localhost:3000/scene/load')
+  .then(r=>r.json())
+  .then(data=>{
+    const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
+    const loadedCamera = loader.parse(JSON.parse(data.camera.camera_string))
+    props.setLoaded({scene:loadedScene,camera:loadedCamera})
+  })
 }
 return (
   <div className='menuDropdown'>
