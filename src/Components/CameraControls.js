@@ -23,12 +23,11 @@ const CameraControls = (props)=>{
     },[])
     useEffect(()=>{
       if(props.loaded){
-        props.setScene(props.loaded.scene)
+        // props.setScene(props.loaded.scene)
       }
       props.setOrbit(orbit.current)
     },[props])
 
-    useFrame(({gl})=>gl.render(props.scene,camera),1)    
     useFrame((state)=>orbit.current.update())
     useFrame((state)=>{
       if(transform.current){

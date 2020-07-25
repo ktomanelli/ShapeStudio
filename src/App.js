@@ -20,17 +20,17 @@ const App=()=>{
   const [raycaster,setRaycaster] = useState(null)
   const [newShapes,setNewShapes] = useState([])
 
-  useEffect(()=>{
-    fetch('http://localhost:3000/scene/loadnew')
-    .then(r=>r.json())
-    .then(data=>{
-      const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
-      const loadedCamera = loader.parse(JSON.parse(data.camera.camera_string))
-      setScene(loadedScene)
-      setCamera(loadedCamera)
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  // useEffect(()=>{
+  //   fetch('http://localhost:3000/scene/loadnew')
+  //   .then(r=>r.json())
+  //   .then(data=>{
+  //     const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
+  //     const loadedCamera = loader.parse(JSON.parse(data.camera.camera_string))
+  //     setScene(loadedScene)
+  //     setCamera(loadedCamera)
+  //   })
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // },[])
 
   return(
     <div id='app'>
