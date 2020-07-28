@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Canvas,useFrame} from 'react-three-fiber'
+import {Canvas} from 'react-three-fiber'
 
 import Scene from './Scene'
 import CameraControls from './CameraControls'
@@ -20,8 +20,10 @@ const Viewer = (props)=>{
         shape.texture.dispose()
         shape.texture = undefined;
       }
-      props.scene.remove(props.active)
-      props.setActive(null)
+      props.scene.remove(shape)
+      if(props.active){
+        props.setActive(null)
+      }
   }
 
   const handleKeyPress=(e)=>{

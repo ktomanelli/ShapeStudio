@@ -10,7 +10,6 @@ const CameraControls = (props)=>{
     const {
       scene,
       camera,
-      raycaster,
       gl:{domElement},
     } = useThree();
     const orbit = useRef()
@@ -22,9 +21,6 @@ const CameraControls = (props)=>{
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     useEffect(()=>{
-      if(props.loaded){
-        // props.setScene(props.loaded.scene)
-      }
       props.setOrbit(orbit.current)
     },[props])
 

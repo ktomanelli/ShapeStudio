@@ -1,7 +1,6 @@
 import React from 'react'
 import SMObject from './SMObject'
 const SceneManager=(props)=>{
-    console.log('scene:',props.scene)
 
     const displayObjects=()=>{
         const objs = props.scene.children.filter(obj=>obj.type!=='Object3D')

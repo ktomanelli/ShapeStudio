@@ -6,7 +6,7 @@ const Header=(props)=>{
 
     return(
         <div id='header'>
-        <MenuBar setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene}/>
+        <MenuBar logo={props.logo} userScenes={props.userScenes} setUserScenes={props.setUserScenes} setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene}/>
         <QuickAccessBar newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>
         </div>
     )

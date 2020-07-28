@@ -1,31 +1,18 @@
-import React from 'react'
+import React,{useState} from 'react'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { makeStyles } from '@material-ui/core/styles';
-import * as THREE from 'three';
-
-const loader = new THREE.ObjectLoader();
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  paper: {
-    marginRight: theme.spacing(2),
-  },
-}));
+import Modal from '@material-ui/core/Modal';
+import SaveWindow from './SaveWindow';
+import OpenWindow from './OpenWindow';
 
 const Menu = (props)=>{
+  const [openModal,setOpenModal] = useState({open:false,body:null})
 
-  const classes = useStyles();
-  const handleClose = (event) => {
-    if (props.ref && props.ref.contains(event.target)) {
-      return;
-    }
-
+  const handleMenuClose = (event) => {
     props.setOpen(false);
   };
 
@@ -37,45 +24,49 @@ const Menu = (props)=>{
   }
 
   const handleSave=()=>{
-    // console.log(props.scene.toJSON())
-    // const sceneString = Buffer.from(JSON.stringify(props.scene.toJSON())).toString('base64')
-    fetch('http://localhost:3000/scene/save',{
-      method:'POST',
-      headers:{
-        'content-type':'application/json',
-        accept:'application/json'
-      },
-      body:JSON.stringify({scene:JSON.stringify(props.scene.toJSON()),camera:JSON.stringify(props.camera.toJSON())})
-    })
+    setOpenModal({open:true,body:'save'})
   }
-const handleLoad=()=>{
-  fetch('http://localhost:3000/scene/load')
-  .then(r=>r.json())
-  .then(data=>{
-    const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
-    const loadedCamera = loader.parse(JSON.parse(data.camera.camera_string))
-    props.setLoaded({scene:loadedScene,camera:loadedCamera})
-  })
-}
+  const handleOpen=()=>{
+    setOpenModal({open:true,body:'open'})
+  }
+
+  const getBody=()=>{
+    switch(openModal.body){
+      case 'save':
+        return <SaveWindow userScenes={props.userScenes} setUserScenes={props.setUserScenes} setOpenModal={setOpenModal} scene={props.scene} camera={props.camera}/>
+      case 'open':
+        return <OpenWindow userScenes={props.userScenes} setOpenModal={setOpenModal} setLoaded={props.setLoaded}/>
+      default:
+        break;
+    }
+  }
 return (
   <div className='menuDropdown'>
-    <Popper open={props.open} anchorEl={props.ref} role={undefined} transition disablePortal>
+    <Popper open={props.open} role={undefined} transition disablePortal>
     {({ TransitionProps, placement }) => (
                   <Grow
                   {...TransitionProps}
                   style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
                 >
                   <Paper>
-          <ClickAwayListener onClickAway={handleClose}>
+          <ClickAwayListener onClickAway={handleMenuClose}>
             <MenuList autoFocusItem={props.open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
               <MenuItem onClick={handleSave}>Save</MenuItem>
-              <MenuItem onClick={handleLoad}>Open</MenuItem>
+              <MenuItem onClick={handleOpen}>Open</MenuItem>
             </MenuList>
           </ClickAwayListener>
           </Paper>
           </Grow>
     )}
   </Popper>
+  <Modal
+        open={openModal.open}
+        onClose={()=>setOpenModal({open:false,body:null})}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        {getBody()}
+      </Modal>
   </div>
 )
 

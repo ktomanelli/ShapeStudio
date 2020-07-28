@@ -1,44 +1,35 @@
 import React,{useState, useEffect} from 'react';
-import {useThree} from 'react-three-fiber'
 import './style.css'
 import Drawer from '@material-ui/core/Drawer';
-
 import Header from './Components/Header/Header'
 import Viewer from './Components/Viewer'
 import Sidebar from './Components/Sidebar/Sidebar'
 import SceneManager from './BottomBar/SceneManager'
-import * as THREE from 'three';
 
 const App=()=>{
-  const loader = new THREE.ObjectLoader();
 
   const [active,setActive] = useState(null)
   const [scene,setScene] = useState(null)
+  const [userScenes,setUserScenes] = useState([])
   const [camera,setCamera] = useState(null)
   const [loaded,setLoaded] = useState(null)
   const [orbit,setOrbit] = useState(null)
-  const [raycaster,setRaycaster] = useState(null)
   const [newShapes,setNewShapes] = useState([])
 
-  // useEffect(()=>{
-  //   fetch('http://localhost:3000/scene/loadnew')
-  //   .then(r=>r.json())
-  //   .then(data=>{
-  //     const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
-  //     const loadedCamera = loader.parse(JSON.parse(data.camera.camera_string))
-  //     setScene(loadedScene)
-  //     setCamera(loadedCamera)
-  //   })
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // },[])
-
+  useEffect(()=>{
+    fetch('http://localhost:3000/scenes')
+    .then(r=>r.json())
+    .then(data=>setUserScenes(data))
+  },[])
   return(
     <div id='app'>
       <Header 
       loaded={loaded}
       scene={scene}
+      userScenes={userScenes}
       camera={camera} 
       newShapes={newShapes}
+      setUserScenes={setUserScenes}
       setLoaded={setLoaded}
       setCamera={setCamera} 
       setScene={setScene}

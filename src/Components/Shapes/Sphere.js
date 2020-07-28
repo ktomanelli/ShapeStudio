@@ -8,7 +8,7 @@ const Sphere=(props)=>{
     return (
         <mesh {...props} ref={mesh} onClick={handleClick}>
             <sphereBufferGeometry attach={'geometry'} args={[props.size.r,props.size.w,props.size.h]} />
-            <meshStandardMaterial attach={'material'} color={'hotpink'} />
+            <meshStandardMaterial attach={'material'} color={'black'} />
         </mesh>
     )
 }
