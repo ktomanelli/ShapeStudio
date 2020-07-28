@@ -4,10 +4,11 @@ import Drawer from '@material-ui/core/Drawer';
 import Header from './Components/Header/Header'
 import Viewer from './Components/Viewer'
 import Sidebar from './Components/Sidebar/Sidebar'
-import SceneManager from './BottomBar/SceneManager'
+import SceneManager from './Components/BottomBar/SceneManager'
 
 const App=()=>{
-
+  const [canvasRendered,setCanvasRendered] = useState(false)
+  const [sceneChildren,setSceneChildren]=useState(null)
   const [active,setActive] = useState(null)
   const [scene,setScene] = useState(null)
   const [userScenes,setUserScenes] = useState([])
@@ -45,6 +46,8 @@ const App=()=>{
               orbit={orbit}
               newShapes={newShapes}
               loaded={loaded}
+              setCanvasRendered={setCanvasRendered}
+              setSceneChildren={setSceneChildren}
               setLoaded={setLoaded}
               setActive={setActive} 
               setCamera={setCamera} 
@@ -52,10 +55,10 @@ const App=()=>{
               setOrbit={setOrbit}
               setNewShapes={setNewShapes}/>
           </div>
-          <div id='bottomBar'>
+          {canvasRendered?<div id='bottomBar'>
           SceneManager
-          <SceneManager scene={scene} setActive={setActive}/>
-          </div>
+          <SceneManager objects={sceneChildren} setActive={setActive}/>
+          </div>:''}
         </div>
         <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
           <Sidebar active={active}/>

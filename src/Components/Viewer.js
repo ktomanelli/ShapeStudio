@@ -53,7 +53,11 @@ const Viewer = (props)=>{
       onPointerMissed={e=>props.setActive(null)}
       >
         <Scene 
+        setSceneChildren={props.setSceneChildren}
+        setCanvasRendered={props.setCanvasRendered}
         scene={props.scene}
+        setScene={props.setScene}
+        setCamera={props.setCamera}
         deleteObj={deleteObj}
         loaded={props.loaded}
         setActive={props.setActive} 

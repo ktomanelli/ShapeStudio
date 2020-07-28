@@ -8,18 +8,12 @@ extend({ OrbitControls,TransformControls });
 const CameraControls = (props)=>{
 
     const {
-      scene,
       camera,
       gl:{domElement},
     } = useThree();
     const orbit = useRef()
     const transform = useRef()
-    useEffect(()=>{        
-      props.setScene(scene)
-      props.setCamera(camera)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    
     useEffect(()=>{
       props.setOrbit(orbit.current)
     },[props])

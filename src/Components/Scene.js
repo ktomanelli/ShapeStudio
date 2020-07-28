@@ -1,5 +1,5 @@
-import React, { useRef } from 'react'
-
+import React, { useRef,useEffect } from 'react'
+import {useThree} from 'react-three-fiber'
 import Shapes from './Shapes/Shapes'
 
 const LoadedShape=(props)=>{
@@ -21,6 +21,23 @@ const LoadedShape=(props)=>{
     )
 }
 const Scene = (props)=>{
+
+    const {
+        scene,
+        camera,
+      } = useThree();
+
+    useEffect(()=>{        
+        props.setScene(scene)
+        props.setCamera(camera)
+        props.setSceneChildren(scene.children)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      })
+      useEffect(()=>{
+        props.setCanvasRendered(true)
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      },[])
 
     const clearScene=()=>{
         props.scene.children.forEach(obj=>{
