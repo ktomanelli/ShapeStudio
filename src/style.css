@@ -138,3 +138,13 @@ body {
   margin-top: 0;
   color: white;
 }
+#SMLabel {
+  overflow: hidden;
+  display: block;
+  border-radius: 25px 25px 1px 1px;
+  width: 10%;
+  height: 10%;
+  margin: 0;
+  padding-left: 1%;
+  background-color: #639dcc;
+}

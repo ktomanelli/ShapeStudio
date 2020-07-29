@@ -57,7 +57,7 @@ const App=()=>{
               setNewShapes={setNewShapes}/>
           </div>
           {canvasRendered?<div id='bottomBar'>
-          SceneManager
+          <p id="SMLabel">SceneManager</p>
           <SceneManager objects={sceneChildren} setActive={setActive}/>
           </div>:''}
         </div>
