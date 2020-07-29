@@ -1,36 +1,47 @@
-import React from 'react'
+import React,{useState} from 'react'
 import SceneCard from './SceneCard'
 import * as THREE from 'three';
 
 const loader = new THREE.ObjectLoader();
 
 const OpenWindow =(props)=>{
+    const [selected,setSelected]=useState({name:'',id:null})
+
 
     const loadScene=()=>{
-        fetch('http://localhost:3000/scenes/load')
+        fetch(`http://localhost:3000/scenes/load/${selected.id}`)
         .then(r=>r.json())
         .then(data=>{
+            console.log(data)
+            // console.log(loader.parse(JSON.parse(data.scene.scene_string)))
           const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
-          const loadedCamera = loader.parse(JSON.parse(data.camera.camera_string))
-          props.setLoaded({scene:loadedScene,camera:loadedCamera})
+          props.setLoaded({scene:loadedScene})
         })
       }
 
       const handleSubmit=(e)=>{
         e.preventDefault()
-        loadScene(e.target.save_name)
+        loadScene()
     }
-
+    const handleChange=(e)=>{
+        props.userScenes.forEach(scene=>{
+            if(scene.save_name===e.target.value){
+                setSelected({name:e.target.value,id:scene.id})
+            }else{
+                setSelected({name:e.target.value,id:null})
+            }
+        })
+    }
     const displaySceneCards=()=>{
-        return props.userScenes.map(scene=><SceneCard scene={scene} />)
+        return props.userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
     }
     return(
         <div className='modal'>
             <div className='sceneCards'>
             {displaySceneCards()}
             </div>
-            <form onSubmit={handleSubmit}>
-            <input type='text' name='save_name'/>
+            <form autoComplete='off' onSubmit={handleSubmit}>
+            <input onChange={handleChange} type='text' name='save_name' value={selected.name}/>
             <input type='submit' value='Open'/>
             </form>
         </div>

@@ -3,16 +3,17 @@ import {useThree} from 'react-three-fiber'
 import Shapes from './Shapes/Shapes'
 
 const LoadedShape=(props)=>{
+    const mesh=useRef()
     useEffect(()=>{
         if(mesh.current){
             props.setActive(mesh.current)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[mesh.current])
+
     const handleClick=(e)=>{
         props.setActive(mesh.current)
     }
-    const mesh=useRef()
     return(
         <mesh
             ref={mesh}

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SaveWindow=(props)=>{
     
-    const [selected,setSelected]=useState({name:'',id:null})
+    const [selected,setSelected]=useState({name:null,id:null})
 
     const classes = useStyles();
     const saveNew=(name)=>{
@@ -28,8 +28,8 @@ const SaveWindow=(props)=>{
           },
           body:JSON.stringify({
               save_name:`${name}`,
-              scene:props.scene.toJSON(),
-              camera:props.camera.toJSON()
+              scene:JSON.stringify(props.scene.toJSON()),
+              camera:JSON.stringify(props.camera.toJSON())
             })
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
@@ -39,14 +39,14 @@ const SaveWindow=(props)=>{
         })
       }
     const savePatch=(name,id)=>{
-        fetch(`http://localhost:3000/scenes/save/${id}`,{
+        fetch(`http://localhost:3000/scenes/${id}`,{
             method:'PATCH',
             headers:{
                 'content-type':'application/json',
-                accept:'application/json',
-            },
+                accept:'application/json'
+              },
             body:JSON.stringify({
-                scene:props.scene.toJSON(),
+                scene:JSON.stringify(props.scene.toJSON()),
             })
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
@@ -64,13 +64,19 @@ const SaveWindow=(props)=>{
         }
     }
     const handleChange=(e)=>{
-        props.userScenes.forEach(scene=>{
-            if(scene.save_name===e.target.value){
-                setSelected({name:e.target.value,id:scene.id})
-            }else{
-                setSelected({name:e.target.value,id:null})
-            }
-        })
+        if(props.userScenes.length>0){
+            props.userScenes.forEach(scene=>{
+                if(scene.save_name===e.target.value){
+                    setSelected({name:e.target.value,id:scene.id})
+                }else{
+                    setSelected({name:e.target.value,id:null})
+                }
+            })
+        }else{
+            setSelected({name:e.target.value,id:null})
+        }
+
+        
     }
     const displaySceneCards=()=>{
         return props.userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
@@ -80,7 +86,7 @@ const SaveWindow=(props)=>{
             <div className='sceneCards'>
             {displaySceneCards()}
             </div>
-            <form onSubmit={handleSubmit}>
+            <form autoComplete='off' onSubmit={handleSubmit}>
             <input onChange={handleChange} type='text' name='save_name' value={selected.name}/>
             <input type='submit' value='Save'/>
             </form>
