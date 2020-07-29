@@ -3,6 +3,7 @@ import SideBarInput from './sideBarInput'
 import { useFrame } from 'react-three-fiber'
 
 const SideBar=(props)=>{
+    const [currentValue,setCurrentValue]=useState(null)
 
 const getPosition=()=>{
     return(

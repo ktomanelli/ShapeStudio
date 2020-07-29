@@ -38,6 +38,7 @@ const Viewer = (props)=>{
       setTransformMode('rotate')
       break;
       case 'Backspace':
+        e.preventDefault()
         deleteObj(props.active)
         break;
       default:
