@@ -8,7 +8,7 @@ const Torus = (props)=>{
     return (
         <mesh {...props} ref={mesh} onClick={handleClick}>
             <torusBufferGeometry attach={'geometry'} args={[props.size.r,props.size.t,props.size.rs,props.size.ts]} />
-            <meshStandardMaterial attach={'material'} color={'black'} />
+            <meshStandardMaterial attach={'material'} color={'#639dcc'} />
         </mesh>
     )
 }

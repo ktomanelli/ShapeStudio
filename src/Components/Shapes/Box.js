@@ -8,7 +8,7 @@ const Box=(props)=>{
     return (
         <mesh {...props} ref={mesh} onClick={handleClick}>
             <boxBufferGeometry attach={'geometry'} args={[props.size.l,props.size.w,props.size.h]} />
-            <meshStandardMaterial attach={'material'} color={'black'} />
+            <meshStandardMaterial attach={'material'} color={'#639dcc'} />
         </mesh>
     )
 }
