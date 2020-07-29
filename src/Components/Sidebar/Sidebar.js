@@ -9,11 +9,14 @@ const SideBar=(props)=>{
     
     const handleChangeComplete = (color) => {
        setObjColor(color.hex);
-       props.active.material.color.set(color.hex)
+       if(props.active.type==='Mesh'){
+           props.active.material.color.set(color.hex)
+       }else{
+           props.active.color.set(color.hex)
+       }
       };
 
     const getPosition=()=>{
-        
     return(
         <div id="sidebar">
             <h4>Position</h4>
