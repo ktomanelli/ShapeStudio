@@ -1,11 +1,19 @@
 import React,{useState, useEffect} from 'react'
 import SideBarInput from './sideBarInput'
+import { SketchPicker } from 'react-color';
 import { useFrame } from 'react-three-fiber'
 
 const SideBar=(props)=>{
-    const [currentValue,setCurrentValue]=useState(null)
+    const [objColor,setObjColor] = useState('#fff')    
 
-const getPosition=()=>{
+    
+    const handleChangeComplete = (color) => {
+       setObjColor(color.hex);
+       props.active.material.color.set(color.hex)
+      };
+
+    const getPosition=()=>{
+        
     return(
         <div id="sidebar">
             <h4>Position</h4>
@@ -20,6 +28,9 @@ const getPosition=()=>{
             <SideBarInput property={props.active.rotation} value={props.active.rotation.x} label={'x'}/>
             <SideBarInput property={props.active.rotation} value={props.active.rotation.y} label={'y'}/>
             <SideBarInput property={props.active.rotation} value={props.active.rotation.z} label={'z'}/>
+            <h4>Color</h4>
+            <SketchPicker color={objColor} onChangeComplete={handleChangeComplete}/>
+            {/* {console.log(props.active)} */}
         </div>
     
     )

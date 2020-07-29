@@ -17,34 +17,65 @@ const SideBarInput = (props)=>{
                 return currentValue.y
             case 'z':
                 return currentValue.z
+            case 'r':
+                return currentValue.r
+            case 'g':
+                return currentValue.g
+            case 'b':
+                return currentValue.b
             default:
                 break;
         }
     }
     const handleChange=(e)=>{
-        let x=props.property.x,
-        y=props.property.y,
-        z=props.property.z
-
-        let changing = Number.parseFloat(e.target.value)
+        if(props.label==='x'||props.label==='y'||props.label==='z'){
+            let x=props.property.x,
+            y=props.property.y,
+            z=props.property.z
+    
+            let changing = Number.parseFloat(e.target.value)
+                switch(props.label){
+                    case 'x':
+                        if(isNaN(changing))changing = x
+                        x=changing
+                        break;
+                    case 'y':
+                        if(isNaN(changing))changing = y
+                        y=changing
+                        break;
+                    case 'z':
+                        if(isNaN(changing))changing = z
+                        z=changing
+                        break;
+                    default:
+                        break;
+                }
+                setCurrentValue({x:x,y:y,z:z})
+                props.property.set(x,y,z)
+        }else{
+            let r=props.property.r,
+            g=props.property.g,
+            b=props.property.b
+            let changing=Number.parseInt(e.target.value)
             switch(props.label){
-                case 'x':
-                    if(isNaN(changing))changing = x
-                    x=changing
+                case 'r':
+                    if(isNaN(changing))changing = r
+                    r=changing
                     break;
-                case 'y':
-                    if(isNaN(changing))changing = y
-                    y=changing
+                case 'g':
+                    if(isNaN(changing))changing = g
+                    g=changing
                     break;
-                case 'z':
-                    if(isNaN(changing))changing = z
-                    z=changing
+                case 'b':
+                    if(isNaN(changing))changing = b
+                    b=changing
                     break;
                 default:
                     break;
             }
-            setCurrentValue({x:x,y:y,z:z})
-            props.property.set(x,y,z)
+            setCurrentValue({r:r,g:g,b:b})
+            props.property.set(changing)
+        }
         
     }
 
