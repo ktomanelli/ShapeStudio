@@ -3,6 +3,12 @@ import {useThree} from 'react-three-fiber'
 import Shapes from './Shapes/Shapes'
 
 const LoadedShape=(props)=>{
+    useEffect(()=>{
+        if(mesh.current){
+            props.setActive(mesh.current)
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[mesh.current])
     const handleClick=(e)=>{
         props.setActive(mesh.current)
     }
@@ -28,6 +34,7 @@ const Scene = (props)=>{
       } = useThree();
 
     useEffect(()=>{        
+        if(props.active) props.setActive(props.active)
         props.setScene(scene)
         props.setCamera(camera)
         props.setSceneChildren(scene.children)

@@ -18,7 +18,7 @@ const QuickAccessBar=(props)=>{
 
     return(
         <div>
-            <ul className='iconList'>
+            <ul className='iconList horizontal'>
                 <li onClick={e=>handleClick(e,'box')}><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} alt='box icon'/></li>
                 <li onClick={e=>handleClick(e,'sphere')}><img className='icon' src={'https://image.flaticon.com/icons/svg/274/274344.svg'} alt='sphere icon'/></li>
             </ul>

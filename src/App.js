@@ -22,6 +22,7 @@ const App=()=>{
     .then(r=>r.json())
     .then(data=>setUserScenes(data))
   },[])
+
   return(
     <div id='app'>
       <Header 
@@ -61,7 +62,7 @@ const App=()=>{
           </div>:''}
         </div>
         <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
-          <Sidebar active={active}/>
+          <Sidebar active={active} setActive={setActive} />
         </Drawer>
       </div>
     </div>

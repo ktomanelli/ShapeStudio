@@ -10,10 +10,7 @@ const MenuBar=(props)=>{
       };
 
     return(
-        <div className="horizontal">
-            <div id='logoContainer'>
-                <img id='logo' src={require('./logo.png')} alt='Shape.Studio' />
-            </div>
+        <div>
             <ul id="menu" className="horizontal">
                 <li>
                     <div className=''>

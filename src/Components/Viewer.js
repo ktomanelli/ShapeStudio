@@ -69,6 +69,7 @@ const Viewer = (props)=>{
         setLoaded={props.setLoaded} 
         mode={transformMode} 
         active={props.active} 
+        setActive={props.setActive}
         scene={props.scene} 
         setScene={props.setScene} 
         camera={props.camera} 

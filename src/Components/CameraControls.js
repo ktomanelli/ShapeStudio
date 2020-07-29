@@ -24,6 +24,11 @@ const CameraControls = (props)=>{
         const controls = transform.current
         controls.setMode(props.mode)
         if(props.active){
+            // const currentActive = props.scene.children.find(child=>{
+            //   if(child.uuid === props.active.uuid)return true
+            // })
+            // props.setActive(currentActive)
+            // console.log('currentActive',currentActive)
             controls.attach(props.active)
             const callback = event => (orbit.current.enabled = !event.value)
             controls.addEventListener("dragging-changed", callback)
