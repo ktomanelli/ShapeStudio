@@ -22,6 +22,10 @@ const Shapes=(props)=>{
                     return <Cylinder size={{rt:1,rb:1,h:1.5,s:32}} setActive={props.setActive} position={[0, 0, 0]}/>
                 case 'torus':
                     return <Torus size={{r:1.5,t:.5,rs:16,ts:100}} setActive={props.setActive} position={[0, 0, 0]}/>
+                case 'ambientlight':
+                    return <ambientLight />
+                case 'spotlight':
+                    return <pointLight position={[10, 10, 10]} />
                 default:
                     return null
             }

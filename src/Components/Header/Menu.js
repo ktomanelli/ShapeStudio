@@ -24,6 +24,29 @@ const Menu = (props)=>{
   }
 
   const handleSave=()=>{
+    if(props.loaded){
+      console.log(props.loaded)
+        fetch(`http://localhost:3000/scenes/${props.loaded.id}`,{
+            method:'PATCH',
+            headers:{
+                'content-type':'application/json',
+                accept:'application/json'
+              },
+            body:JSON.stringify({
+                scene_string:JSON.stringify(props.scene.toJSON()),
+            })
+        }).then(r=>{
+            setOpenModal({open:false,body:null})
+            fetch('http://localhost:3000/scenes')
+            .then(r=>r.json())
+            .then(data=>props.setUserScenes(data))
+        })
+    
+    }else{
+      handleSaveAs()
+    }
+  }
+  const handleSaveAs=()=>{
     setOpenModal({open:true,body:'save'})
   }
   const handleOpen=()=>{
@@ -51,8 +74,9 @@ return (
                   <Paper>
           <ClickAwayListener onClickAway={handleMenuClose}>
             <MenuList autoFocusItem={props.open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-              <MenuItem onClick={handleSave}>Save</MenuItem>
               <MenuItem onClick={handleOpen}>Open</MenuItem>
+              <MenuItem onClick={handleSave}>Save</MenuItem>
+              <MenuItem onClick={handleSaveAs}>Save As</MenuItem>
             </MenuList>
           </ClickAwayListener>
           </Paper>

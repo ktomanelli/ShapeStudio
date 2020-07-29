@@ -19,6 +19,12 @@ const QuickAccessBar=(props)=>{
             case 'torus':
                 props.setNewShapes([...props.newShapes, 'torus'])
                 break;
+            case 'ambientlight':
+                props.setNewShapes([...props.newShapes, 'ambientlight'])
+                break;
+            case 'spotlight':
+                props.setNewShapes([...props.newShapes, 'spotlight'])
+                break;
             default:
                 break;
         }
@@ -27,6 +33,8 @@ const QuickAccessBar=(props)=>{
     return(
         <div>
             <ul className='iconList horizontal'>
+                <li onClick={e=>handleClick(e,'ambientlight')}><img className='icon' src={require('./ambientlight.png')} alt='box icon'/></li>
+                <li onClick={e=>handleClick(e,'spotlight')}><img className='icon' src={require('./spotlight.png')} alt='box icon'/></li>
                 <li onClick={e=>handleClick(e,'box')}><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} alt='box icon'/></li>
                 <li onClick={e=>handleClick(e,'sphere')}><img className='icon' src={'https://image.flaticon.com/icons/svg/274/274344.svg'} alt='sphere icon'/></li>
                 <li onClick={e=>handleClick(e,'cone')}><img className='icon' src={require('./cone.png')} alt='cone icon'/></li>

@@ -19,7 +19,7 @@ const SaveWindow=(props)=>{
     const [selected,setSelected]=useState({name:null,id:null})
 
     const classes = useStyles();
-    const saveNew=(name)=>{
+    const saveAs=(name)=>{
         fetch('http://localhost:3000/scenes/save',{
           method:'POST',
           headers:{
@@ -29,7 +29,6 @@ const SaveWindow=(props)=>{
           body:JSON.stringify({
               save_name:`${name}`,
               scene:JSON.stringify(props.scene.toJSON()),
-              camera:JSON.stringify(props.camera.toJSON())
             })
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
@@ -38,30 +37,11 @@ const SaveWindow=(props)=>{
             .then(data=>props.setUserScenes(data))
         })
       }
-    const savePatch=(name,id)=>{
-        fetch(`http://localhost:3000/scenes/${id}`,{
-            method:'PATCH',
-            headers:{
-                'content-type':'application/json',
-                accept:'application/json'
-              },
-            body:JSON.stringify({
-                scene:JSON.stringify(props.scene.toJSON()),
-            })
-        }).then(r=>{
-            props.setOpenModal({open:false,body:null})
-            fetch('http://localhost:3000/scenes')
-            .then(r=>r.json())
-            .then(data=>props.setUserScenes(data))
-        })
-    }
+
     const handleSubmit=(e)=>{
         e.preventDefault()
-        if(selected.id){
-            savePatch(selected.name,selected.id)
-        }else{
-            saveNew(selected.name)
-        }
+        saveAs(selected.name)
+ 
     }
     const handleChange=(e)=>{
         if(props.userScenes.length>0){
