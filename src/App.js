@@ -5,8 +5,18 @@ import Header from './Components/Header/Header'
 import Viewer from './Components/Viewer'
 import Sidebar from './Components/Sidebar/Sidebar'
 import SceneManager from './Components/BottomBar/SceneManager'
+import Signin from './Components/Signin'
 
 const App=()=>{
+  const [user,setUser] = useState({
+    user:{
+      id:null,
+      email:'',
+      scenes:[],
+      assets:[]
+    },
+    token:''
+  })
   const [canvasRendered,setCanvasRendered] = useState(false)
   const [sceneChildren,setSceneChildren]=useState(null)
   const [active,setActive] = useState(null)
@@ -17,55 +27,76 @@ const App=()=>{
   const [orbit,setOrbit] = useState(null)
   const [newShapes,setNewShapes] = useState([])
 
-  useEffect(()=>{
-    fetch('http://localhost:3000/scenes')
-    .then(r=>r.json())
-    .then(data=>setUserScenes(data))
-  },[])
-
+    //fetch user data
+    useEffect(()=>{
+      if(localStorage.token){
+          fetch('http://localhost:3000/users/stay_logged_in',{
+              headers:{
+                  Authorization:`Bearer ${localStorage.token}`
+              }
+          })
+          .then(r=>r.json())
+          .then(data=>{
+              if(data.message){
+                  alert(data.message)
+              }else{
+                  localStorage.token = data.token
+                  setUser(data)
+              }
+          })
+          // fetch('http://localhost:3000/scenes')
+          // .then(r=>r.json())
+          // .then(data=>setUserScenes(data))
+      }
+  },[]);
   return(
-    <div id='app'>
-      <Header 
-      loaded={loaded}
-      scene={scene}
-      userScenes={userScenes}
-      camera={camera} 
-      newShapes={newShapes}
-      setUserScenes={setUserScenes}
-      setLoaded={setLoaded}
-      setCamera={setCamera} 
-      setScene={setScene}
-      setNewShapes={setNewShapes}
-      />
-      <div className='horizontal'>
-        <div className='vertical'>
-          <div id='viewer'>
-            <Viewer id='threejs' 
-              active={active} 
-              scene={scene}
-              camera={camera} 
-              orbit={orbit}
-              newShapes={newShapes}
-              loaded={loaded}
-              setCanvasRendered={setCanvasRendered}
-              setSceneChildren={setSceneChildren}
-              setLoaded={setLoaded}
-              setActive={setActive} 
-              setCamera={setCamera} 
-              setScene={setScene}
-              setOrbit={setOrbit}
-              setNewShapes={setNewShapes}/>
-          </div>
-          {canvasRendered?<div id='bottomBar'>
-          <p id="SMLabel">SceneManager</p>
-          <SceneManager objects={sceneChildren} setActive={setActive}/>
-          </div>:''}
+    <>
+    { user.user.id?   <div id='app'>
+    <Header 
+    loaded={loaded}
+    scene={scene}
+    userScenes={userScenes}
+    camera={camera} 
+    newShapes={newShapes}
+    setUserScenes={setUserScenes}
+    setLoaded={setLoaded}
+    setCamera={setCamera} 
+    setScene={setScene}
+    setNewShapes={setNewShapes}
+    />
+    <div className='horizontal'>
+      <div className='vertical'>
+        <div id='viewer'>
+          <Viewer id='threejs' 
+            active={active} 
+            scene={scene}
+            camera={camera} 
+            orbit={orbit}
+            newShapes={newShapes}
+            loaded={loaded}
+            setCanvasRendered={setCanvasRendered}
+            setSceneChildren={setSceneChildren}
+            setLoaded={setLoaded}
+            setActive={setActive} 
+            setCamera={setCamera} 
+            setScene={setScene}
+            setOrbit={setOrbit}
+            setNewShapes={setNewShapes}/>
         </div>
-        <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
-          <Sidebar active={active} setActive={setActive} />
-        </Drawer>
+        {canvasRendered?<div id='bottomBar'>
+        <p id="SMLabel">SceneManager</p>
+        <SceneManager objects={sceneChildren} setActive={setActive}/>
+        </div>:''}
       </div>
+      <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
+        <Sidebar active={active} setActive={setActive} />
+      </Drawer>
     </div>
+  </div> 
+  :
+    <Signin setUser={setUser}/>
+}
+</>
   )
 }
 

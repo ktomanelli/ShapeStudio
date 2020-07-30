@@ -21,7 +21,27 @@ body {
   display: flex;
   flex-direction: row;
 }
-
+#signin {
+  padding-top: 10%;
+  height: 100%;
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #639dcc;
+}
+.signinup {
+  width: 100%;
+}
+#signin img {
+  width: 40%;
+  height: auto;
+  padding: 30px;
+}
+#emailpass {
+  width: 25%;
+  background-color: white;
+}
 #header {
   z-index: 1;
   width: 100%;
