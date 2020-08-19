@@ -21,7 +21,6 @@ const Signin=(props)=>{
     const handleSubmit=(e)=>{
         setError({message:''})
         e.preventDefault()
-        console.log(e.target.name)
         if(signup){
             if(password===confPassword){
                 fetch('http://localhost:3000/users',{
@@ -36,7 +35,22 @@ const Signin=(props)=>{
                 setError({message:'Passwords must match.'})
             }
         }else{
-            console.log( 'Email:', email, 'Password: ', password); 
+            fetch('http://localhost:3000/users/login',{
+                method:'POST',
+                headers:{
+                    'content-type':'application/json',
+                    accept:'application/json'
+                },
+                body:JSON.stringify({email,password})
+            })
+            .then(r=>r.json())
+            .then(data=>{
+                if(data.message)setError({message:data.message})
+                else{
+                    props.setUser(data)
+                }
+            })
+            // console.log( 'Email:', email, 'Password: ', password); 
         }
     }
     return(
@@ -49,7 +63,7 @@ const Signin=(props)=>{
             {signup?<TextField id="outlined-basic" type='password' label="Confirm Password" variant="filled" onInput={ e=>setConfPassword(e.target.value)}/>:''}
             <Button className='signinup' varient='contained' name='signin' type="submit">{signup?'Sign Up':'Sign In'}</Button>
         </form>
-        {signup?'':<p><a onClick={()=>setSignup(true)}>Don't have an account? Click here to Sign up</a></p>}
+        {signup?<p onClick={()=>setSignup(false)}>Already have an account? Click here to Sign in!</p>:<p onClick={()=>setSignup(true)}>Don't have an account? Click here to Sign up!</p>}
     </div>
     )
 
