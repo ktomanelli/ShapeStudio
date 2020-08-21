@@ -21,15 +21,18 @@ const Signin=(props)=>{
     const handleSubmit=(e)=>{
         setError({message:''})
         e.preventDefault()
+        const user = {
+            email,password
+        }
         if(signup){
             if(password===confPassword){
                 fetch('http://localhost:3000/users',{
                     method:'POST',
                     headers:{
-                        'content-typ':'application/json',
+                        'content-type':'application/json',
                         accept:'application/json'
                     },
-                    body:JSON.stringify({email:email,password:password})
+                    body:JSON.stringify(user)
                 }).then(r=>r.json()).then(handleResponse)
             }else{
                 setError({message:'Passwords must match.'})
@@ -41,15 +44,10 @@ const Signin=(props)=>{
                     'content-type':'application/json',
                     accept:'application/json'
                 },
-                body:JSON.stringify({email,password})
+                body:JSON.stringify(user)
             })
             .then(r=>r.json())
-            .then(data=>{
-                if(data.message)setError({message:data.message})
-                else{
-                    props.setUser(data)
-                }
-            })
+            .then(handleResponse)
             // console.log( 'Email:', email, 'Password: ', password); 
         }
     }
