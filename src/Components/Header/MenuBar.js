@@ -9,8 +9,21 @@ const MenuBar=(props)=>{
         setOpen((prevOpen) => !prevOpen);
       };
 
+    const handleLogout=()=>{
+        localStorage.clear()
+        props.setUser({    
+            user:{
+                id:null,
+                email:'',
+                scenes:[],
+                assets:[]
+            },
+            token:''
+        })
+      }
     return(
         <div>
+            <div id="menuContainer" className="horizontal">
             <ul id="menu" className="horizontal">
                 <li>
                     <div className=''>
@@ -18,12 +31,14 @@ const MenuBar=(props)=>{
                     <Menu ref={anchorRef} userScenes={props.userScenes} setUserScenes={props.setUserScenes} loaded={props.loaded} setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene} open={open} setOpen={setOpen} ref={anchorRef.current}/>
                     </div>
                 </li>
-                <li><Button color="white">Edit</Button></li>
-                <li><Button color="white">View</Button></li>
-                <li><Button color="white">Shape</Button></li>
-                <li><Button color="white">Tools</Button></li>
-                <li><Button color="white">Help</Button></li>
+                <li><Button>Edit</Button></li>
+                <li><Button>View</Button></li>
+                <li><Button>Shape</Button></li>
+                <li><Button>Tools</Button></li>
+                <li><Button>Help</Button></li>
             </ul>
+            <Button onClick={handleLogout}>Logout</Button>
+            </div>
         </div>
     )
 

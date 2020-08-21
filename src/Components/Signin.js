@@ -61,7 +61,7 @@ const Signin=(props)=>{
             {signup?<TextField id="outlined-basic" type='password' label="Confirm Password" variant="filled" onInput={ e=>setConfPassword(e.target.value)}/>:''}
             <Button className='signinup' varient='contained' name='signin' type="submit">{signup?'Sign Up':'Sign In'}</Button>
         </form>
-        {signup?<p onClick={()=>setSignup(false)}>Already have an account? Click here to Sign in!</p>:<p onClick={()=>setSignup(true)}>Don't have an account? Click here to Sign up!</p>}
+        <p className="signin_signup" onClick={()=>setSignup(!signup)}>{signup? "Already have an account? Click here to Sign in!":"Don't have an account? Click here to Sign up!"}</p>
     </div>
     )
 

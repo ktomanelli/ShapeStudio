@@ -30,6 +30,9 @@ body {
   align-items: center;
   background-color: #639dcc;
 }
+.signin_signup {
+  cursor: pointer;
+}
 .signinup {
   width: 100%;
 }
@@ -60,6 +63,9 @@ body {
   margin-bottom: 10px;
   margin-right: 0;
   width: 55%;
+}
+#menuContainer {
+  justify-content: space-between;
 }
 #menu {
   list-style-type: none;

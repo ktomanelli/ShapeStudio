@@ -30,7 +30,6 @@ const App=()=>{
     //fetch user data
     useEffect(()=>{
       if(localStorage.token){
-        console.log('token present')
           fetch('http://localhost:3000/users/stay_logged_in',{
               headers:{
                   Authorization:`Bearer ${localStorage.token}`
@@ -45,9 +44,9 @@ const App=()=>{
                   setUser(data)
               }
           })
-          // fetch('http://localhost:3000/scenes')
-          // .then(r=>r.json())
-          // .then(data=>setUserScenes(data))
+          fetch('http://localhost:3000/scenes')
+          .then(r=>r.json())
+          .then(data=>setUserScenes(data))
       }
   },[]);
   return(
@@ -59,6 +58,7 @@ const App=()=>{
     userScenes={userScenes}
     camera={camera} 
     newShapes={newShapes}
+    setUser={setUser}
     setUserScenes={setUserScenes}
     setLoaded={setLoaded}
     setCamera={setCamera} 
