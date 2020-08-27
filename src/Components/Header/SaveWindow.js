@@ -23,6 +23,7 @@ const SaveWindow=(props)=>{
         fetch('http://localhost:3000/scenes/save',{
           method:'POST',
           headers:{
+            Authorization:`Bearer ${localStorage.token}`,
             'content-type':'application/json',
             accept:'application/json'
           },
@@ -32,7 +33,11 @@ const SaveWindow=(props)=>{
             })
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
-            fetch('http://localhost:3000/scenes')
+            fetch('http://localhost:3000/scenes',{
+                headers:{
+                    Authorization:`Bearer ${localStorage.token}`
+                }    
+            })
             .then(r=>r.json())
             .then(data=>props.setUserScenes(data))
         })

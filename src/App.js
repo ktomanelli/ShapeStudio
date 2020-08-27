@@ -30,6 +30,7 @@ const App=()=>{
     //fetch user data
     useEffect(()=>{
       if(localStorage.token){
+        console.log('a nice old test')
           fetch('http://localhost:3000/users/stay_logged_in',{
               headers:{
                   Authorization:`Bearer ${localStorage.token}`
@@ -44,7 +45,11 @@ const App=()=>{
                   setUser(data)
               }
           })
-          fetch('http://localhost:3000/scenes')
+          fetch('http://localhost:3000/scenes',{
+            headers:{
+                Authorization:`Bearer ${localStorage.token}`
+            }
+        })
           .then(r=>r.json())
           .then(data=>setUserScenes(data))
       }

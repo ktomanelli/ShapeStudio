@@ -7,7 +7,7 @@ const Header=(props)=>{
     return(
         <div id='header' className='horizontal'>
             <div id='logoContainer'>
-                <img id='logo' src={require('./logo.png')} alt='Shape.Studio' />
+                <img id='logo' src={require('./logo beta.png')} alt='Shape.Studio' />
             </div>
             <div>
                 <MenuBar logo={props.logo} userScenes={props.userScenes} setUserScenes={props.setUserScenes} setUser={props.setUser} loaded={props.loaded} setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene}/>

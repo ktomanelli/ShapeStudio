@@ -27,7 +27,7 @@ const MenuBar=(props)=>{
             <ul id="menu" className="horizontal">
                 <li>
                     <div className=''>
-                    <Button ref={anchorRef} onClick={handleToggle} color="white">File</Button>
+                    <Button ref={anchorRef} onClick={handleToggle}>File</Button>
                     <Menu ref={anchorRef} userScenes={props.userScenes} setUserScenes={props.setUserScenes} loaded={props.loaded} setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene} open={open} setOpen={setOpen} ref={anchorRef.current}/>
                     </div>
                 </li>

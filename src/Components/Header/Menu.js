@@ -58,7 +58,7 @@ const Menu = (props)=>{
       case 'save':
         return <SaveWindow userScenes={props.userScenes} setUserScenes={props.setUserScenes} setOpenModal={setOpenModal} scene={props.scene} camera={props.camera}/>
       case 'open':
-        return <OpenWindow userScenes={props.userScenes} setOpenModal={setOpenModal} setLoaded={props.setLoaded}/>
+        return <OpenWindow userScenes={props.userScenes} setUserScenes={props.setUserScenes} setOpenModal={setOpenModal} setLoaded={props.setLoaded}/>
       default:
         break;
     }
@@ -83,14 +83,12 @@ return (
           </Grow>
     )}
   </Popper>
-  <Modal
-        open={openModal.open}
-        onClose={()=>setOpenModal({open:false,body:null})}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-      >
-        {getBody()}
-      </Modal>
+    <Modal
+      open={openModal.open}
+      onClose={()=>setOpenModal({open:false,body:null})}
+    >
+      {getBody()}
+    </Modal>
   </div>
 )
 

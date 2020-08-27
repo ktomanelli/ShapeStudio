@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import SceneCard from './SceneCard'
 import * as THREE from 'three';
 
@@ -7,19 +7,34 @@ const loader = new THREE.ObjectLoader();
 const OpenWindow =(props)=>{
     const [selected,setSelected]=useState({name:'',id:null})
 
-
-    const loadScene=()=>{
-        fetch(`http://localhost:3000/scenes/load/${selected.id}`)
+    useEffect(()=>{
+        fetch('http://localhost:3000/scenes',{
+            headers:{
+                Authorization:`Bearer ${localStorage.token}`
+            }
+        })
         .then(r=>r.json())
         .then(data=>{
-            console.log(data)
+            props.setUserScenes(data)
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+    const loadScene=()=>{
+        fetch(`http://localhost:3000/scenes/load/${selected.id}`,{
+            headers:{
+                Authorization:`Bearer ${localStorage.token}`
+            }
+        })
+        .then(r=>r.json())
+        .then(data=>{
           props.setOpenModal({open:false,body:null})
           const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
           props.setLoaded({scene:loadedScene,id:data.scene.id})
         })
-      }
+    }
 
-      const handleSubmit=(e)=>{
+    const handleSubmit=(e)=>{
         e.preventDefault()
         loadScene()
     }
