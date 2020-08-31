@@ -2,7 +2,7 @@
 
 An in-browser 3D modeling application which allows users to create simple 3D objects.
 
-![](public/logo.png)
+![](public/logoBackground.png)
 
 ## How It Works
 
@@ -17,7 +17,7 @@ Shape Studio is built with a Rails backend which handles user authentication as 
 - Ruby on Rails
 - Node.JS
 
-## How to Run
+## How to Run (frontend)
 
 - Clone this repo as well as the [backend repo](https://github.com/ktomanelli/ShapeStudio_backend), navigate to the project root in your terminal.
 - Run `npm start`
