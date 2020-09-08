@@ -39,8 +39,7 @@ const Scene = (props)=>{
         props.setScene(scene)
         props.setCamera(camera)
         props.setSceneChildren(scene.children)
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      })
+      },[camera, props, scene])
       useEffect(()=>{
         props.setCanvasRendered(true)
 

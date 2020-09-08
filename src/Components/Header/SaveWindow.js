@@ -72,7 +72,7 @@ const SaveWindow=(props)=>{
             {displaySceneCards()}
             </div>
             <form autoComplete='off' onSubmit={handleSubmit}>
-            <input onChange={handleChange} type='text' name='save_name' value={selected.name}/>
+            <input onChange={handleChange} type='text' name='save_name' value={selected.name?selected.name:''}/>
             <input type='submit' value='Save'/>
             </form>
         </div>

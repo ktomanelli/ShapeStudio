@@ -48,7 +48,7 @@ const OpenWindow =(props)=>{
         })
     }
     const displaySceneCards=()=>{
-        return props.userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
+        return props.userScenes.map(scene=><SceneCard key={scene.id} selected={selected} setSelected={setSelected} scene={scene} />)
     }
     return(
         <div className='modal'>
@@ -56,7 +56,7 @@ const OpenWindow =(props)=>{
             {displaySceneCards()}
             </div>
             <form autoComplete='off' onSubmit={handleSubmit}>
-            <input onChange={handleChange} type='text' name='save_name' value={selected.name}/>
+            <input onChange={handleChange} type='text' name='save_name' value={selected.name?selected.name:''}/>
             <input type='submit' value='Open'/>
             </form>
         </div>

@@ -87,7 +87,9 @@ return (
       open={openModal.open}
       onClose={()=>setOpenModal({open:false,body:null})}
     >
+      <div>
       {getBody()}
+      </div>
     </Modal>
   </div>
 )

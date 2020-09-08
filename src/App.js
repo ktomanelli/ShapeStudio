@@ -94,7 +94,7 @@ const App=()=>{
         <SceneManager objects={sceneChildren} setActive={setActive}/>
         </div>:''}
       </div>
-      <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={''}>
+      <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={()=>console.log('close')}>
         <Sidebar active={active} setActive={setActive} />
       </Drawer>
     </div>
