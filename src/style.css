@@ -130,8 +130,8 @@ body {
   z-index: 0;
 }
 #sidebar {
-  padding-top: 5vw;
-  padding-bottom: 5vw;
+  padding-top: 11vh;
+  padding-bottom: 10vh;
 }
 #outlined-basic {
   margin: 1%;
@@ -143,11 +143,12 @@ body {
   width: 100%;
 }
 #sceneManager {
+  overflow: scroll;
+  max-height: 15vh;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   grid-gap: 10px;
   grid-auto-rows: 100px;
-  overflow: scroll;
   background: #639dcc;
 }
 .objectIcon {
