@@ -1,4 +1,4 @@
-import React, { useRef,useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {useThree} from 'react-three-fiber'
 import Shapes from './Shapes/Shapes'
 
@@ -38,7 +38,6 @@ const Scene = (props)=>{
     return (
         <>
             <gridHelper args={['100','100']}/>
-            {console.log('newShapes',props.newShapes)}
             {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>:''}
         </>
     )
