@@ -5,25 +5,25 @@ const QuickAccessBar=(props)=>{
     const handleClick=(e,icon)=>{
         switch(icon){
             case 'box':
-                props.setNewShapes([...props.newShapes, 'box'])
+                props.setNewShapes([...props.newShapes, {name:'box'}])
                 break;
             case 'sphere':
-                props.setNewShapes([...props.newShapes, 'sphere'])
+                props.setNewShapes([...props.newShapes, {name:'sphere'}])
                 break;
             case 'cone':
-                props.setNewShapes([...props.newShapes, 'cone'])
+                props.setNewShapes([...props.newShapes, {name:'cone'}])
                 break;
             case 'cylinder':
-                props.setNewShapes([...props.newShapes, 'cylinder'])
+                props.setNewShapes([...props.newShapes, {name:'cylinder'}])
                 break;
             case 'torus':
-                props.setNewShapes([...props.newShapes, 'torus'])
+                props.setNewShapes([...props.newShapes, {name:'torus'}])
                 break;
             case 'ambientlight':
-                props.setNewShapes([...props.newShapes, 'ambientlight'])
+                props.setNewShapes([...props.newShapes, {name:'ambientlight'}])
                 break;
             case 'spotlight':
-                props.setNewShapes([...props.newShapes, 'spotlight'])
+                props.setNewShapes([...props.newShapes, {name:'spotlight'}])
                 break;
             default:
                 break;

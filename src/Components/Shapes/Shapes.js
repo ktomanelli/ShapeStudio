@@ -4,6 +4,7 @@ import Sphere from './Sphere'
 import Cone from './Cone'
 import Cylinder from './Cylinder'
 import Torus from './Torus'
+import LoadedShape from './LoadedShape'
 
 const Shapes=(props)=>{
 
@@ -11,21 +12,25 @@ const Shapes=(props)=>{
     const renderNewShapes=()=>{
 
         return props.newShapes.map(shape=>{
-             switch(shape){
+             switch(shape.name){
                 case 'box':
-                    return <Box key={`${shape}${Date.now().toString}`} size={{l:1,w:1,h:1}} setActive={props.setActive} position={[0, 0, 0]} />
+                    return <Box key={`${shape.name.name}${Date.now().toString}`} size={{l:1,w:1,h:1}} setActive={props.setActive} position={[0, 0, 0]} />
                 case 'sphere':
-                    return  <Sphere key={`${shape}${Date.now().toString}`} size={{r:1,w:32,h:32}} setActive={props.setActive}/>
+                    return  <Sphere key={`${shape.name}${Date.now().toString}`} size={{r:1,w:32,h:32}} setActive={props.setActive}/>
                 case 'cone':
-                    return <Cone key={`${shape}${Date.now().toString}`} size={{r:1,h:1.5,s:32}} setActive={props.setActive} position={[0, 0, 0]}/>
+                    return <Cone key={`${shape.name}${Date.now().toString}`} size={{r:1,h:1.5,s:32}} setActive={props.setActive} position={[0, 0, 0]}/>
                 case 'cylinder':
-                    return <Cylinder key={`${shape}${Date.now().toString}`} size={{rt:1,rb:1,h:1.5,s:32}} setActive={props.setActive} position={[0, 0, 0]}/>
+                    return <Cylinder key={`${shape.name}${Date.now().toString}`} size={{rt:1,rb:1,h:1.5,s:32}} setActive={props.setActive} position={[0, 0, 0]}/>
                 case 'torus':
-                    return <Torus key={`${shape}${Date.now().toString}`} size={{r:1.5,t:.5,rs:16,ts:100}} setActive={props.setActive} position={[0, 0, 0]}/>
+                    return <Torus key={`${shape.name}${Date.now().toString}`} size={{r:1.5,t:.5,rs:16,ts:100}} setActive={props.setActive} position={[0, 0, 0]}/>
                 case 'ambientlight':
-                    return <ambientLight key={`${shape}${Date.now().toString}`}/>
+                    return <ambientLight key={`${shape.name}${Date.now().toString}`}/>
                 case 'spotlight':
-                    return <pointLight key={`${shape}${Date.now().toString}`} position={[10, 10, 10]} />
+                    return <pointLight key={`${shape.name}${Date.now().toString}`} position={[10, 10, 10]} />
+                case 'loaded':
+                    return <LoadedShape setActive={props.setActive} object={shape.obj}/>
+                case 'primitive':
+                    return <primitive object={shape.obj}/>
                 default:
                     return null
             }
