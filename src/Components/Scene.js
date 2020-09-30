@@ -8,8 +8,20 @@ const Scene = (props)=>{
         scene,
         camera,
       } = useThree();
+    
     useEffect(()=>{
         if(props.loaded){
+            
+            
+            //need to unmount component rather than delete and dispose
+
+
+            // props.scene.children.forEach(obj=>{
+            //     if(obj.type!=='GridHelper'){
+            //         console.log('deleted')
+            //         props.deleteObj(obj)
+            //     }
+            // })
             const loadedShapes = []
             props.loaded.scene.children.forEach(obj=>{
                 if(obj.type==='Mesh'){
@@ -22,13 +34,19 @@ const Scene = (props)=>{
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[props.loaded])
-    
-    useEffect(()=>{        
+
+    useEffect(()=>{     
+        console.log('props',props)   
         if(props.active) props.setActive(props.active)
         props.setScene(scene)
         props.setCamera(camera)
         props.setSceneChildren(scene.children)
-      },[camera, props, scene])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      },[
+        camera, 
+        scene,
+        props
+    ])
       useEffect(()=>{
         props.setCanvasRendered(true)
 
@@ -37,8 +55,9 @@ const Scene = (props)=>{
 
     return (
         <>
+        {console.log(scene.children)}
             <gridHelper args={['100','100']}/>
-            {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>:''}
+            {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes} setDeleteObj={props.setDeleteObj} deleteObj={props.deleteObj}/>:''}
         </>
     )
 }
