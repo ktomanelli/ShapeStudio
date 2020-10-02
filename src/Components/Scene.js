@@ -36,7 +36,6 @@ const Scene = (props)=>{
     },[props.loaded])
 
     useEffect(()=>{     
-        console.log('props',props)   
         if(props.active) props.setActive(props.active)
         props.setScene(scene)
         props.setCamera(camera)
@@ -55,7 +54,6 @@ const Scene = (props)=>{
 
     return (
         <>
-        {console.log(scene.children)}
             <gridHelper args={['100','100']}/>
             {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes} setDeleteObj={props.setDeleteObj} deleteObj={props.deleteObj}/>:''}
         </>

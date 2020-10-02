@@ -30,7 +30,6 @@ const App=()=>{
     //fetch user data
     useEffect(()=>{
       if(localStorage.token){
-        console.log('a nice old test')
           fetch('http://localhost:3000/users/stay_logged_in',{
               headers:{
                   Authorization:`Bearer ${localStorage.token}`

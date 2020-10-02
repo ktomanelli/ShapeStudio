@@ -7,24 +7,6 @@ import CameraControls from './CameraControls'
 const Viewer = (props)=>{
   const [transformMode,setTransformMode] = useState('translate')
   const [deleteObj,setDeleteObj]=useState([])
-  // const deleteObj=(shape)=>{
-      // if(shape.geometry){
-      //   shape.geometry.dispose()
-      //   shape.geometry = undefined
-      // }
-      // if(shape.material){
-      //   shape.material.dispose()
-      //   shape.material=undefined
-      // }
-      // if(shape.texture){
-      //   shape.texture.dispose()
-      //   shape.texture = undefined;
-      // }
-      // props.scene.remove(shape)
-      // if(props.active){
-      //   props.setActive(null)
-      // }
-  // }
 
   const handleKeyPress=(e)=>{
     switch(e.key){
@@ -38,7 +20,11 @@ const Viewer = (props)=>{
       setTransformMode('rotate')
       break;
       case "Backspace":
-        if(props.active)setDeleteObj([...deleteObj,props.active])
+      case "Delete":
+        e.preventDefault()
+        if(props.active){
+          setDeleteObj([...deleteObj,props.active])
+        }
         break;
       default:
       console.log(e.key)
