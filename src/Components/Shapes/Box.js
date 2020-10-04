@@ -8,29 +8,23 @@ const Box=(props)=>{
     }
 
     useEffect(()=>{
-        mesh.current.objId=props.objId
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-    useEffect(()=>{
-        if(props.deleteObj){
-            const isPresent = props.deleteObj.find(obj=>obj.objId===props.objId)
-            if(isPresent){
-                toggle(false)
-                const tempArr=props.deleteObj
-                console.log('before splice',tempArr)
-                tempArr.splice(tempArr.indexOf(isPresent),1)
-                console.log('show',show)
-                console.log('after splice',tempArr)
-                props.setDeleteObj([...tempArr])
-                props.setActive(null)   
+        if(mesh.current){
+            if(props.deleteObj){
+                const isPresent = props.deleteObj.find(obj=>obj.uuid===mesh.current.uuid)
+                if(isPresent){
+                    props.setActive(null)   
+                    const tempArr=props.deleteObj
+                    tempArr.splice(tempArr.indexOf(isPresent),1)
+                    props.setDeleteObj([...tempArr])
+                    toggle(false)            
+                }
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[props.deleteObj, props.objId])
+    },[props.deleteObj,props.objId,mesh])
 
-    useEffect(()=>{
-        return ()=>console.log('unmounted')
-    },[])
+    
+
     return (
         <>
             {show&&<mesh {...props} ref={mesh} onClick={handleClick} className='nicebox' >

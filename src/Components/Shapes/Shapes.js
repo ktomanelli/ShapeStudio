@@ -18,7 +18,6 @@ const Shapes=(props)=>{
                         // key={`${shape.name}${Date.now().toString()}`}
                         deleteObj={props.deleteObj} 
                         setDeleteObj={props.setDeleteObj}
-                        objId={`${shape.name}${Date.now().toString()}`} 
                         size={{l:1,w:1,h:1}} 
                         setActive={props.setActive} 
                         position={[0, 0, 0]} 
@@ -26,22 +25,25 @@ const Shapes=(props)=>{
                 case 'sphere':
                     return  <Sphere 
                         // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
                         size={{r:1,w:32,h:32}} 
                         setActive={props.setActive}
                     />
                 case 'cone':
                     return <Cone 
                         // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
                         size={{r:1,h:1.5,s:32}} 
                         setActive={props.setActive} 
                         position={[0, 0, 0]}
                     />
                 case 'cylinder':
                     return <Cylinder 
-                        // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
+                        // key={`${shape.name}${Date.now().toString()}`}
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj} 
                         size={{rt:1,rb:1,h:1.5,s:32}} 
                         setActive={props.setActive} 
                         position={[0, 0, 0]}
@@ -49,7 +51,8 @@ const Shapes=(props)=>{
                 case 'torus':
                     return <Torus 
                         // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
                         size={{r:1.5,t:.5,rs:16,ts:100}} 
                         setActive={props.setActive} 
                         position={[0, 0, 0]}
@@ -62,20 +65,19 @@ const Shapes=(props)=>{
                 case 'spotlight':
                     return <pointLight 
                         // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
                         position={[10, 10, 10]} 
                     />
                 case 'loaded':
                     return <LoadedShape 
                         // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
                         setActive={props.setActive} 
                         object={shape.obj}
                     />
                 case 'primitive':
                     return <primitive 
                         // key={`${shape.name}${Date.now().toString()}`} 
-                        objId={`${shape.name}${Date.now().toString()}`} 
                         object={shape.obj}
                     />
                 default:
