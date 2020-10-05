@@ -5,6 +5,9 @@ import Cone from './Cone'
 import Cylinder from './Cylinder'
 import Torus from './Torus'
 import LoadedShape from './LoadedShape'
+import AmbientLight from './AmbientLight'
+import PointLight from './PointLight'
+import Primitive from './Primitive'
 
 const Shapes=(props)=>{
 
@@ -18,8 +21,8 @@ const Shapes=(props)=>{
                         // key={`${shape.name}${Date.now().toString()}`}
                         deleteObj={props.deleteObj} 
                         setDeleteObj={props.setDeleteObj}
-                        size={{l:1,w:1,h:1}} 
                         setActive={props.setActive} 
+                        size={{l:1,w:1,h:1}} 
                         position={[0, 0, 0]} 
                     />
                 case 'sphere':
@@ -27,16 +30,16 @@ const Shapes=(props)=>{
                         // key={`${shape.name}${Date.now().toString()}`} 
                         deleteObj={props.deleteObj} 
                         setDeleteObj={props.setDeleteObj}
-                        size={{r:1,w:32,h:32}} 
                         setActive={props.setActive}
+                        size={{r:1,w:32,h:32}} 
                     />
                 case 'cone':
                     return <Cone 
                         // key={`${shape.name}${Date.now().toString()}`} 
                         deleteObj={props.deleteObj} 
                         setDeleteObj={props.setDeleteObj}
-                        size={{r:1,h:1.5,s:32}} 
                         setActive={props.setActive} 
+                        size={{r:1,h:1.5,s:32}} 
                         position={[0, 0, 0]}
                     />
                 case 'cylinder':
@@ -44,8 +47,8 @@ const Shapes=(props)=>{
                         // key={`${shape.name}${Date.now().toString()}`}
                         deleteObj={props.deleteObj} 
                         setDeleteObj={props.setDeleteObj} 
-                        size={{rt:1,rb:1,h:1.5,s:32}} 
                         setActive={props.setActive} 
+                        size={{rt:1,rb:1,h:1.5,s:32}} 
                         position={[0, 0, 0]}
                     />
                 case 'torus':
@@ -53,19 +56,21 @@ const Shapes=(props)=>{
                         // key={`${shape.name}${Date.now().toString()}`} 
                         deleteObj={props.deleteObj} 
                         setDeleteObj={props.setDeleteObj}
-                        size={{r:1.5,t:.5,rs:16,ts:100}} 
                         setActive={props.setActive} 
+                        size={{r:1.5,t:.5,rs:16,ts:100}} 
                         position={[0, 0, 0]}
                     />
                 case 'ambientlight':
-                    return <ambientLight 
-                        // key={`${shape.name}${Date.now().toString()}`}
-                        objId={`${shape.name}${Date.now().toString()}`}
-                    />
+                    return <AmbientLight
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
+                        setActive={props.setActive} 
+                        />
                 case 'spotlight':
-                    return <pointLight 
-                        // key={`${shape.name}${Date.now().toString()}`} 
-                        position={[10, 10, 10]} 
+                    return <PointLight
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
+                        setActive={props.setActive} 
                     />
                 case 'loaded':
                     return <LoadedShape 
@@ -76,8 +81,10 @@ const Shapes=(props)=>{
                         object={shape.obj}
                     />
                 case 'primitive':
-                    return <primitive 
-                        // key={`${shape.name}${Date.now().toString()}`} 
+                    return <Primitive 
+                        deleteObj={props.deleteObj} 
+                        setDeleteObj={props.setDeleteObj}
+                        setActive={props.setActive} 
                         object={shape.obj}
                     />
                 default:

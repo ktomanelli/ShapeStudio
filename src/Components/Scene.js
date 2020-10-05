@@ -11,15 +11,7 @@ const Scene = (props)=>{
     
     useEffect(()=>{
         if(props.loaded){
-            
-            //need to unmount component rather than delete and dispose
-            // props.scene.children.forEach(obj=>{
-            //     if(obj.type!=='GridHelper'){
-            //         console.log('deleted')
-            //         props.deleteObj(obj)
-            //     }
-            // })
-            
+            props.setDeleteObj([...props.deleteObj,...scene.children])
             const loadedShapes = []
             props.loaded.scene.children.forEach(obj=>{
                 if(obj.type==='Mesh'){
