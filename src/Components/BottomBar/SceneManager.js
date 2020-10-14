@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
 import SMObject from './SMObject'
+import {sceneStore} from './../../zustand'
 const SceneManager=(props)=>{
 
+    const {scene} = sceneStore()
+
     const displayObjects=()=>{
-        const objs = props.objects.filter(obj=>obj.type!=='Object3D')
+        const objs = scene.children.filter(obj=>obj.type!=='Object3D')
         return objs.map(child=>{
-            return <SMObject key={child.uuid} obj={child} setActive={props.setActive}/>
+            return <SMObject key={child.uuid} obj={child}/>
         })
     }
 useEffect(()=>{
@@ -13,7 +16,7 @@ useEffect(()=>{
 })
     return(
         <div id='sceneManager'>
-            {props.objects ? displayObjects():''}
+            {scene && displayObjects()}
         </div>
     )
 

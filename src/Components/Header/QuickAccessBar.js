@@ -1,29 +1,31 @@
 import React from 'react'
+import {sceneStore} from './../../zustand'
 
 const QuickAccessBar=(props)=>{
+    const {newShapes,setNewShapes} = sceneStore()
 
     const handleClick=(e,icon)=>{
         switch(icon){
             case 'box':
-                props.setNewShapes([...props.newShapes, {name:'box'}])
+                setNewShapes([...newShapes, {name:'box'}])
                 break;
             case 'sphere':
-                props.setNewShapes([...props.newShapes, {name:'sphere'}])
+                setNewShapes([...newShapes, {name:'sphere'}])
                 break;
             case 'cone':
-                props.setNewShapes([...props.newShapes, {name:'cone'}])
+                setNewShapes([...newShapes, {name:'cone'}])
                 break;
             case 'cylinder':
-                props.setNewShapes([...props.newShapes, {name:'cylinder'}])
+                setNewShapes([...newShapes, {name:'cylinder'}])
                 break;
             case 'torus':
-                props.setNewShapes([...props.newShapes, {name:'torus'}])
+                setNewShapes([...newShapes, {name:'torus'}])
                 break;
             case 'ambientlight':
-                props.setNewShapes([...props.newShapes, {name:'ambientlight'}])
+                setNewShapes([...newShapes, {name:'ambientlight'}])
                 break;
             case 'spotlight':
-                props.setNewShapes([...props.newShapes, {name:'spotlight'}])
+                setNewShapes([...newShapes, {name:'spotlight'}])
                 break;
             default:
                 break;

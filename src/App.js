@@ -6,26 +6,17 @@ import Viewer from './Components/Viewer'
 import Sidebar from './Components/Sidebar/Sidebar'
 import SceneManager from './Components/BottomBar/SceneManager'
 import Signin from './Components/Signin'
+import {userStore,sceneStore} from './zustand'
 
 const App=()=>{
-  const [user,setUser] = useState({
-    user:{
-      id:null,
-      email:'',
-      scenes:[],
-      assets:[]
-    },
-    token:''
-  })
+
+  const {
+    user,
+    setUser,
+    setUserScenes
+  } = userStore()
+  const {active} = sceneStore()
   const [canvasRendered,setCanvasRendered] = useState(false)
-  const [sceneChildren,setSceneChildren]=useState(null)
-  const [active,setActive] = useState(null)
-  const [scene,setScene] = useState(null)
-  const [userScenes,setUserScenes] = useState([])
-  const [camera,setCamera] = useState(null)
-  const [loaded,setLoaded] = useState(null)
-  const [orbit,setOrbit] = useState(null)
-  const [newShapes,setNewShapes] = useState([])
 
     //fetch user data
     useEffect(()=>{
@@ -52,54 +43,29 @@ const App=()=>{
           .then(r=>r.json())
           .then(data=>setUserScenes(data))
       }
-  },[]);
+  },[setUser, setUserScenes]);
+
   return(
     <>
-    { user.user.id?   <div id='app'>
-    <Header 
-    loaded={loaded}
-    scene={scene}
-    userScenes={userScenes}
-    camera={camera} 
-    newShapes={newShapes}
-    setUser={setUser}
-    setUserScenes={setUserScenes}
-    setLoaded={setLoaded}
-    setCamera={setCamera} 
-    setScene={setScene}
-    setNewShapes={setNewShapes}
-    />
+    { user.user ? <div id='app'>
+    <Header/>
     <div className='horizontal'>
       <div className='vertical'>
         <div id='viewer'>
-          <Viewer id='threejs' 
-            active={active} 
-            scene={scene}
-            camera={camera} 
-            orbit={orbit}
-            newShapes={newShapes}
-            loaded={loaded}
-            setCanvasRendered={setCanvasRendered}
-            setSceneChildren={setSceneChildren}
-            setLoaded={setLoaded}
-            setActive={setActive} 
-            setCamera={setCamera} 
-            setScene={setScene}
-            setOrbit={setOrbit}
-            setNewShapes={setNewShapes}/>
+          <Viewer id='threejs' setCanvasRendered={setCanvasRendered}/>
         </div>
-        {canvasRendered?<div id='bottomBar'>
+        {canvasRendered && <div id='bottomBar'>
         <p id="SMLabel">SceneManager</p>
-        <SceneManager objects={sceneChildren} setActive={setActive}/>
-        </div>:''}
+        <SceneManager/>
+        </div>}
       </div>
       <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={()=>console.log('close')}>
-        <Sidebar active={active} setActive={setActive} />
+        <Sidebar/>
       </Drawer>
     </div>
   </div> 
   :
-    <Signin setUser={setUser}/>
+    <Signin/>
 }
 </>
   )

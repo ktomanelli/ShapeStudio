@@ -1,27 +1,30 @@
 import React,{useState,useEffect,useRef} from 'react'
+import {sceneStore} from './../../zustand'
 
 const Cone = (props)=>{
+    const {deleteObj,setDeleteObj,setActive} = sceneStore()
+
     const mesh = useRef()
     const [show,toggle]=useState(true);
     const handleClick=(e)=>{
-        props.setActive(mesh.current)
+        setActive(mesh.current)
     }
 
     useEffect(()=>{
         if(mesh.current){
-            if(props.deleteObj){
-                const isPresent = props.deleteObj.find(obj=>obj.uuid===mesh.current.uuid)
+            if(deleteObj){
+                const isPresent = deleteObj.find(obj=>obj.uuid===mesh.current.uuid)
                 if(isPresent){
-                    props.setActive(null)   
-                    const tempArr=props.deleteObj
+                    setActive(null)   
+                    const tempArr=deleteObj
                     tempArr.splice(tempArr.indexOf(isPresent),1)
-                    props.setDeleteObj([...tempArr])
+                    setDeleteObj([...tempArr])
                     toggle(false)            
                 }
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[props.deleteObj,props.objId,mesh])
+    },[deleteObj,props.objId,mesh])
    
     return (
         <>

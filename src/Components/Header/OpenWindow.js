@@ -1,10 +1,14 @@
 import React,{useState,useEffect} from 'react'
 import SceneCard from './SceneCard'
 import * as THREE from 'three';
+import {userStore,sceneStore} from './../../zustand'
 
 const loader = new THREE.ObjectLoader();
 
 const OpenWindow =(props)=>{
+    const {userScenes,setUserScenes} = userStore()
+    const {setLoaded} = sceneStore()
+
     const [selected,setSelected]=useState({name:'',id:null})
 
     useEffect(()=>{
@@ -15,7 +19,7 @@ const OpenWindow =(props)=>{
         })
         .then(r=>r.json())
         .then(data=>{
-            props.setUserScenes(data)
+            setUserScenes(data)
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
@@ -30,7 +34,7 @@ const OpenWindow =(props)=>{
         .then(data=>{
           props.setOpenModal({open:false,body:null})
           const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
-          props.setLoaded({scene:loadedScene,id:data.scene.id})
+          setLoaded({scene:loadedScene,id:data.scene.id})
         })
     }
 
@@ -39,7 +43,7 @@ const OpenWindow =(props)=>{
         loadScene()
     }
     const handleChange=(e)=>{
-        props.userScenes.forEach(scene=>{
+        userScenes.forEach(scene=>{
             if(scene.save_name===e.target.value){
                 setSelected({name:e.target.value,id:scene.id})
             }else{
@@ -48,7 +52,7 @@ const OpenWindow =(props)=>{
         })
     }
     const displaySceneCards=()=>{
-        return props.userScenes.map(scene=><SceneCard key={scene.id} selected={selected} setSelected={setSelected} scene={scene} />)
+        return userScenes.map(scene=><SceneCard key={scene.id} selected={selected} setSelected={setSelected} scene={scene} />)
     }
     return(
         <div className='modal'>

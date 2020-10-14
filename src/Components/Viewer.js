@@ -3,10 +3,11 @@ import {Canvas} from 'react-three-fiber'
 
 import Scene from './Scene'
 import CameraControls from './CameraControls'
+import {sceneStore} from './../zustand'
 
 const Viewer = (props)=>{
-  const [transformMode,setTransformMode] = useState('translate')
-  const [deleteObj,setDeleteObj]=useState([])
+  const {active,setActive,deleteObj,setDeleteObj,newShapes} = sceneStore()
+  const [transformMode,setTransformMode] = useState('translate')  
 
   const handleKeyPress=(e)=>{
     switch(e.key){
@@ -22,8 +23,8 @@ const Viewer = (props)=>{
       case "Backspace":
       case "Delete":
         e.preventDefault()
-        if(props.active){
-          setDeleteObj([...deleteObj,props.active])
+        if(active){
+          setDeleteObj([...deleteObj,active])
         }
         break;
       default:
@@ -36,34 +37,10 @@ const Viewer = (props)=>{
       <Canvas
       style={{height:window.innerHeight,width:window.innerWidth}} 
       onKeyDown={handleKeyPress} 
-      onPointerMissed={e=>props.setActive(null)}
+      onPointerMissed={e=>setActive(null)}
       >
-        <Scene 
-        setSceneChildren={props.setSceneChildren}
-        setCanvasRendered={props.setCanvasRendered}
-        scene={props.scene}
-        setScene={props.setScene}
-        setCamera={props.setCamera}
-        deleteObj={deleteObj}
-        setDeleteObj={setDeleteObj}
-        loaded={props.loaded}
-        setLoaded={props.setLoaded}
-        setActive={props.setActive} 
-        newShapes={props.newShapes} 
-        setNewShapes={props.setNewShapes}
-        />
-        <CameraControls 
-        loaded={props.loaded} 
-        setLoaded={props.setLoaded} 
-        mode={transformMode} 
-        active={props.active} 
-        setActive={props.setActive}
-        scene={props.scene} 
-        setScene={props.setScene} 
-        camera={props.camera} 
-        setCamera={props.setCamera} 
-        setOrbit={props.setOrbit}
-        />
+        <Scene setCanvasRendered={props.setCanvasRendered}/>
+        <CameraControls mode={transformMode}/>
       </Canvas>
     )
 }

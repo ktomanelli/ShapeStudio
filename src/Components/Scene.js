@@ -1,40 +1,50 @@
 import React, { useEffect } from 'react'
 import {useThree} from 'react-three-fiber'
 import Shapes from './Shapes/Shapes'
-
+import {sceneStore} from './../zustand'
 const Scene = (props)=>{
 
+    const {
+        setScene,
+        setCamera,
+        deleteObj,
+        setDeleteObj,
+        loaded,
+        active,
+        setActive,
+        newShapes,
+        setNewShapes
+    } = sceneStore()
     const {
         scene,
         camera,
       } = useThree();
     
     useEffect(()=>{
-        if(props.loaded){
-            props.setDeleteObj([...props.deleteObj,...scene.children])
+        if(loaded){
+            setDeleteObj([...deleteObj,...scene.children])
             const loadedShapes = []
-            props.loaded.scene.children.forEach(obj=>{
+            loaded.scene.children.forEach(obj=>{
                 if(obj.type==='Mesh'){
                     loadedShapes.push({name:'loaded',obj})
                 }else if(obj.type!=='Object3D'){
                     loadedShapes.push({name:'primitive',obj})
                 }
             })
-            props.setNewShapes([...props.newShapes, ...loadedShapes])
+            setNewShapes([...newShapes, ...loadedShapes])
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[props.loaded])
+    },[loaded])
 
     useEffect(()=>{     
-        if(props.active) props.setActive(props.active)
-        props.setScene(scene)
-        props.setCamera(camera)
-        props.setSceneChildren(scene.children)
+        if(active) setActive(active)
+        setScene(scene)
+        setCamera(camera)
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[
         camera, 
         scene,
-        props
+        deleteObj
     ])
       useEffect(()=>{
         props.setCanvasRendered(true)
@@ -45,7 +55,7 @@ const Scene = (props)=>{
     return (
         <>
             <gridHelper args={['100','100']}/>
-            {props.newShapes?<Shapes setActive={props.setActive} newShapes={props.newShapes} setNewShapes={props.setNewShapes} setDeleteObj={props.setDeleteObj} deleteObj={props.deleteObj}/>:''}
+            {newShapes && <Shapes/>}
         </>
     )
 }

@@ -8,83 +8,54 @@ import LoadedShape from './LoadedShape'
 import AmbientLight from './AmbientLight'
 import PointLight from './PointLight'
 import Primitive from './Primitive'
-
+import {sceneStore} from './../../zustand'
 const Shapes=(props)=>{
+    const {newShapes}=sceneStore()
 
     //this function will handle rendering shapes that have not yet been saved to scene
     const renderNewShapes=()=>{
-
-        return props.newShapes.map(shape=>{
+        return newShapes.map((shape,i)=>{
              switch(shape.name){
                 case 'box':
                     return <Box 
-                        // key={`${shape.name}${Date.now().toString()}`}
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
+                        key={i}
                         size={{l:1,w:1,h:1}} 
                         position={[0, 0, 0]} 
                     />
                 case 'sphere':
                     return  <Sphere 
-                        // key={`${shape.name}${Date.now().toString()}`} 
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive}
+                        key={i}
                         size={{r:1,w:32,h:32}} 
                     />
                 case 'cone':
                     return <Cone 
-                        // key={`${shape.name}${Date.now().toString()}`} 
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
+                        key={i}
                         size={{r:1,h:1.5,s:32}} 
                         position={[0, 0, 0]}
                     />
                 case 'cylinder':
                     return <Cylinder 
-                        // key={`${shape.name}${Date.now().toString()}`}
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj} 
-                        setActive={props.setActive} 
+                        key={i}
                         size={{rt:1,rb:1,h:1.5,s:32}} 
                         position={[0, 0, 0]}
                     />
                 case 'torus':
                     return <Torus 
-                        // key={`${shape.name}${Date.now().toString()}`} 
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
+                        key={i}
                         size={{r:1.5,t:.5,rs:16,ts:100}} 
                         position={[0, 0, 0]}
                     />
                 case 'ambientlight':
-                    return <AmbientLight
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
-                        />
+                    return <AmbientLight/>
                 case 'spotlight':
-                    return <PointLight
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
-                    />
+                    return <PointLight/>
                 case 'loaded':
                     return <LoadedShape 
-                        // key={`${shape.name}${Date.now().toString()}`} 
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
+                        key={i}
                         object={shape.obj}
                     />
                 case 'primitive':
                     return <Primitive 
-                        deleteObj={props.deleteObj} 
-                        setDeleteObj={props.setDeleteObj}
-                        setActive={props.setActive} 
                         object={shape.obj}
                     />
                 default:

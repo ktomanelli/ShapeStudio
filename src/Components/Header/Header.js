@@ -10,8 +10,8 @@ const Header=(props)=>{
                 <img id='logo' src={require('./logo beta.png')} alt='Shape.Studio' />
             </div>
             <div>
-                <MenuBar logo={props.logo} userScenes={props.userScenes} setUserScenes={props.setUserScenes} setUser={props.setUser} loaded={props.loaded} setLoaded={props.setLoaded} camera={props.camera} setCamera={props.setCamera} scene={props.scene} setScene={props.setScene}/>
-                <QuickAccessBar newShapes={props.newShapes} setNewShapes={props.setNewShapes}/>
+                <MenuBar/>
+                <QuickAccessBar/>
             </div>
         </div>
     )

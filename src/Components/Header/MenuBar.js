@@ -10,7 +10,12 @@ import Modal from '@material-ui/core/Modal';
 import SaveWindow from './SaveWindow';
 import OpenWindow from './OpenWindow';
 
+import {userStore,sceneStore} from './../../zustand'
+
 const MenuBar=(props)=>{
+  const {setUserScenes, setUser} = userStore()
+  const {loaded,scene} = sceneStore()
+
     const anchorRef = React.useRef(null);
     const [openModal,setOpenModal] = useState({open:false,body:null})
     const [open, setOpen] = useState(false);
@@ -30,7 +35,7 @@ const MenuBar=(props)=>{
   }
     const handleLogout=()=>{
         localStorage.clear()
-        props.setUser({    
+        setUser({    
             user:{
                 id:null,
                 email:'',
@@ -43,22 +48,22 @@ const MenuBar=(props)=>{
 
       const handleSave=()=>{
           handleToggle()
-        if(props.loaded){
-          console.log(props.loaded)
-            fetch(`http://localhost:3000/scenes/${props.loaded.id}`,{
+        if(loaded){
+          console.log(loaded)
+            fetch(`http://localhost:3000/scenes/${loaded.id}`,{
                 method:'PATCH',
                 headers:{
                     'content-type':'application/json',
                     accept:'application/json'
                   },
                 body:JSON.stringify({
-                    scene_string:JSON.stringify(props.scene.toJSON()),
+                    scene_string:JSON.stringify(scene.toJSON()),
                 })
             }).then(r=>{
                 setOpenModal({open:false,body:null})
                 fetch('http://localhost:3000/scenes')
                 .then(r=>r.json())
-                .then(data=>props.setUserScenes(data))
+                .then(data=>setUserScenes(data))
             })
         
         }else{
@@ -77,9 +82,9 @@ const MenuBar=(props)=>{
       const getBody=()=>{
         switch(openModal.body){
           case 'save':
-            return <SaveWindow userScenes={props.userScenes} setUserScenes={props.setUserScenes} setOpenModal={setOpenModal} scene={props.scene} camera={props.camera}/>
+            return <SaveWindow setOpenModal={setOpenModal}/>
           case 'open':
-            return <OpenWindow userScenes={props.userScenes} setUserScenes={props.setUserScenes} setOpenModal={setOpenModal} setLoaded={props.setLoaded}/>
+            return <OpenWindow setOpenModal={setOpenModal}/>
           default:
             break;
         }

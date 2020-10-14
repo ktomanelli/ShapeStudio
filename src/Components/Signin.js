@@ -1,8 +1,10 @@
 import React,{useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import {userStore} from './../zustand'
 
 const Signin=(props)=>{
+    const {setUser} = userStore()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confPassword, setConfPassword] = useState('');
@@ -15,7 +17,7 @@ const Signin=(props)=>{
             alert(data.message)
         } else{
             localStorage.token = data.token
-            props.setUser(data)
+            setUser(data)
         }
     };
     const handleSubmit=(e)=>{

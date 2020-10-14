@@ -2,6 +2,8 @@ import React,{useEffect,useState} from 'react'
 import SceneCard from './SceneCard'
 import { makeStyles } from '@material-ui/core/styles';
 
+import {userStore,sceneStore} from './../../zustand'
+
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -15,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 const SaveWindow=(props)=>{
+    const {userScenes,setUserScenes} = userStore()
+    const {scene,camera} = sceneStore()
     
     const [selected,setSelected]=useState({name:null,id:null})
 
@@ -29,7 +33,7 @@ const SaveWindow=(props)=>{
           },
           body:JSON.stringify({
               save_name:`${name}`,
-              scene:JSON.stringify(props.scene.toJSON()),
+              scene:JSON.stringify(scene.toJSON()),
             })
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
@@ -39,7 +43,7 @@ const SaveWindow=(props)=>{
                 }    
             })
             .then(r=>r.json())
-            .then(data=>props.setUserScenes(data))
+            .then(data=>setUserScenes(data))
         })
       }
 
@@ -49,8 +53,8 @@ const SaveWindow=(props)=>{
  
     }
     const handleChange=(e)=>{
-        if(props.userScenes.length>0){
-            props.userScenes.forEach(scene=>{
+        if(userScenes.length>0){
+            userScenes.forEach(scene=>{
                 if(scene.save_name===e.target.value){
                     setSelected({name:e.target.value,id:scene.id})
                 }else{
@@ -64,7 +68,7 @@ const SaveWindow=(props)=>{
         
     }
     const displaySceneCards=()=>{
-        return props.userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
+        return userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
     }
     return(
         <div className='modal'>
