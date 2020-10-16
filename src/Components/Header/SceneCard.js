@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 const SceneCard=(props)=>{
+    const url = 'http://localhost:3000'+props.scene.screenshot
     useEffect(()=>{
         const oldSelected = document.querySelector('.selected')
         if(oldSelected) oldSelected.classList.remove('selected')
@@ -16,7 +17,8 @@ const SceneCard=(props)=>{
 
     return (
         <div className='saveIcon' data-id={props.scene.id} onClick={addSelected}>
-            <img src='https://img.icons8.com/all/500/document.png' alt='document icon'/>
+           { console.log(url)}
+            <img src={url} alt='document icon'/>
             <p>{props.scene.save_name}</p>
         </div>
     )

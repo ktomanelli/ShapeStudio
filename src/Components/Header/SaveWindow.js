@@ -3,7 +3,7 @@ import SceneCard from './SceneCard'
 import { makeStyles } from '@material-ui/core/styles';
 
 import {userStore,sceneStore} from './../../zustand'
-
+import {screenshot} from './../../Functions/screenshot'
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -18,23 +18,25 @@ const useStyles = makeStyles((theme) => ({
 
 const SaveWindow=(props)=>{
     const {userScenes,setUserScenes} = userStore()
-    const {scene,camera} = sceneStore()
+    const {renderer,scene,camera} = sceneStore()
     
     const [selected,setSelected]=useState({name:null,id:null})
 
     const classes = useStyles();
-    const saveAs=(name)=>{
+    const saveAs=async(name)=>{
+        const blob = await screenshot(renderer,scene,camera)
+        const fd = new FormData()
+        fd.append('scene[save_name]',name)
+        fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
+        fd.append('scene[screenshot]',blob)
+
         fetch('http://localhost:3000/scenes/save',{
-          method:'POST',
-          headers:{
-            Authorization:`Bearer ${localStorage.token}`,
-            'content-type':'application/json',
-            accept:'application/json'
-          },
-          body:JSON.stringify({
-              save_name:`${name}`,
-              scene:JSON.stringify(scene.toJSON()),
-            })
+            method:'POST',
+            headers:{
+                Authorization:`Bearer ${localStorage.token}`,
+                accept:'application/json'
+            },
+            body:fd
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
             fetch('http://localhost:3000/scenes',{
@@ -43,7 +45,10 @@ const SaveWindow=(props)=>{
                 }    
             })
             .then(r=>r.json())
-            .then(data=>setUserScenes(data))
+            .then(data=>{
+                console.log(data)
+                setUserScenes(data)
+            })
         })
       }
 
