@@ -20,7 +20,9 @@ const sceneStore = create(set=>({
     camera:null,
     setCamera: (camera)=>set({camera}),
     deleteObj:[],
-    setDeleteObj: (deleteObj)=>set({deleteObj:[...deleteObj]})
+    setDeleteObj: (deleteObj)=>set({deleteObj:[...deleteObj]}),
+    renderer:null,
+    setRenderer: (renderer)=>set({renderer}),
 }))
 
 

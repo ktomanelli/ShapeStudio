@@ -1,17 +1,13 @@
 import React, { useEffect,useRef } from 'react'
-import {useFrame, useThree, extend} from 'react-three-fiber'
+import {useFrame, extend} from 'react-three-fiber'
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls";
 import {sceneStore} from './../zustand'
 extend({ OrbitControls,TransformControls });
 
 const CameraControls = (props)=>{
-  const {active,scene,setOrbit}=sceneStore()
+  const {active,scene,camera,setOrbit,renderer}=sceneStore()
 
-    const {
-      camera,
-      gl:{domElement},
-    } = useThree();
     const orbit = useRef()
     const transform = useRef()
     
@@ -37,8 +33,12 @@ const CameraControls = (props)=>{
 
     return (
       <>
-        <transformControls ref={transform} args={[camera,domElement]}/>
-        <orbitControls ref={orbit} args={[camera,domElement]} />
+      {renderer && 
+        <>
+        <transformControls ref={transform} args={[camera,renderer.domElement]}/>
+        <orbitControls ref={orbit} args={[camera,renderer.domElement]} />
+        </>
+      }
       </>
     )
   }

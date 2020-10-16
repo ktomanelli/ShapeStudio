@@ -13,11 +13,13 @@ const Scene = (props)=>{
         active,
         setActive,
         newShapes,
-        setNewShapes
+        setNewShapes,
+        setRenderer
     } = sceneStore()
     const {
         scene,
         camera,
+        gl,
       } = useThree();
     
     useEffect(()=>{
@@ -40,6 +42,7 @@ const Scene = (props)=>{
         if(active) setActive(active)
         setScene(scene)
         setCamera(camera)
+        setRenderer(gl)
       // eslint-disable-next-line react-hooks/exhaustive-deps
       },[
         camera, 
