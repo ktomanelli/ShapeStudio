@@ -17,7 +17,6 @@ const SceneCard=(props)=>{
 
     return (
         <div className='saveIcon' data-id={props.scene.id} onClick={addSelected}>
-           { console.log(url)}
             <img src={url} alt='document icon'/>
             <p>{props.scene.save_name}</p>
         </div>

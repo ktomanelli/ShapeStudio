@@ -11,10 +11,12 @@ import SaveWindow from './SaveWindow';
 import OpenWindow from './OpenWindow';
 
 import {userStore,sceneStore} from './../../zustand'
+import {screenshot} from './../../Functions/screenshot'
+
 
 const MenuBar=(props)=>{
   const {setUserScenes, setUser} = userStore()
-  const {loaded,scene} = sceneStore()
+  const {loaded,scene,renderer,camera} = sceneStore()
 
     const anchorRef = React.useRef(null);
     const [openModal,setOpenModal] = useState({open:false,body:null})
@@ -46,22 +48,27 @@ const MenuBar=(props)=>{
         })
       }
 
-      const handleSave=()=>{
-          handleToggle()
+      const handleSave=async()=>{
+        handleToggle()
         if(loaded){
-          console.log(loaded)
+          const fd = new FormData()
+          const blob = await screenshot(renderer,scene,camera)
+          fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
+          fd.append('scene[screenshot]',blob)
             fetch(`http://localhost:3000/scenes/${loaded.id}`,{
                 method:'PATCH',
                 headers:{
-                    'content-type':'application/json',
-                    accept:'application/json'
-                  },
-                body:JSON.stringify({
-                    scene_string:JSON.stringify(scene.toJSON()),
-                })
+                  Authorization:`Bearer ${localStorage.token}`,
+                  accept:'application/json'
+                },
+                body:fd
             }).then(r=>{
                 setOpenModal({open:false,body:null})
-                fetch('http://localhost:3000/scenes')
+                fetch('http://localhost:3000/scenes',{
+                  headers:{
+                    Authorization:`Bearer ${localStorage.token}`,
+                  }
+                })
                 .then(r=>r.json())
                 .then(data=>setUserScenes(data))
             })

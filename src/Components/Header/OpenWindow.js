@@ -32,7 +32,6 @@ const OpenWindow =(props)=>{
         })
         .then(r=>r.json())
         .then(data=>{
-            console.log(data)
           props.setOpenModal({open:false,body:null})
           const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
           setLoaded({scene:loadedScene,id:data.scene.id})
