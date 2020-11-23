@@ -47,7 +47,7 @@ const Shapes=(props)=>{
                     />
                 case 'ambientlight':
                     return <AmbientLight/>
-                case 'spotlight':
+                case 'pointlight':
                     return <PointLight/>
                 case 'loaded':
                     return <LoadedShape 

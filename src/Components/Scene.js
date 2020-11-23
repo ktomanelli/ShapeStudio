@@ -29,6 +29,10 @@ const Scene = (props)=>{
             loaded.scene.children.forEach(obj=>{
                 if(obj.type==='Mesh'){
                     loadedShapes.push({name:'loaded',obj})
+                }else if(obj.type==='PointLight'){
+                    loadedShapes.push({name:'pointlight',obj})
+                }else if(obj.type==='AmbientLight'){
+                    loadedShapes.push({name:'ambientlight',obj})
                 }else if(obj.type!=='Object3D'){
                     loadedShapes.push({name:'primitive',obj})
                 }

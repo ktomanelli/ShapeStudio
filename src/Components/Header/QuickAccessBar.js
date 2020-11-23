@@ -24,8 +24,8 @@ const QuickAccessBar=(props)=>{
             case 'ambientlight':
                 setNewShapes([...newShapes, {name:'ambientlight'}])
                 break;
-            case 'spotlight':
-                setNewShapes([...newShapes, {name:'spotlight'}])
+            case 'pointlight':
+                setNewShapes([...newShapes, {name:'pointlight'}])
                 break;
             default:
                 break;
@@ -36,7 +36,7 @@ const QuickAccessBar=(props)=>{
         <div>
             <ul className='iconList horizontal'>
                 <li onClick={e=>handleClick(e,'ambientlight')}><img className='icon' src={require('./ambientlight.png')} alt='box icon'/></li>
-                <li onClick={e=>handleClick(e,'spotlight')}><img className='icon' src={require('./spotlight.png')} alt='box icon'/></li>
+                <li onClick={e=>handleClick(e,'pointlight')}><img className='icon' src={require('./spotlight.png')} alt='box icon'/></li>
                 <li onClick={e=>handleClick(e,'box')}><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} alt='box icon'/></li>
                 <li onClick={e=>handleClick(e,'sphere')}><img className='icon' src={'https://image.flaticon.com/icons/svg/274/274344.svg'} alt='sphere icon'/></li>
                 <li onClick={e=>handleClick(e,'cone')}><img className='icon' src={require('./cone.png')} alt='cone icon'/></li>
