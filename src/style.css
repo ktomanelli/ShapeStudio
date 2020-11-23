@@ -72,44 +72,52 @@ body {
   color: #ffffff;
 }
 .modal {
-  border-radius: 25px;
-  top: 25%;
-  right: 25%;
+  box-shadow: 10px 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   position: fixed;
   width: 60%;
-  height: 50%;
-  background-color: #87bc88;
-  overflow: scroll;
+  height: 60%;
+  background-color: white;
+  overflow-y: scroll;
+}
+.openSaveInput {
+  position: sticky;
+  bottom: 0;
+  background-color: #639dcc;
+  padding: 1em;
+  width: 100%;
 }
 .sceneCards {
-  width: auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  padding: 4%;
+  /* margin-bottom: 5%; */
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  justify-items: stretch;
+  column-gap: 1em;
+  row-gap: 3em;
 }
 .saveIcon {
   text-align: center;
-  width: 15%;
-  height: auto;
+  width: 100%;
+  height: 20vh;
   display: flex;
   flex-direction: column;
 }
 .saveIcon img {
-  margin: 2%;
+  border: 1px solid;
+  margin: 10px;
+  box-shadow: 7px 5px;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 50%;
 }
-
-.modal form {
-  position: fixed;
-  bottom: 25%;
-}
-.selected {
-  background-color: #5e807f;
-  border-style: groove;
+.selectedSave {
+  background-color: #639dcc;
 }
 .iconList {
   list-style-type: none;

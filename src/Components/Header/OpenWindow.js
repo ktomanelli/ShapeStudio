@@ -1,4 +1,6 @@
 import React,{useState,useEffect} from 'react'
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import SceneCard from './SceneCard'
 import * as THREE from 'three';
 import {userStore,sceneStore} from './../../zustand'
@@ -59,9 +61,9 @@ const OpenWindow =(props)=>{
             <div className='sceneCards'>
             {displaySceneCards()}
             </div>
-            <form autoComplete='off' onSubmit={handleSubmit}>
-            <input onChange={handleChange} type='text' name='save_name' value={selected.name?selected.name:''}/>
-            <input type='submit' value='Open'/>
+            <form className="openSaveInput" autoComplete='off' onSubmit={handleSubmit}>
+            <TextField id="outlined-basic" placeholder="File Name" onChange={handleChange}name='save_name' value={selected.name?selected.name:''}/>
+            <Button type='submit' variant="contained">Open</Button>
             </form>
         </div>
     )

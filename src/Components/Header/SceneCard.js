@@ -3,11 +3,12 @@ import React, { useEffect } from 'react'
 const SceneCard=(props)=>{
     const url = 'http://localhost:3000'+props.scene.screenshot
     useEffect(()=>{
-        const oldSelected = document.querySelector('.selected')
-        if(oldSelected) oldSelected.classList.remove('selected')
+        const oldSelected = document.querySelector('.selectedSave')
+        if(oldSelected) oldSelected.classList.remove('selectedSave')
         if(props.selected.id){
             const card=document.querySelector(`[data-id='${props.selected.id}']`)
-            card.classList.add('selected')
+            card.childNodes[0].classList.add('selectedSave')
+            // card.classList.add('selectedSave')
         }
     },[props.selected.id])
     const addSelected=(e)=>{
@@ -17,7 +18,7 @@ const SceneCard=(props)=>{
 
     return (
         <div className='saveIcon' data-id={props.scene.id} onClick={addSelected}>
-            <img src={url} alt='document icon'/>
+            <img src={url} alt='scene screenshot'/>
             <p>{props.scene.save_name}</p>
         </div>
     )
