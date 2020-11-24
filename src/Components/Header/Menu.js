@@ -36,11 +36,10 @@ const Menu = (props)=>{
         {props.name}
     </Button>
     {props.items && 
-    <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+    <Popper open={open} anchorEl={anchorRef.current} role={undefined} placement="bottom-start" transition disablePortal>
         {({ TransitionProps, placement }) => (
             <Grow
             {...TransitionProps}
-            style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
             >
             <Paper>
                 <ClickAwayListener onClickAway={handleMenuClose}>

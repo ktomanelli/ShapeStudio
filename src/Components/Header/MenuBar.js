@@ -110,7 +110,17 @@ const MenuBar=(props)=>{
                 <li><Menu name="View" /></li>
                 <li><Menu name="Shape" /></li>
                 <li><Menu name="Tools" /></li>
-                <li><Menu name="Help" /></li>
+                <li>
+                  <Menu 
+                    name="Help" 
+                    items={
+                      [
+                        {name:'Submit A Bug',function:()=>setOpenModal({open:true,body:'bug'})},
+                        {name:'About Shape Studio',function:()=>setOpenModal({open:true,body:'about'})},
+                      ]
+                    }
+                  />
+                </li>
             </ul>
               <Button onClick={handleLogout}>Logout</Button>
             </div>
