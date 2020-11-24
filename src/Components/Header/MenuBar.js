@@ -10,13 +10,25 @@ import Modal from '@material-ui/core/Modal';
 import SaveWindow from './SaveWindow';
 import OpenWindow from './OpenWindow';
 
-import {userStore,sceneStore} from './../../zustand'
-import {screenshot} from './../../Functions/screenshot'
-
+import {userStore,sceneStore} from '../../zustand'
+import {screenshot} from '../../Functions/screenshot'
 
 const MenuBar=(props)=>{
-  const {setUserScenes, setUser} = userStore()
-  const {loaded,scene,renderer,camera} = sceneStore()
+  const {setUser,setUserScenes} = userStore()
+  const {
+    loaded,
+    scene,
+    renderer,
+    camera,
+    setScene,
+    setActive,
+    setCamera,
+    setLoaded,
+    setOrbit,
+    setNewShapes,
+    setDeleteObj,
+    setRenderer
+  } = sceneStore();
 
     const anchorRef = React.useRef(null);
     const [openModal,setOpenModal] = useState({open:false,body:null})
@@ -37,17 +49,21 @@ const MenuBar=(props)=>{
   }
     const handleLogout=()=>{
         localStorage.clear()
-        setUser({    
-            user:{
-                id:null,
-                email:'',
-                scenes:[],
-                assets:[]
-            },
-            token:''
-        })
+        clearUserStore();
+        clearSceneStore();
       }
-
+      const clearUserStore = ()=>{
+        setUser({user:null});
+        setUserScenes([])
+    }
+    const clearSceneStore = () => {
+      setScene({});
+      setActive(null);
+      setLoaded(null);
+      setNewShapes([]);
+      setDeleteObj([]);
+      setRenderer(null);
+  }
       const handleSave=async()=>{
         handleToggle()
         if(loaded){
@@ -137,7 +153,7 @@ const MenuBar=(props)=>{
                 <li><Button>Tools</Button></li>
                 <li><Button>Help</Button></li>
             </ul>
-            <Button onClick={handleLogout}>Logout</Button>
+              <Button onClick={handleLogout}>Logout</Button>
             </div>
             <Modal
             open={openModal.open}
