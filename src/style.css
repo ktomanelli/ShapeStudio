@@ -93,6 +93,9 @@ body {
   width: 60%;
   height: 60%;
 }
+.error {
+  color: red;
+}
 .openSaveInput {
   position: sticky;
   bottom: 0;

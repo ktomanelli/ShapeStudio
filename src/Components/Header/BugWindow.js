@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 const BugWindow = (props)=>{
     const [disabled,setDisabled] = useState(false)
     const [bugText,setBugText] = useState({title:'',body:''})
+    const [error,setError] = useState(null)
     const handleBugSubmit=(e)=>{
         e.preventDefault();
         setDisabled(true)
@@ -20,9 +21,13 @@ const BugWindow = (props)=>{
                 body:bugText.body,
             })
         }).then(r=>r.json()).then(data=>{
-            console.log(data)        
-            setDisabled(false)
-            props.setOpenModal({open:false,body:null})
+            if(data.status===200){
+                setDisabled(false)
+                props.setOpenModal({open:false,body:null})
+            }else{
+                setDisabled(false)
+                setError(data.error)
+            }
         })
     }
     const handleChange = (e)=>{
@@ -35,6 +40,7 @@ const BugWindow = (props)=>{
             {disabled&&<div className='loading'>
                 <img src={require('./loading.svg')} alt='loading img'/>
             </div>}
+            {error&&<p className='error'>{error}</p>}
             <div className='bug'>
                 <h1>Submit A Bug 🐛</h1>
             <form className='vertical' autoComplete='off' onSubmit={handleBugSubmit}>
