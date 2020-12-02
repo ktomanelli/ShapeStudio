@@ -72,7 +72,7 @@ body {
   color: #ffffff;
 }
 .modal {
-  box-shadow: 10px 8px;
+  box-shadow: 10px 8px black;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -84,6 +84,21 @@ body {
 }
 #about {
   background-color: #639dcc;
+  text-align: center;
+  color: white;
+  padding-left: 10vw;
+  padding-right: 10vw;
+  padding-bottom: 5vw;
+  padding-top: 2vw;
+}
+#kyle {
+  width: 10vw;
+}
+#contactIcons {
+  justify-content: space-evenly;
+}
+#contactIcons a img {
+  width: 6vw;
 }
 .modal img {
   display: block;
