@@ -8,6 +8,7 @@ import Menu from './Menu'
 import {userStore,sceneStore} from '../../zustand'
 import {screenshot} from '../../Functions/screenshot'
 import BugWindow from './BugWindow';
+import AboutWindow from './AboutWindow';
 
 const MenuBar=(props)=>{
   const {setUser,setUserScenes} = userStore()
@@ -89,7 +90,7 @@ const MenuBar=(props)=>{
           case 'bug':
             return <BugWindow setOpenModal={setOpenModal}/>
           case 'about':
-            return 
+            return <AboutWindow />
           default:
             break;
         }

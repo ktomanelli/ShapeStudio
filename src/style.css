@@ -82,6 +82,16 @@ body {
   background-color: white;
   overflow-y: scroll;
 }
+#about {
+  background-color: #639dcc;
+}
+.modal img {
+  display: block;
+  width: 30vh;
+  padding: 1%;
+  margin-left: auto;
+  margin-right: auto;
+}
 .bug {
   margin: 10%;
 }
