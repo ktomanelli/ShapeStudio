@@ -38,7 +38,7 @@ const BugWindow = (props)=>{
     return(
         <div className='modal'>
             {disabled&&<div className='loading'>
-                <img src={require('./loading.svg')} alt='loading img'/>
+                <img src={require('../../Assets/loading.svg')} alt='loading img'/>
             </div>}
             {error&&<p className='error'>{error}</p>}
             <div className='bug'>

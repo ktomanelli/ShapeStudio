@@ -55,7 +55,7 @@ const Signin=(props)=>{
     }
     return(
     <div id='signin'>
-        <img src={require('./Header/logo beta.png')} alt='Shape Studio' />
+        <img src={require('../Assets/logo beta.png')} alt='Shape Studio' />
         {error.message?<p>{error.message}</p>:''}
         <form id='emailpass' className='vertical' onSubmit={handleSubmit}>
             <TextField id="outlined-basic" type='email' label="Email" variant="filled" onInput={ e=>setEmail(e.target.value)}/>

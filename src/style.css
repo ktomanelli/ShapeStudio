@@ -71,6 +71,9 @@ body {
   list-style-type: none;
   color: #ffffff;
 }
+.button {
+  color: blue;
+}
 .modal {
   box-shadow: 10px 8px black;
   top: 50%;

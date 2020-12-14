@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import SceneCard from './SceneCard'
+import SceneCard from '../Header/SceneCard'
 import * as THREE from 'three';
-import {userStore,sceneStore} from './../../zustand'
+import {userStore,sceneStore} from '../../zustand'
 
 const loader = new THREE.ObjectLoader();
 

@@ -1,7 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import SceneCard from './SceneCard'
+import SceneCard from '../Header/SceneCard'
 import { makeStyles } from '@material-ui/core/styles';
 
 import {userStore,sceneStore} from './../../zustand'

@@ -1,17 +1,18 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import Modal from '@material-ui/core/Modal';
 import { Button } from '@material-ui/core'
-import SaveWindow from './SaveWindow';
-import OpenWindow from './OpenWindow';
+import SaveWindow from '../Modals/SaveWindow';
+import OpenWindow from '../Modals/OpenWindow';
 import Menu from './Menu'
 
 import {userStore,sceneStore} from '../../zustand'
 import {screenshot} from '../../Functions/screenshot'
-import BugWindow from './BugWindow';
-import AboutWindow from './AboutWindow';
+import BugWindow from '../Modals/BugWindow';
+import AboutWindow from '../Modals/AboutWindow';
+import Notice from '../Modals/Notice'
 
 const MenuBar=(props)=>{
-  const {setUser,setUserScenes} = userStore()
+  const {user,setUser,setUserScenes} = userStore()
   const {
     loaded,
     scene,
@@ -28,6 +29,12 @@ const MenuBar=(props)=>{
   } = sceneStore();
 
     const [openModal,setOpenModal] = useState({open:false,body:null})
+
+    useEffect(()=>{
+      if(user.user.show_notice){
+        setOpenModal({open:true,body:'notice'})
+      }
+    },[])
 
     const handleLogout=()=>{
         localStorage.clear()
@@ -91,6 +98,8 @@ const MenuBar=(props)=>{
             return <BugWindow setOpenModal={setOpenModal}/>
           case 'about':
             return <AboutWindow />
+          case 'notice':
+            return <Notice/>
           default:
             break;
         }

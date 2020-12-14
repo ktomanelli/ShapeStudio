@@ -7,7 +7,7 @@ const Header=(props)=>{
     return(
         <div id='header' className='horizontal'>
             <div id='logoContainer'>
-                <img id='logo' src={require('./logo beta.png')} alt='Shape.Studio' />
+                <img id='logo' src={require('../../Assets/logo beta.png')} alt='Shape.Studio' />
             </div>
             <div>
                 <MenuBar/>

@@ -1,11 +1,11 @@
 import React from 'react'
-import kyle from './kyle.svg'
+import kyle from '../../Assets/kyle.svg'
 
 const AboutWindow = (props)=>{
 
     return(
         <div id='about' className='modal'>
-            <img src={require('./logo.png')} alt='logo'></img>
+            <img src={require('../../Assets/logo.png')} alt='logo'></img>
             <p>Hey there! Thanks for clicking on the About page!</p>
             <p>My name is Kyle.</p>
             <img id='kyle' src={kyle}/> 
@@ -21,10 +21,10 @@ const AboutWindow = (props)=>{
             <p>If you have a question or just want to chat, feel free to reach out!</p>
             <div id='contactIcons' className='horizontal'>
                 <a href='https://twitter.com/kyletomanelli' target='_blank'>
-                    <img className='contactIcon' src={require('./twitter.webp')}/>
+                    <img className='contactIcon' src={require('../../Assets/twitter.webp')}/>
                 </a>
                 <a href='mailto:kyle@shape.studio' target='_blank'>
-                    <img className='contactIcon' src={require('./email.webp')}/>
+                    <img className='contactIcon' src={require('../../Assets/email.webp')}/>
                 </a>
             </div>
         </div>

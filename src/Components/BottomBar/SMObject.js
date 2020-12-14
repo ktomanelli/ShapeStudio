@@ -6,7 +6,7 @@ const SMObject = (props)=>{
 
     return(
         <div className='objectIcon' onClick={()=>setActive(props.obj)}>
-            <img src={require('./obj.png')} alt='object icon'/>
+            <img src={require('../../Assets/obj.png')} alt='object icon'/>
             <p>{props.obj.type==='Mesh' ? props.obj.geometry.type : props.obj.type}</p>
         </div>
     )
