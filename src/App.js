@@ -15,7 +15,7 @@ const App=()=>{
     setUser,
     setUserScenes
   } = userStore()
-  const {active} = sceneStore()
+  const {active,deleteObj,setDeleteObj,setTransformMode} = sceneStore()
   const [canvasRendered,setCanvasRendered] = useState(false)
 
     //fetch user data
@@ -45,19 +45,43 @@ const App=()=>{
       }
   },[setUser, setUserScenes]);
 
+  const handleKeyPress=(e)=>{
+    switch(e.key){
+      case "z":
+      setTransformMode('translate')
+      break;
+      case "x":
+      setTransformMode('scale')
+      break;
+      case "c":
+      setTransformMode('rotate')
+      break;
+      case "Backspace":
+      case "Delete":
+        e.preventDefault()
+        if(active){
+          setDeleteObj([...deleteObj,active])
+        }
+        break;
+      default:
+      // console.log(e.key)
+      break;
+    }
+  }
+
   return(
     <>
     { user.user ? <div id='app'>
     <Header/>
     <div className='horizontal'>
-      <div className='vertical'>
+      <div className='vertical' tabIndex='0' onKeyDown={handleKeyPress}>
         <div id='viewer'>
           <Viewer id='threejs' setCanvasRendered={setCanvasRendered}/>
         </div>
-        {canvasRendered && <div id='bottomBar'>
+        <div id='bottomBar'>
         <p id="SMLabel">SceneManager</p>
-        <SceneManager/>
-        </div>}
+        <SceneManager canvasRendered={canvasRendered}/>
+        </div>
       </div>
       <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={()=>console.log('close')}>
         <Sidebar/>

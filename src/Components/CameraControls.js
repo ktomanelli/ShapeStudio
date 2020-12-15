@@ -6,7 +6,7 @@ import {sceneStore} from './../zustand'
 extend({ OrbitControls,TransformControls });
 
 const CameraControls = (props)=>{
-  const {active,scene,setActive,camera,setOrbit,renderer}=sceneStore()
+  const {active,scene,setActive,camera,setOrbit,renderer,transformMode}=sceneStore()
 
     const orbit = useRef()
     const transform = useRef()
@@ -19,7 +19,7 @@ const CameraControls = (props)=>{
     useFrame((state)=>{
       if(transform.current){
         const controls = transform.current
-        controls.setMode(props.mode)
+        controls.setMode(transformMode)
         if(active){
           if(controls.dragging){
             setActive(controls.object)

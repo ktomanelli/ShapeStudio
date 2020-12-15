@@ -17,6 +17,8 @@ const sceneStore = create(set=>({
     setOrbit: (orbit)=>set({orbit}),
     newShapes:[],
     setNewShapes: (newShapes)=>set({newShapes:[...newShapes]}),
+    transformMode:'translate',
+    setTransformMode:(transformMode)=>set({transformMode}),
     camera:null,
     setCamera: (camera)=>set({camera}),
     deleteObj:[],

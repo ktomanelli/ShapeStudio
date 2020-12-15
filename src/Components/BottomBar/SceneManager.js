@@ -14,10 +14,12 @@ const SceneManager=(props)=>{
 useEffect(()=>{
 
 })
-    return(
-        <div id='sceneManager'>
+    return(<>
+        {props.canvasRendered&&
+            <div id='sceneManager'>
             {scene && displayObjects()}
-        </div>
+        </div>}
+        </>
     )
 
 }
