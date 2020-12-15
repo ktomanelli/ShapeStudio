@@ -35,8 +35,13 @@ const BugWindow = (props)=>{
         newState[e.target.name] = e.target.value
         setBugText(newState)
     }
+    const handleClick=()=>{
+        props.setOpenModal({open:false,body:null})
+    }
     return(
         <div className='modal'>
+            <div className='xicon' onClick={handleClick}>𝗫</div>
+
             {disabled&&<div className='loading'>
                 <img src={require('../../Assets/loading.svg')} alt='loading img'/>
             </div>}

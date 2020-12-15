@@ -97,9 +97,9 @@ const MenuBar=(props)=>{
           case 'bug':
             return <BugWindow setOpenModal={setOpenModal}/>
           case 'about':
-            return <AboutWindow />
+            return <AboutWindow setOpenModal={setOpenModal}/>
           case 'notice':
-            return <Notice/>
+            return <Notice setOpenModal={setOpenModal}/>
           default:
             break;
         }

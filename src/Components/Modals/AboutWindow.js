@@ -2,9 +2,13 @@ import React from 'react'
 import kyle from '../../Assets/kyle.svg'
 
 const AboutWindow = (props)=>{
-
+    const handleClick=()=>{
+        props.setOpenModal({open:false,body:null})
+    }
     return(
-        <div id='about' className='modal'>
+        <div className='modal'>
+            <div className='xicon' onClick={handleClick}>𝗫</div>
+            <div id='about'>
             <img src={require('../../Assets/logo.png')} alt='logo'></img>
             <p>Hey there! Thanks for clicking on the About page!</p>
             <p>My name is Kyle.</p>
@@ -26,6 +30,8 @@ const AboutWindow = (props)=>{
                 <a href='mailto:kyle@shape.studio' target='_blank'>
                     <img className='contactIcon' src={require('../../Assets/email.webp')}/>
                 </a>
+            </div>
+
             </div>
         </div>
     )

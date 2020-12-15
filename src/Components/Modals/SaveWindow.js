@@ -48,7 +48,6 @@ const SaveWindow=(props)=>{
             })
             .then(r=>r.json())
             .then(data=>{
-                console.log(data)
                 setUserScenes(data)
             })
         })
@@ -77,8 +76,13 @@ const SaveWindow=(props)=>{
     const displaySceneCards=()=>{
         return userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
     }
+    const handleClick=()=>{
+        props.setOpenModal({open:false,body:null})
+    }
     return(
         <div className='modal'>
+            <div className='xicon' onClick={handleClick}>𝗫</div>
+
             <div className='sceneCards'>
             {displaySceneCards()}
             </div>

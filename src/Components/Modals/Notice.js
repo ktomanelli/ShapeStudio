@@ -8,19 +8,36 @@ const Notice = props =>{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
-        }).then(r=>r.json()).then(data=>setNotice(data))
+        }).then(r=>r.json()).then(data=>{
+            if(data.notice)setNotice(data)
+        })
     },[])
+    const handleClick=(e)=>{
+        props.setOpenModal({open:false,body:null})
+    }
+    const handleDontShow=e=>{
+        fetch('http://localhost:3000/notices/hide',{
+            method:'PATCH',
+            headers:{
+                Authorization:`Bearer ${localStorage.token}`
+            }
+        }).then(r=>r.json()).then(data=>{
+            handleClick()
+        })
+    }
     return(
         <>
         {notice && 
             <div className='modal'>
-                <img src={require('../../Assets/xIcon.webp')} alt='x icon'/>
-                <div>
+                <div className='xicon' onClick={handleClick}>𝗫</div>
+                <div id='notice'>
                     <h1>{notice.notice.title}</h1>
-                    <p>{notice.notice.body}</p>
-                    <Button className='button'>
+                    <div dangerouslySetInnerHTML={{__html:notice.notice.body}}/>
+                <div className='dontShowButton'>
+                <Button onClick={handleDontShow}>
                     Don't show this again.
-                    </Button>
+                </Button>
+                </div>
                 </div>
             </div>
         }

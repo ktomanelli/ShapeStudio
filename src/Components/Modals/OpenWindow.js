@@ -56,8 +56,13 @@ const OpenWindow =(props)=>{
     const displaySceneCards=()=>{
         return userScenes.map(scene=><SceneCard key={scene.id} selected={selected} setSelected={setSelected} scene={scene} />)
     }
+    const handleClick=()=>{
+        props.setOpenModal({open:false,body:null})
+    }
     return(
         <div className='modal'>
+            <div className='xicon' onClick={handleClick}>𝗫</div>
+
             <div className='sceneCards'>
             {displaySceneCards()}
             </div>
