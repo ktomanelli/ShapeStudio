@@ -6,7 +6,7 @@ import {sceneStore} from './../zustand'
 extend({ OrbitControls,TransformControls });
 
 const CameraControls = (props)=>{
-  const {active,scene,camera,setOrbit,renderer}=sceneStore()
+  const {active,scene,setActive,camera,setOrbit,renderer}=sceneStore()
 
     const orbit = useRef()
     const transform = useRef()
@@ -21,6 +21,9 @@ const CameraControls = (props)=>{
         const controls = transform.current
         controls.setMode(props.mode)
         if(active){
+          if(controls.dragging){
+            setActive(controls.object)
+          }
             controls.attach(active)
             const callback = event => (orbit.current.enabled = !event.value)
             controls.addEventListener("dragging-changed", callback)
