@@ -4,7 +4,7 @@ const screenshot=(gl,scene,camera,fd)=>{
     gl.render(scene,camera)
     gl.toneMapping = THREE.ACESFilmicToneMapping
     gl.toneMappingExposure = 0.6
-    gl.outputEncoding = THREE.sRGBEncoding
+    // gl.outputEncoding = THREE.sRGBEncoding
     gl.preserveDrawingBuffer = true
     return new Promise((resolve,reject)=>{
         gl.domElement.toBlob(
