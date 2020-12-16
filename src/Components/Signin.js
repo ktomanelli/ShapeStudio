@@ -2,6 +2,7 @@ import React,{useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import {userStore} from './../zustand'
+import BACKEND_URL from '../config'
 
 const Signin=(props)=>{
     const {setUser} = userStore()
@@ -28,7 +29,7 @@ const Signin=(props)=>{
         }
         if(signup){
             if(password===confPassword){
-                fetch(`${process.env.BACKEND_URL}/users`,{
+                fetch(`${BACKEND_URL}/users`,{
                     method:'POST',
                     headers:{
                         'content-type':'application/json',
@@ -40,7 +41,7 @@ const Signin=(props)=>{
                 setError({message:'Passwords must match.'})
             }
         }else{
-            fetch(`${process.env.BACKEND_URL}/users/login`,{
+            fetch(`${BACKEND_URL}/users/login`,{
                 method:'POST',
                 headers:{
                     'content-type':'application/json',

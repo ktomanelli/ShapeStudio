@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core'
 import SaveWindow from '../Modals/SaveWindow';
 import OpenWindow from '../Modals/OpenWindow';
 import Menu from './Menu'
-
+import BACKEND_URL from '../../config'
 import {userStore,sceneStore} from '../../zustand'
 import {screenshot} from '../../Functions/screenshot'
 import BugWindow from '../Modals/BugWindow';
@@ -59,7 +59,7 @@ const MenuBar=(props)=>{
           const blob = await screenshot(renderer,scene,camera)
           fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
           fd.append('scene[screenshot]',blob)
-            fetch(`${process.env.BACKEND_URL}/scenes/${loaded.id}`,{
+            fetch(`${BACKEND_URL}/scenes/${loaded.id}`,{
                 method:'PATCH',
                 headers:{
                   Authorization:`Bearer ${localStorage.token}`,
@@ -68,7 +68,7 @@ const MenuBar=(props)=>{
                 body:fd
             }).then(r=>{
                 setOpenModal({open:false,body:null})
-                fetch(`${process.env.BACKEND_URL}/scenes`,{
+                fetch(`${BACKEND_URL}/scenes`,{
                   headers:{
                     Authorization:`Bearer ${localStorage.token}`,
                   }

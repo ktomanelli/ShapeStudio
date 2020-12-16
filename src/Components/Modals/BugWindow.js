@@ -1,6 +1,7 @@
 import React,{useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import BACKEND_URL from '../../config'
 
 const BugWindow = (props)=>{
     const [disabled,setDisabled] = useState(false)
@@ -9,7 +10,7 @@ const BugWindow = (props)=>{
     const handleBugSubmit=(e)=>{
         e.preventDefault();
         setDisabled(true)
-        fetch(`${process.env.BACKEND_URL}/issues`,{
+        fetch(`${BACKEND_URL}/issues`,{
             method:'POST',
             headers:{
                 'content-type':'application/json',

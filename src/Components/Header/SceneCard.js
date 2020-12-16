@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react'
+import BACKEND_URL from '../../config'
 
 const SceneCard=(props)=>{
-    const url = `${process.env.BACKEND_URL}/${props.scene.screenshot}`
+    const url = `${BACKEND_URL}/${props.scene.screenshot}`
     useEffect(()=>{
         const oldSelected = document.querySelector('.selectedSave')
         if(oldSelected) oldSelected.classList.remove('selectedSave')

@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import SceneCard from '../Header/SceneCard'
 import * as THREE from 'three';
 import {userStore,sceneStore} from '../../zustand'
+import BACKEND_URL from '../../config'
 
 const loader = new THREE.ObjectLoader();
 
@@ -14,7 +15,7 @@ const OpenWindow =(props)=>{
     const [selected,setSelected]=useState({name:'',id:null})
 
     useEffect(()=>{
-        fetch(`${process.env.BACKEND_URL}/scenes`,{
+        fetch(`${BACKEND_URL}/scenes`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
@@ -27,7 +28,7 @@ const OpenWindow =(props)=>{
     },[])
 
     const loadScene=()=>{
-        fetch(`${process.env.BACKEND_URL}/scenes/load/${selected.id}`,{
+        fetch(`${BACKEND_URL}/scenes/load/${selected.id}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }

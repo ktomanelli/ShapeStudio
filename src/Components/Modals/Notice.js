@@ -1,10 +1,11 @@
 import React,{useEffect,useState} from 'react'
 import { Button } from '@material-ui/core'
+import BACKEND_URL from '../../config'
 
 const Notice = props =>{
     const [notice,setNotice] = useState(null)
     useEffect(()=>{
-        fetch(`${process.env.BACKEND_URL}/notices`,{
+        fetch(`${BACKEND_URL}/notices`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
@@ -16,7 +17,7 @@ const Notice = props =>{
         props.setOpenModal({open:false,body:null})
     }
     const handleDontShow=e=>{
-        fetch(`${process.env.BACKEND_URL}/notices/hide`,{
+        fetch(`${BACKEND_URL}/notices/hide`,{
             method:'PATCH',
             headers:{
                 Authorization:`Bearer ${localStorage.token}`

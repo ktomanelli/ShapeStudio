@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import SceneCard from '../Header/SceneCard'
 import { makeStyles } from '@material-ui/core/styles';
 
+import BACKEND_URL from '../../config'
 import {userStore,sceneStore} from './../../zustand'
 import {screenshot} from './../../Functions/screenshot'
 
@@ -32,7 +33,7 @@ const SaveWindow=(props)=>{
         fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
         fd.append('scene[screenshot]',blob)
 
-        fetch(`${process.env.BACKEND_URL}/scenes/save`,{
+        fetch(`${BACKEND_URL}/scenes/save`,{
             method:'POST',
             headers:{
                 Authorization:`Bearer ${localStorage.token}`,
@@ -41,7 +42,7 @@ const SaveWindow=(props)=>{
             body:fd
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
-            fetch(`${process.env.BACKEND_URL}/scenes`,{
+            fetch(`${BACKEND_URL}/scenes`,{
                 headers:{
                     Authorization:`Bearer ${localStorage.token}`
                 }    
