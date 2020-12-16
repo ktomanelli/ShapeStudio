@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 const SceneCard=(props)=>{
-    const url = 'http://localhost:3000'+props.scene.screenshot
+    const url = `${process.env.BACKEND_URL}/${props.scene.screenshot}`
     useEffect(()=>{
         const oldSelected = document.querySelector('.selectedSave')
         if(oldSelected) oldSelected.classList.remove('selectedSave')

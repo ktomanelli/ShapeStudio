@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core'
 const Notice = props =>{
     const [notice,setNotice] = useState(null)
     useEffect(()=>{
-        fetch('http://localhost:3000/notices',{
+        fetch(`${process.env.BACKEND_URL}/notices`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
@@ -16,7 +16,7 @@ const Notice = props =>{
         props.setOpenModal({open:false,body:null})
     }
     const handleDontShow=e=>{
-        fetch('http://localhost:3000/notices/hide',{
+        fetch(`${process.env.BACKEND_URL}/notices/hide`,{
             method:'PATCH',
             headers:{
                 Authorization:`Bearer ${localStorage.token}`

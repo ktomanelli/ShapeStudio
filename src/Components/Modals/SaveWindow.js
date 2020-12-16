@@ -32,7 +32,7 @@ const SaveWindow=(props)=>{
         fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
         fd.append('scene[screenshot]',blob)
 
-        fetch('http://localhost:3000/scenes/save',{
+        fetch(`${process.env.BACKEND_URL}/scenes/save`,{
             method:'POST',
             headers:{
                 Authorization:`Bearer ${localStorage.token}`,
@@ -41,7 +41,7 @@ const SaveWindow=(props)=>{
             body:fd
         }).then(r=>{
             props.setOpenModal({open:false,body:null})
-            fetch('http://localhost:3000/scenes',{
+            fetch(`${process.env.BACKEND_URL}/scenes`,{
                 headers:{
                     Authorization:`Bearer ${localStorage.token}`
                 }    

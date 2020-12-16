@@ -9,7 +9,7 @@ const BugWindow = (props)=>{
     const handleBugSubmit=(e)=>{
         e.preventDefault();
         setDisabled(true)
-        fetch('http://localhost:3000/issues',{
+        fetch(`${process.env.BACKEND_URL}/issues`,{
             method:'POST',
             headers:{
                 'content-type':'application/json',

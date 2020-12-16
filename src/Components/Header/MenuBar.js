@@ -59,7 +59,7 @@ const MenuBar=(props)=>{
           const blob = await screenshot(renderer,scene,camera)
           fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
           fd.append('scene[screenshot]',blob)
-            fetch(`http://localhost:3000/scenes/${loaded.id}`,{
+            fetch(`${process.env.BACKEND_URL}/scenes/${loaded.id}`,{
                 method:'PATCH',
                 headers:{
                   Authorization:`Bearer ${localStorage.token}`,
@@ -68,7 +68,7 @@ const MenuBar=(props)=>{
                 body:fd
             }).then(r=>{
                 setOpenModal({open:false,body:null})
-                fetch('http://localhost:3000/scenes',{
+                fetch(`${process.env.BACKEND_URL}/scenes`,{
                   headers:{
                     Authorization:`Bearer ${localStorage.token}`,
                   }

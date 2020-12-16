@@ -28,7 +28,7 @@ const Signin=(props)=>{
         }
         if(signup){
             if(password===confPassword){
-                fetch('http://localhost:3000/users',{
+                fetch(`${process.env.BACKEND_URL}/users`,{
                     method:'POST',
                     headers:{
                         'content-type':'application/json',
@@ -40,7 +40,7 @@ const Signin=(props)=>{
                 setError({message:'Passwords must match.'})
             }
         }else{
-            fetch('http://localhost:3000/users/login',{
+            fetch(`${process.env.BACKEND_URL}/users/login`,{
                 method:'POST',
                 headers:{
                     'content-type':'application/json',

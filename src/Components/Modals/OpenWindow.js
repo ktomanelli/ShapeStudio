@@ -14,7 +14,7 @@ const OpenWindow =(props)=>{
     const [selected,setSelected]=useState({name:'',id:null})
 
     useEffect(()=>{
-        fetch('http://localhost:3000/scenes',{
+        fetch(`${process.env.BACKEND_URL}/scenes`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
@@ -27,7 +27,7 @@ const OpenWindow =(props)=>{
     },[])
 
     const loadScene=()=>{
-        fetch(`http://localhost:3000/scenes/load/${selected.id}`,{
+        fetch(`${process.env.BACKEND_URL}/scenes/load/${selected.id}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
