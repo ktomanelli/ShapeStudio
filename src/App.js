@@ -6,6 +6,7 @@ import Viewer from './Components/Viewer'
 import Sidebar from './Components/Sidebar/Sidebar'
 import SceneManager from './Components/BottomBar/SceneManager'
 import Signin from './Components/Signin'
+import BACKEND_URL from './config'
 import {userStore,sceneStore} from './zustand'
 
 const App=()=>{
@@ -21,9 +22,11 @@ const App=()=>{
     //fetch user data
     useEffect(()=>{
       if(localStorage.token){
-          fetch(`${process.env.BACKEND_URL}/users/stay_logged_in`,{
+          fetch(`${BACKEND_URL}/users/stay_logged_in`,{
               headers:{
-                  Authorization:`Bearer ${localStorage.token}`
+                  Authorization:`Bearer ${localStorage.token}`,
+                  'content-type':'application/json',
+                  accept:'application/json'
               }
           })
           .then(r=>r.json())
@@ -35,9 +38,11 @@ const App=()=>{
                   setUser(data)
               }
           })
-          fetch(`${process.env.BACKEND_URL}/scenes`,{
+          fetch(`${BACKEND_URL}/scenes`,{
             headers:{
-                Authorization:`Bearer ${localStorage.token}`
+                Authorization:`Bearer ${localStorage.token}`,
+                'content-type':'application/json',
+                accept:'application/json'
             }
         })
           .then(r=>r.json())
