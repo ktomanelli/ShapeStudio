@@ -17,7 +17,6 @@ const PointLight=(props)=>{
             if(deleteObj){
                 const isPresent = deleteObj.find(obj=>obj.uuid===mesh.current.uuid)
                 if(isPresent){
-                    console.log('ayoo')
                     setActive(null)   
                     const tempArr=deleteObj
                     tempArr.splice(tempArr.indexOf(isPresent),1)
