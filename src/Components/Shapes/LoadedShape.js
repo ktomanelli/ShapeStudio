@@ -36,6 +36,7 @@ const LoadedShape=(props)=>{
             userData={{}}
             position={props.object.position}
             rotation={props.object.rotation}
+            scale={props.object.scale}
             geometry={props.object.geometry}
             material={props.object.material}
         />}
