@@ -10,6 +10,7 @@ const AboutWindow = (props)=>{
             <div className='xicon' onClick={handleClick}>𝗫</div>
             <div id='about'>
             <img src={require('../../Assets/logo.png')} alt='logo'></img>
+            <em>V 0.1</em>
             <p>Hey there! Thanks for clicking on the About page!</p>
             <p>My name is Kyle.</p>
             <img id='kyle' src={kyle}/> 
@@ -31,6 +32,9 @@ const AboutWindow = (props)=>{
                     <img className='contactIcon' src={require('../../Assets/email.webp')}/>
                 </a>
             </div>
+            <p>
+            © 2020 <u>Shape Studio</u>
+            </p>
 
             </div>
         </div>
