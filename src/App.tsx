@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react';
+import React,{useState, useEffect, KeyboardEvent} from 'react';
 import './style.css'
 import Drawer from '@material-ui/core/Drawer';
 import Header from './Components/Header/Header'
@@ -50,7 +50,7 @@ const App=()=>{
       }
   },[setUser, setUserScenes]);
 
-  const handleKeyPress=(e)=>{
+  const handleKeyPress=(e: KeyboardEvent)=>{
     switch(e.key){
       case "z":
       setTransformMode('translate')
@@ -76,10 +76,10 @@ const App=()=>{
 
   return(
     <>
-    { user.user ? <div id='app'>
+    { user ? <div id='app'>
     <Header/>
     <div className='horizontal'>
-      <div className='vertical' tabIndex='0' onKeyDown={handleKeyPress}>
+      <div className='vertical' tabIndex={0} onKeyDown={handleKeyPress}>
         <div id='viewer'>
           <Viewer id='threejs' setCanvasRendered={setCanvasRendered}/>
         </div>

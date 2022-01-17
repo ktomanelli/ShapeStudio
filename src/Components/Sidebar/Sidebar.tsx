@@ -1,13 +1,13 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState} from 'react'
 import SideBarInput from './sideBarInput'
 import { SketchPicker } from 'react-color';
 import {sceneStore} from './../../zustand'
 
-const SideBar=(props)=>{
+const SideBar=()=>{
     const {active} = sceneStore()
     const [objColor,setObjColor] = useState('#fff')    
     
-    const handleChangeComplete = (color) => {
+    const handleChangeComplete = (color:{hex:string}) => {
        setObjColor(color.hex);
        if(active.type==='Mesh'){
            active.material.color.set(color.hex)

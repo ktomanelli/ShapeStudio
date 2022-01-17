@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
-import {Canvas} from 'react-three-fiber'
+import React from 'react'
+import {Canvas} from '@react-three/fiber'
 
 import Scene from './Scene'
 import CameraControls from './CameraControls'
 import {sceneStore} from './../zustand'
 
-const Viewer = (props)=>{
+const Viewer = (props: {id: string, setCanvasRendered: any})=>{
   const {setActive} = sceneStore()
     return (
       <Canvas

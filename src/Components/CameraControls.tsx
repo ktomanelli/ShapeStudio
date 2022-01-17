@@ -1,21 +1,22 @@
-import React, { useEffect,useRef } from 'react'
-import {useFrame, extend} from 'react-three-fiber'
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls";
+import React, { useEffect, useRef } from 'react'
+import {useFrame} from '@react-three/fiber'
+import {OrbitControls, TransformControls} from '@react-three/drei';
 import {sceneStore} from './../zustand'
-extend({ OrbitControls,TransformControls });
+import { Event } from 'three';
 
-const CameraControls = (props)=>{
+const CameraControls = ()=>{
   const {active,scene,setActive,camera,setOrbit,renderer,transformMode}=sceneStore()
-
-    const orbit = useRef()
-    const transform = useRef()
     
-    useEffect(()=>{
+  const transform = useRef<any>()
+  const orbit = useRef<any>()
+
+  useEffect(()=>{
       setOrbit(orbit.current)
     },[scene, setOrbit])
 
-    useFrame((state)=>orbit.current.update())
+    useFrame((state)=> {
+      if(orbit.current)orbit.current.update();
+    });
     useFrame((state)=>{
       if(transform.current){
         const controls = transform.current
@@ -25,7 +26,7 @@ const CameraControls = (props)=>{
             setActive(controls.object)
           }
             controls.attach(active)
-            const callback = event => (orbit.current.enabled = !event.value)
+            const callback = (event: Event) => (orbit.current.enabled = !event.value)
             controls.addEventListener("dragging-changed", callback)
             return () => controls.removeEventListener("dragging-changed", callback)
         }else{
@@ -38,8 +39,8 @@ const CameraControls = (props)=>{
       <>
       {renderer && 
         <>
-        <transformControls ref={transform} args={[camera,renderer.domElement]}/>
-        <orbitControls ref={orbit} args={[camera,renderer.domElement]} />
+          <TransformControls ref={transform} mode={transformMode}/>
+          <OrbitControls ref={orbit} camera={camera}/>
         </>
       }
       </>

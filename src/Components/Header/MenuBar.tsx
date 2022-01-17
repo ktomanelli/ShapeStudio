@@ -9,7 +9,6 @@ import {userStore,sceneStore} from '../../zustand'
 import {screenshot} from '../../Functions/screenshot'
 import BugWindow from '../Modals/BugWindow';
 import AboutWindow from '../Modals/AboutWindow';
-import Notice from '../Modals/Notice'
 
 const MenuBar=(props)=>{
   const {user,setUser,setUserScenes} = userStore()

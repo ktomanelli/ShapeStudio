@@ -2,7 +2,7 @@ import React from 'react'
 import MenuBar from './MenuBar'
 import QuickAccessBar from './QuickAccessBar'
 
-const Header=(props)=>{
+const Header=()=>{
 
     return(
         <div id='header' className='horizontal'>

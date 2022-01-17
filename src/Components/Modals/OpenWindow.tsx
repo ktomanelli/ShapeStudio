@@ -1,18 +1,19 @@
-import React,{useState,useEffect} from 'react'
+import React,{useState,useEffect, FormEvent} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SceneCard from '../Header/SceneCard'
 import * as THREE from 'three';
 import {userStore,sceneStore} from '../../zustand'
 import BACKEND_URL from '../../config'
+import { Scene } from 'three';
 
 const loader = new THREE.ObjectLoader();
 
-const OpenWindow =(props)=>{
+const OpenWindow =(props: any)=>{
     const {userScenes,setUserScenes} = userStore()
     const {setLoaded} = sceneStore()
 
-    const [selected,setSelected]=useState({name:'',id:null})
+    const [selected,setSelected]=useState({name: '',id: ''})
 
     useEffect(()=>{
         fetch(`${BACKEND_URL}/scenes`,{
@@ -36,21 +37,21 @@ const OpenWindow =(props)=>{
         .then(r=>r.json())
         .then(data=>{
           props.setOpenModal({open:false,body:null})
-          const loadedScene = loader.parse(JSON.parse(data.scene.scene_string))
-          setLoaded({scene:loadedScene,id:data.scene.id})
+          const loadedScene = loader.parse(JSON.parse(data.scene.scene_string)) as Scene;
+          setLoaded({scene:loadedScene, id:data.scene.id})
         })
     }
 
-    const handleSubmit=(e)=>{
+    const handleSubmit=(e: FormEvent)=>{
         e.preventDefault()
         loadScene()
     }
-    const handleChange=(e)=>{
+    const handleChange=(e: FormEvent<HTMLInputElement>)=>{
         userScenes.forEach(scene=>{
-            if(scene.save_name===e.target.value){
-                setSelected({name:e.target.value,id:scene.id})
+            if(scene.save_name===(e.target as HTMLTextAreaElement).value){
+                setSelected({name:(e.target as HTMLTextAreaElement).value, id:scene.id})
             }else{
-                setSelected({name:e.target.value,id:null})
+                setSelected({name:(e.target as HTMLTextAreaElement).value, id:''})
             }
         })
     }
@@ -68,7 +69,7 @@ const OpenWindow =(props)=>{
             {displaySceneCards()}
             </div>
             <form className="openSaveInput" autoComplete='off' onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" placeholder="File Name" onChange={handleChange}name='save_name' value={selected.name?selected.name:''}/>
+            <TextField id="outlined-basic" placeholder="File Name" onChange={(e)=>handleChange}name='save_name' value={selected.name?selected.name:''}/>
             <Button type='submit' variant="contained">Open</Button>
             </form>
         </div>

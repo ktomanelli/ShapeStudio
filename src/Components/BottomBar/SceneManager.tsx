@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import SMObject from './SMObject'
-import {sceneStore} from './../../zustand'
+import {sceneStore} from '../../zustand'
 const SceneManager=(props)=>{
 
     const {scene} = sceneStore()

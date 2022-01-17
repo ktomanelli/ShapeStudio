@@ -1,6 +1,6 @@
 import React from 'react'
-import {sceneStore} from './../../zustand'
-const SMObject = (props)=>{
+import {sceneStore} from '../../zustand'
+const SMObject = (props: any)=>{
     
     const {setActive} = sceneStore()
 

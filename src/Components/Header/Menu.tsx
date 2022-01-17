@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState} from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import Grow from '@material-ui/core/Grow';
@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { Button } from '@material-ui/core'
 
-const Menu = (props)=>{
+const Menu = (props: any)=>{
     const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
     

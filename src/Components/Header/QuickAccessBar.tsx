@@ -1,5 +1,5 @@
 import React from 'react'
-import {sceneStore} from './../../zustand'
+import {sceneStore} from '../../zustand'
 
 const QuickAccessBar=(props)=>{
     const assetPath = '../../Assets'

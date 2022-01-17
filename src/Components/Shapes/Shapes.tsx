@@ -8,8 +8,8 @@ import LoadedShape from './LoadedShape'
 import AmbientLight from './AmbientLight'
 import PointLight from './PointLight'
 import Primitive from './Primitive'
-import {sceneStore} from './../../zustand'
-const Shapes=(props)=>{
+import {sceneStore} from '../../zustand'
+const Shapes=(props: any)=>{
     const {newShapes}=sceneStore()
 
     //this function will handle rendering shapes that have not yet been saved to scene
