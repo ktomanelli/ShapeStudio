@@ -22,7 +22,7 @@ const Cone = (props: any)=>{
                     return false
                 })
                 if(isPresent){
-                    setActive(null)   
+                    setActive({} as CustomObject3D)
                     const tempArr=deleteObj
                     tempArr.splice(tempArr.indexOf(isPresent),1)
                     setDeleteObj([...tempArr])

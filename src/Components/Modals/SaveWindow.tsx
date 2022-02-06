@@ -1,88 +1,95 @@
-import React,{useEffect,useState} from 'react'
+import React,{ChangeEventHandler, FormEventHandler, useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SceneCard from '../Header/SceneCard'
-import { makeStyles } from '@material-ui/core/styles';
-
+import axios from 'axios'
 import BACKEND_URL from '../../config'
 import {userStore,sceneStore} from './../../zustand'
-import {screenshot} from './../../Functions/screenshot'
+import { getObject3dArray } from '../../Functions/getObject3dArray';
+import { screenshot } from '../../Functions/screenshot';
+import { buildScenes } from '../../Functions/buildScenes';
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-      position: 'absolute',
-      width: 400,
-      backgroundColor: theme.palette.background.paper,
-      border: '2px solid #000',
-      boxShadow: theme.shadows[5],
-      padding: theme.spacing(2, 4, 3),
-    },
-  }));
 
-const SaveWindow=(props)=>{
-    const {userScenes,setUserScenes} = userStore()
+const SaveWindow=(props: any)=>{
+    const {scenes,setScenes} = userStore()
     const {renderer,scene,camera} = sceneStore()
     
-    const [selected,setSelected]=useState({name:null,id:null})
+    const [selected,setSelected]=useState({name:'',id:''})
 
-    const classes = useStyles();
-    const saveAs=async(name)=>{
-        const blob = await screenshot(renderer,scene,camera)
-        const fd = new FormData()
-        fd.append('scene[save_name]',name)
-        fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
-        fd.append('scene[screenshot]',blob)
+    const saveAs=async(name: string)=>{
+        const blob: Blob = await screenshot(renderer,scene,camera)
+        const three_objects = await getObject3dArray(scene, name);
+        try{
+            const saveResp = await axios.post(`${BACKEND_URL}/objects/save`, {
+                payload:{three_objects}
+            },{
+                headers:{
+                    Authorization:`Bearer ${localStorage.token}`,
+                    accept:'application/json',
+                    'content-type':'application/json',
+                } 
+            });
+            if(saveResp){
+                console.log(saveResp)
+                const fd = new FormData()
+                fd.append('payload[screenshot]',blob)
+                try{
+                    const screenshotResp = await axios.patch(`${BACKEND_URL}/objects/${scene.uuid}`, fd,{
+                        headers:{
+                            Authorization:`Bearer ${localStorage.token}`,
+                            accept:'application/json',
+                        } 
+                    });
+                    console.log(screenshotResp)
+                } catch(e){
+                    console.log('error uploading screenshot')
+                }
+            }
+        } catch(e){
+            console.log('error saving data')
+        }
 
-        fetch(`${BACKEND_URL}/scenes/save`,{
-            method:'POST',
-            headers:{
-                Authorization:`Bearer ${localStorage.token}`,
-                accept:'application/json'
-            },
-            body:fd
-        }).then(r=>{
-            props.setOpenModal({open:false,body:null})
-            fetch(`${BACKEND_URL}/scenes`,{
+        try{
+            const getScenesResp = await axios.get(`${BACKEND_URL}/objects`,{
                 headers:{
                     Authorization:`Bearer ${localStorage.token}`
-                }    
-            })
-            .then(r=>r.json())
-            .then(data=>{
-                setUserScenes(data)
-            })
-        })
+                }  
+            }) 
+            setScenes(buildScenes(getScenesResp.data));
+        }catch(e){
+            console.log('error retrieving objects')
+        }
       }
 
-    const handleSubmit=(e)=>{
-        e.preventDefault()
+    const handleSubmit: FormEventHandler<HTMLFormElement>=(event)=>{
+        event.preventDefault()
         saveAs(selected.name)
  
     }
-    const handleChange=(e)=>{
-        if(userScenes.length>0){
-            userScenes.forEach(scene=>{
-                if(scene.save_name===e.target.value){
-                    setSelected({name:e.target.value,id:scene.id})
+    const handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event)=>{
+        if(scenes.length>0){
+            scenes.forEach(scene=>{
+                if(scene.save_name===event.target.value){
+                    setSelected({name: event.target.value, id: scene.uuid})
                 }else{
-                    setSelected({name:e.target.value,id:null})
+                    setSelected({name:event.target.value, id:''})
                 }
             })
         }else{
-            setSelected({name:e.target.value,id:null})
+            setSelected({name:event.currentTarget.value, id:''})
         }
 
         
     }
     const displaySceneCards=()=>{
-        return userScenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
+        return scenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
     }
     const handleClick=()=>{
         props.setOpenModal({open:false,body:null})
     }
     return(
         <div className='modal'>
-            <div className='xicon' onClick={handleClick}>𝗫</div>
+            <div className='xicon' onClick={handleClick}>X</div>
 
             <div className='sceneCards'>
             {displaySceneCards()}

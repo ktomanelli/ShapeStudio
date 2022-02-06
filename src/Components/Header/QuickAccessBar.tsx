@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { MouseEvent } from 'react'
 import {sceneStore} from '../../zustand'
 
-const QuickAccessBar=(props)=>{
-    const assetPath = '../../Assets'
+const QuickAccessBar=()=>{
     const {newShapes,setNewShapes} = sceneStore()
 
-    const handleClick=(e,icon)=>{
-        switch(icon){
+    const handleClick=(e: MouseEvent<HTMLLIElement>)=>{
+        const name = e.currentTarget.getAttribute('data-name');
+
+        switch(name){
             case 'box':
                 setNewShapes([...newShapes, {name:'box'}])
                 break;
@@ -36,13 +37,13 @@ const QuickAccessBar=(props)=>{
     return(
         <div>
             <ul className='iconList horizontal'>
-                <li onClick={e=>handleClick(e,'ambientlight')}><img className='icon' src={require(`../../Assets/ambientlight.png`)} alt='box icon'/></li>
-                <li onClick={e=>handleClick(e,'pointlight')}><img className='icon' src={require(`../../Assets/spotlight.png`)} alt='box icon'/></li>
-                <li onClick={e=>handleClick(e,'box')}><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} alt='box icon'/></li>
-                <li onClick={e=>handleClick(e,'sphere')}><img className='icon' src={'https://image.flaticon.com/icons/svg/274/274344.svg'} alt='sphere icon'/></li>
-                <li onClick={e=>handleClick(e,'cone')}><img className='icon' src={require(`../../Assets/cone.png`)} alt='cone icon'/></li>
-                <li onClick={e=>handleClick(e,'cylinder')}><img className='icon' src={require(`../../Assets/cylinder.png`)} alt='cylinder icon'/></li>
-                <li onClick={e=>handleClick(e,'torus')}><img className='icon' src={require(`../../Assets/torus.png`)} alt='torus icon'/></li>
+                <li onClick={handleClick} data-name='ambientlight'><img className='icon' src={require(`../../Assets/ambientlight.png`)} alt='ambientlight'/></li>
+                <li onClick={handleClick} data-name='spotlight'><img className='icon' src={require(`../../Assets/spotlight.png`)} alt='spotlight'/></li>
+                <li onClick={handleClick} data-name='box'><img className='icon' src={'https://www.freeiconspng.com/uploads/3d-cube-icon-symbol-7.png'} alt='box'/></li>
+                <li onClick={handleClick} data-name='sphere'><img className='icon' src={'https://image.flaticon.com/icons/svg/274/274344.svg'} alt='sphere'/></li>
+                <li onClick={handleClick} data-name='cone'><img className='icon' src={require(`../../Assets/cone.png`)} alt='cone'/></li>
+                <li onClick={handleClick} data-name='cylinder'><img className='icon' src={require(`../../Assets/cylinder.png`)} alt='cylinder'/></li>
+                <li onClick={handleClick} data-name='torus'><img className='icon' src={require(`../../Assets/torus.png`)} alt='torus'/></li>
             </ul>
         </div>
     )

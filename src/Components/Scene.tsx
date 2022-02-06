@@ -25,7 +25,7 @@ const Scene = (props: any)=>{
       } = useThree();
     
     useEffect(()=>{
-        if(loaded as Loaded){
+        if(Object.keys(loaded).length > 0){
             setDeleteObj([...deleteObj,...scene.children as CustomObject3D[]])
             const loadedShapes: {name:string, obj:CustomObject3D}[] = []
             loaded.scene.children.forEach(obj=>{
@@ -52,7 +52,7 @@ const Scene = (props: any)=>{
     },[loaded])
 
     useEffect(()=>{     
-        if(active) setActive(active)
+        if(Object.keys(active).length) setActive(active)
         setScene(scene)
         setCamera(camera)
         setRenderer(gl)
@@ -71,7 +71,7 @@ const Scene = (props: any)=>{
     return (
         <>
             <gridHelper args={[100, 100]}/>
-            {newShapes && <Shapes/>}
+            {newShapes.length && <Shapes/>}
         </>
     )
 }

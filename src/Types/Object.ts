@@ -1,4 +1,4 @@
-export type UserScene = {
+export type Object = {
     id: string;
     user_id: string;
     scene_string: string;

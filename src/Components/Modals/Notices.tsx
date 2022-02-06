@@ -31,7 +31,7 @@ const Notices = (props: any) => {
         <>
         {notice && 
             <div className='modal'>
-                <div className='xicon' onClick={handleClick}>𝗫</div>
+                <div className='xicon' onClick={handleClick}>X</div>
                 <div id='notice'>
                     <h1>{notice.title}</h1>
                     <div dangerouslySetInnerHTML={{__html:notice.body}}/>

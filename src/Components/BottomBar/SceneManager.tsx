@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import SMObject from './SMObject'
 import {sceneStore} from '../../zustand'
-const SceneManager=(props)=>{
+const SceneManager=(props: any)=>{
 
     const {scene} = sceneStore()
 
@@ -15,9 +15,9 @@ useEffect(()=>{
 
 })
     return(<>
-        {props.canvasRendered&&
+        {props.canvasRendered &&
             <div id='sceneManager'>
-            {scene && displayObjects()}
+            {Object.keys(scene).length > 0 && displayObjects()}
         </div>}
         </>
     )

@@ -14,7 +14,8 @@ const App=()=>{
   const {
     user,
     setUser,
-    setUserScenes
+    setScenes,
+    setObjects
   } = userStore()
   const {active,deleteObj,setDeleteObj,setTransformMode} = sceneStore()
   const [canvasRendered,setCanvasRendered] = useState(false)
@@ -38,7 +39,8 @@ const App=()=>{
                   setUser(data)
               }
           })
-          fetch(`${BACKEND_URL}/scenes`,{
+          console.log('before fetch for objects')
+          fetch(`${BACKEND_URL}/objects`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`,
                 'content-type':'application/json',
@@ -46,9 +48,15 @@ const App=()=>{
             }
         })
           .then(r=>r.json())
-          .then(data=>setUserScenes(data))
+          .then(data=>{
+            const tempScenes = [];
+            const tempObjects = [];
+            // data.forEach(item=>{
+              
+            // })
+          })
       }
-  },[setUser, setUserScenes]);
+  },[setUser, setScenes, setObjects]);
 
   const handleKeyPress=(e: KeyboardEvent)=>{
     switch(e.key){
@@ -76,27 +84,27 @@ const App=()=>{
 
   return(
     <>
-    { user ? <div id='app'>
-    <Header/>
-    <div className='horizontal'>
-      <div className='vertical' tabIndex={0} onKeyDown={handleKeyPress}>
-        <div id='viewer'>
-          <Viewer id='threejs' setCanvasRendered={setCanvasRendered}/>
-        </div>
-        <div id='bottomBar'>
-        <p id="SMLabel">SceneManager</p>
-        <SceneManager canvasRendered={canvasRendered}/>
-        </div>
-      </div>
-      <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={()=>console.log('close')}>
-        <Sidebar/>
-      </Drawer>
-    </div>
-  </div> 
-  :
-    <Signin/>
-}
-</>
+      { Object.keys(user).length>0 ? <div id='app'>
+        <Header/>
+          <div className='horizontal'>
+            <div className='vertical' tabIndex={0} onKeyDown={handleKeyPress}>
+              <div id='viewer'>
+                <Viewer id='threejs' setCanvasRendered={setCanvasRendered}/>
+              </div>
+              <div id='bottomBar'>
+              <p id="SMLabel">SceneManager</p>
+              <SceneManager canvasRendered={canvasRendered}/>
+              </div>
+            </div>
+            <Drawer id='drawer' variant="persistent" anchor={'right'} open={active?true:false} onClose={()=>console.log('close')}>
+              <Sidebar/>
+            </Drawer>
+          </div>
+        </div> 
+      :
+        <Signin/>
+      }
+    </>
   )
 }
 

@@ -1,88 +1,57 @@
-import React,{ useState,useEffect } from 'react'
+import React,{ useState,useEffect, ChangeEventHandler } from 'react'
 import TextField from '@material-ui/core/TextField';
+import { Euler, Vector3 } from 'three';
+import { sceneStore } from '../../zustand';
+import { CustomObject3D } from '../../Types/CustomObject3D';
 
-const SideBarInput = (props)=>{
-    const [currentValue,setCurrentValue]=useState({})
+type SideBarInputProps = {
+    property: 'position' | 'scale' | 'rotation',
+    label: string,
+    value: number
+}
+
+const SideBarInput = (props: SideBarInputProps)=>{
+    const {active} = sceneStore();
+    const [currentValue,setCurrentValue]=useState('');
+
     useEffect(()=>{
-        if(props.property){
-            setCurrentValue(props.property)
-        }
-    }, [props.property])
+        setCurrentValue(props.value.toString());
+    }, [])
 
-    const getValue=()=>{
-        switch(props.label){
-            case 'x':
-                return currentValue.x
-            case 'y':
-                return currentValue.y
-            case 'z':
-                return currentValue.z
-            case 'r':
-                return currentValue.r
-            case 'g':
-                return currentValue.g
-            case 'b':
-                return currentValue.b
-            default:
-                break;
-        }
-    }
-    const handleChange=(e)=>{
-        if(props.label==='x'||props.label==='y'||props.label==='z'){
-            let x=props.property.x,
-            y=props.property.y,
-            z=props.property.z
-    
-            let changing = Number.parseFloat(e.target.value)
-                switch(props.label){
+    useEffect(()=>{
+        setCurrentValue(props.value.toString())
+    },[props.value])
+
+    const handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>=(event)=>{
+        if(Object.keys(active).length && active[props.property]){
+            const value = parseFloat(event.target.value);
+            if(!isNaN(value)){
+                let tempVector3: Vector3;
+                props.property==='rotation' ? tempVector3 = active.rotation.toVector3() : tempVector3 = active[props.property].clone();
+                switch(props.label) {
                     case 'x':
-                        if(isNaN(changing))changing = x
-                        x=changing
+                        tempVector3.setX(value);
                         break;
                     case 'y':
-                        if(isNaN(changing))changing = y
-                        y=changing
-                        break;
+                        tempVector3.setY(value);
+                        break
                     case 'z':
-                        if(isNaN(changing))changing = z
-                        z=changing
-                        break;
+                        tempVector3.setZ(value);
+                        break
                     default:
                         break;
                 }
-                setCurrentValue({x:x,y:y,z:z})
-                props.property.set(x,y,z)
-        }else{
-            let r=props.property.r,
-            g=props.property.g,
-            b=props.property.b
-            let changing=Number.parseInt(e.target.value)
-            switch(props.label){
-                case 'r':
-                    if(isNaN(changing))changing = r
-                    r=changing
-                    break;
-                case 'g':
-                    if(isNaN(changing))changing = g
-                    g=changing
-                    break;
-                case 'b':
-                    if(isNaN(changing))changing = b
-                    b=changing
-                    break;
-                default:
-                    break;
+                active[props.property].set(tempVector3.x,tempVector3.y,tempVector3.z);
             }
-            setCurrentValue({r:r,g:g,b:b})
-            props.property.set(changing)
         }
-        
+        setCurrentValue(event.target.value);
     }
+
 
         
     return(
         <div>
-            <TextField id="outlined-basic" label={props.label.toUpperCase()} variant="filled" value={getValue()} onChange={handleChange}/>
+            <TextField id="outlined-basic" label={props.label.toUpperCase()} variant="filled" value={currentValue} onChange={handleChange}/>
         </div>
     )
 }

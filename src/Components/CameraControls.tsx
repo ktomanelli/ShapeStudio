@@ -1,50 +1,48 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {useFrame} from '@react-three/fiber'
 import {OrbitControls, TransformControls} from '@react-three/drei';
 import {sceneStore} from './../zustand'
 import { Event } from 'three';
 
 const CameraControls = ()=>{
-  const {active,scene,setActive,camera,setOrbit,renderer,transformMode}=sceneStore()
-    
-  const transform = useRef<any>()
-  const orbit = useRef<any>()
+  const {active, setActive,activePosition, setActivePosition, setActiveScale, setActiveRotation, setActiveQuaternion, renderer, transformMode}=sceneStore()
+  const [dragging, setDragging] = useState(false);
+  
+  const transform = useRef()
 
-  useEffect(()=>{
-      setOrbit(orbit.current)
-    },[scene, setOrbit])
+  // useFrame((state)=>{
+  //   if(transform.current){
+  //     const controls = transform.current
+  //     if(active){
+  //       if(dragging){
+  //         setActive(controls.object)
+  //       }
+  //         controls.attach(active)
+  //         const callback = event => (orbit.current.enabled = !event.value)
+  //         controls.addEventListener("dragging-changed", callback)
+  //         return () => controls.removeEventListener("dragging-changed", callback)
+  //     }else{
+  //       controls.detach()
+  //     }
+  //   }
+  // })
 
-    useFrame((state)=> {
-      if(orbit.current)orbit.current.update();
-    });
-    useFrame((state)=>{
-      if(transform.current){
-        const controls = transform.current
-        controls.setMode(transformMode)
-        if(active){
-          if(controls.dragging){
-            setActive(controls.object)
-          }
-            controls.attach(active)
-            const callback = (event: Event) => (orbit.current.enabled = !event.value)
-            controls.addEventListener("dragging-changed", callback)
-            return () => controls.removeEventListener("dragging-changed", callback)
-        }else{
-          controls.detach()
-        }
-      }
-    })
-
-    return (
-      <>
-      {renderer && 
-        <>
-          <TransformControls ref={transform} mode={transformMode}/>
-          <OrbitControls ref={orbit} camera={camera}/>
-        </>
-      }
-      </>
-    )
+  const handleObjectChange:((e?: Event) => void) = (e) => {
+    if(dragging){
+      setActive(active);
+    }
   }
+
+  return (
+    <>
+    {Object.keys(renderer).length > 0  && 
+      <>
+        {Object.keys(active).length && <TransformControls onObjectChange={handleObjectChange} onMouseDown={()=>setDragging(true)} onMouseUp={()=>setDragging(false)} object={active} mode={transformMode}/>}
+        <OrbitControls enablePan={!dragging} enableZoom={!dragging} enableRotate={!dragging}/>
+      </>
+    }
+    </>
+  )
+}
 
   export default CameraControls

@@ -9,100 +9,88 @@ import {userStore,sceneStore} from '../../zustand'
 import {screenshot} from '../../Functions/screenshot'
 import BugWindow from '../Modals/BugWindow';
 import AboutWindow from '../Modals/AboutWindow';
+import Notices from '../Modals/Notices';
 
-const MenuBar=(props)=>{
-  const {user,setUser,setUserScenes} = userStore()
+const MenuBar=()=>{
+  const {user, setScenes, setObjects, clearUserStore} = userStore()
   const {
     loaded,
     scene,
     renderer,
     camera,
-    setScene,
-    setActive,
-    setCamera,
-    setLoaded,
-    setOrbit,
-    setNewShapes,
-    setDeleteObj,
-    setRenderer
+    clearSceneStore
   } = sceneStore();
 
-    const [openModal,setOpenModal] = useState({open:false,body:null})
+    const [openModal,setOpenModal] = useState({open:false, body:''})
 
     useEffect(()=>{
-      if(user.user.show_notice){
-        setOpenModal({open:true,body:'notice'})
+      if(user.show_notice){
+        setOpenModal({open:true, body:'notice'})
       }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const handleLogout=()=>{
-        localStorage.clear()
-        clearUserStore();
-        clearSceneStore();
-      }
-      const clearUserStore = ()=>{
-        setUser({user:null});
-        setUserScenes([])
+      localStorage.clear()
+      clearUserStore();
+      clearSceneStore();
     }
-    const clearSceneStore = () => {
-      setScene({});
-      setActive(null);
-      setLoaded(null);
-      setNewShapes([]);
-      setDeleteObj([]);
-      setRenderer(null);
-  }
-      const handleSave=async()=>{
-        if(loaded){
-          const fd = new FormData()
-          const blob = await screenshot(renderer,scene,camera)
-          fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
-          fd.append('scene[screenshot]',blob)
-            fetch(`${BACKEND_URL}/scenes/${loaded.id}`,{
-                method:'PATCH',
+
+    const handleSave=async()=>{
+      if(loaded){
+        const fd = new FormData()
+        const blob = await screenshot(renderer,scene,camera);
+        fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
+        fd.append('scene[screenshot]', blob)
+          fetch(`${BACKEND_URL}/objects/${loaded.id}`,{
+              method:'PATCH',
+              headers:{
+                Authorization:`Bearer ${localStorage.token}`,
+                accept:'application/json'
+              },
+              body:fd
+          }).then(r=>{
+              setOpenModal({open:false, body: ''})
+              fetch(`${BACKEND_URL}/objects`,{
                 headers:{
                   Authorization:`Bearer ${localStorage.token}`,
-                  accept:'application/json'
-                },
-                body:fd
-            }).then(r=>{
-                setOpenModal({open:false,body:null})
-                fetch(`${BACKEND_URL}/scenes`,{
-                  headers:{
-                    Authorization:`Bearer ${localStorage.token}`,
-                  }
-                })
-                .then(r=>r.json())
-                .then(data=>setUserScenes(data))
-            })
-        
-        }else{
-          handleSaveAs()
-        }
+                }
+              })
+              .then(r=>r.json())
+              .then(data=>{
+                console.log('DATA', data)
+              })
+          })
+      
+      }else{
+        handleSaveAs()
       }
-      const handleSaveAs=()=>{
-        setOpenModal({open:true,body:'save'})
+    }
+
+    const handleSaveAs=()=>{
+      setOpenModal({open:true,body:'save'})
+    }
+
+    const handleOpen=()=>{
+      setOpenModal({open:true,body:'open'})
+    }
+  
+    const getBody=()=>{
+      switch(openModal.body){
+        case 'save':
+          return <SaveWindow setOpenModal={setOpenModal}/>
+        case 'open':
+          return <OpenWindow setOpenModal={setOpenModal}/>
+        case 'bug':
+          return <BugWindow setOpenModal={setOpenModal}/>
+        case 'about':
+          return <AboutWindow setOpenModal={setOpenModal}/>
+        case 'notice':
+          return <Notices setOpenModal={setOpenModal}/>
+        default:
+          break;
       }
-      const handleOpen=()=>{
-        setOpenModal({open:true,body:'open'})
-      }
-    
-      const getBody=()=>{
-        switch(openModal.body){
-          case 'save':
-            return <SaveWindow setOpenModal={setOpenModal}/>
-          case 'open':
-            return <OpenWindow setOpenModal={setOpenModal}/>
-          case 'bug':
-            return <BugWindow setOpenModal={setOpenModal}/>
-          case 'about':
-            return <AboutWindow setOpenModal={setOpenModal}/>
-          case 'notice':
-            return <Notice setOpenModal={setOpenModal}/>
-          default:
-            break;
-        }
-      }
+    }
 
     return(
         <div>
@@ -140,7 +128,7 @@ const MenuBar=(props)=>{
             </div>
             <Modal
             open={openModal.open}
-            onClose={()=>setOpenModal({open:false,body:null})}
+            onClose={()=>setOpenModal({open:false, body:''})}
             >
                 <div>
                     {getBody()}

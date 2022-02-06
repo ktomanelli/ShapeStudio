@@ -1,10 +1,10 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import SideBarInput from './sideBarInput'
 import { SketchPicker } from 'react-color';
 import {sceneStore} from './../../zustand'
 
 const SideBar=()=>{
-    const {active} = sceneStore()
+    const {active, activePosition, activeScale, activeRotation, activeQuaternion} = sceneStore()
     const [objColor,setObjColor] = useState('#fff')    
     
     const handleChangeComplete = (color:{hex:string}) => {
@@ -20,17 +20,17 @@ const SideBar=()=>{
     return(
         <div id="sidebar">
             <h4>Position</h4>
-            <SideBarInput property={active.position} value={active.position.x} label={'x'}/>
-            <SideBarInput property={active.position} value={active.position.y} label={'y'}/>
-            <SideBarInput property={active.position} value={active.position.z} label={'z'}/>
+            <SideBarInput property={'position'} label={'x'} value={active.position.x}/>
+            <SideBarInput property={'position'} label={'y'} value={active.position.y}/>
+            <SideBarInput property={'position'} label={'z'} value={active.position.z}/>
             <h4>Scale</h4>
-            <SideBarInput property={active.scale} value={active.scale.x} label={'x'}/>
-            <SideBarInput property={active.scale} value={active.scale.y} label={'y'}/>
-            <SideBarInput property={active.scale} value={active.scale.z} label={'z'}/>
+            <SideBarInput property={'scale'} label={'x'} value={active.scale.x}/>
+            <SideBarInput property={'scale'} label={'y'} value={active.scale.y}/>
+            <SideBarInput property={'scale'} label={'z'} value={active.scale.z}/>
             <h4>Rotation</h4>
-            <SideBarInput property={active.rotation} value={active.rotation.x} label={'x'}/>
-            <SideBarInput property={active.rotation} value={active.rotation.y} label={'y'}/>
-            <SideBarInput property={active.rotation} value={active.rotation.z} label={'z'}/>
+            <SideBarInput property={'rotation'} label={'x'} value={active.rotation.x}/>
+            <SideBarInput property={'rotation'} label={'y'} value={active.rotation.y}/>
+            <SideBarInput property={'rotation'} label={'z'} value={active.rotation.z}/>
             <h4>Color</h4>
             <SketchPicker color={objColor} onChangeComplete={handleChangeComplete}/>
         </div>
@@ -40,7 +40,7 @@ const SideBar=()=>{
 
     return(
         <div id='sidebar'>
-            {active && getPosition()}
+            {Object.keys(active).length > 0 && getPosition()}
         </div>
     )
 

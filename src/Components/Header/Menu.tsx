@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{KeyboardEventHandler, useState} from 'react';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Popper from '@material-ui/core/Popper';
 import Grow from '@material-ui/core/Grow';
@@ -7,18 +7,23 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { Button } from '@material-ui/core'
 
-const Menu = (props: any)=>{
+type MenuProps ={
+    name: string;
+    items?: {name: string; function: ()=>void | Promise<void>}[]
+}
+
+const Menu = (props: MenuProps)=>{
     const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
     
     const handleToggle = () => {
         setOpen((prevOpen) => !prevOpen);
       };
-    const handleMenuClose = (event) => {
+    const handleMenuClose = () => {
         setOpen(false);
-      };
+    };
 
-    const handleListKeyDown = (event) => {
+    const handleListKeyDown: KeyboardEventHandler<HTMLUListElement> = (event) => {
         if (event.key === 'Tab') {
             event.preventDefault();
             setOpen(false);
@@ -44,7 +49,7 @@ const Menu = (props: any)=>{
             <Paper>
                 <ClickAwayListener onClickAway={handleMenuClose}>
                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                        {props.items.map(item=><MenuItem key={item.name} onClick={()=>{item.function();handleToggle()}}>{item.name}</MenuItem>)}
+                        {props.items?.map(item=><MenuItem key={item.name} onClick={()=>{item.function();handleToggle()}}>{item.name}</MenuItem>)}
                     </MenuList>
                 </ClickAwayListener>
             </Paper>

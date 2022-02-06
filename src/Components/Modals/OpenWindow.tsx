@@ -6,39 +6,42 @@ import * as THREE from 'three';
 import {userStore,sceneStore} from '../../zustand'
 import BACKEND_URL from '../../config'
 import { Scene } from 'three';
+import { buildScenes } from '../../Functions/buildScenes';
+// import { mapObject3dFromDb } from '../../Mappers/threeObjectMapper';
 
 const loader = new THREE.ObjectLoader();
 
 const OpenWindow =(props: any)=>{
-    const {userScenes,setUserScenes} = userStore()
-    const {setLoaded} = sceneStore()
+    const {scenes,setScenes} = userStore();
+    const {setLoaded} = sceneStore();
 
     const [selected,setSelected]=useState({name: '',id: ''})
 
     useEffect(()=>{
-        fetch(`${BACKEND_URL}/scenes`,{
+        fetch(`${BACKEND_URL}/objects`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
         })
         .then(r=>r.json())
         .then(data=>{
-            setUserScenes(data)
+            setScenes(buildScenes(data))
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const loadScene=()=>{
-        fetch(`${BACKEND_URL}/scenes/load/${selected.id}`,{
+        fetch(`${BACKEND_URL}/objects/load/${selected.id}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
         })
         .then(r=>r.json())
         .then(data=>{
+            console.log(data)
           props.setOpenModal({open:false,body:null})
-          const loadedScene = loader.parse(JSON.parse(data.scene.scene_string)) as Scene;
-          setLoaded({scene:loadedScene, id:data.scene.id})
+          const loadedScene = loader.parse(JSON.parse(data.object.scene_string)) as Scene;
+          setLoaded({scene:loadedScene, id:data.object.id})
         })
     }
 
@@ -47,23 +50,23 @@ const OpenWindow =(props: any)=>{
         loadScene()
     }
     const handleChange=(e: FormEvent<HTMLInputElement>)=>{
-        userScenes.forEach(scene=>{
+        scenes.forEach(scene=>{
             if(scene.save_name===(e.target as HTMLTextAreaElement).value){
-                setSelected({name:(e.target as HTMLTextAreaElement).value, id:scene.id})
+                setSelected({name:(e.target as HTMLTextAreaElement).value, id: scene.uuid})
             }else{
                 setSelected({name:(e.target as HTMLTextAreaElement).value, id:''})
             }
         })
     }
     const displaySceneCards=()=>{
-        return userScenes.map(scene=><SceneCard key={scene.id} selected={selected} setSelected={setSelected} scene={scene} />)
+        return scenes.map(scene=><SceneCard key={scene.uuid} selected={selected} setSelected={setSelected} scene={scene} />)
     }
     const handleClick=()=>{
         props.setOpenModal({open:false,body:null})
     }
     return(
         <div className='modal'>
-            <div className='xicon' onClick={handleClick}>𝗫</div>
+            <div className='xicon' onClick={handleClick}>X</div>
 
             <div className='sceneCards'>
             {displaySceneCards()}

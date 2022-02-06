@@ -1,14 +1,14 @@
-import React,{useState} from 'react'
+import React,{ChangeEventHandler, FormEventHandler, useState} from 'react'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import BACKEND_URL from '../../config'
 
-const BugWindow = (props)=>{
+const BugWindow = (props: any)=>{
     const [disabled,setDisabled] = useState(false)
     const [bugText,setBugText] = useState({title:'',body:''})
     const [error,setError] = useState(null)
-    const handleBugSubmit=(e)=>{
-        e.preventDefault();
+    const handleBugSubmit: FormEventHandler<HTMLFormElement> =(event)=>{
+        event.preventDefault();
         setDisabled(true)
         fetch(`${BACKEND_URL}/issues`,{
             method:'POST',
@@ -31,9 +31,13 @@ const BugWindow = (props)=>{
             }
         })
     }
-    const handleChange = (e)=>{
+    const handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event)=>{
         const newState = {...bugText}
-        newState[e.target.name] = e.target.value
+        if(event.currentTarget.name === 'title') {
+            newState.title = event.currentTarget.value;
+        } else {
+            newState.body = event.currentTarget.value;
+        }
         setBugText(newState)
     }
     const handleClick=()=>{
@@ -41,7 +45,7 @@ const BugWindow = (props)=>{
     }
     return(
         <div className='modal'>
-            <div className='xicon' onClick={handleClick}>𝗫</div>
+            <div className='xicon' onClick={handleClick}>X</div>
 
             {disabled&&<div className='loading'>
                 <img src={require('../../Assets/loading.svg')} alt='loading img'/>
