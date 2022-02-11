@@ -1,4 +1,3 @@
-import { Scene } from 'three';
 import {mapObject3dFromDb, ObjectFromDb} from '../Mappers/threeObjectMapper'
 import { CustomScene } from '../Types/CustomScene';
 

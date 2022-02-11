@@ -2,11 +2,11 @@ import { Object3D, Scene } from "three";
 import { mapObject3dToDb, ObjectSaveData } from "../Mappers/threeObjectMapper";
 import { CustomObject3D } from "../Types/CustomObject3D";
 
-const getObject3dArray = async (scene: Scene, name: string) =>{
+const getObject3dArray = async (scene: Scene) =>{
     const Objects = [];
-    const sceneObj = mapObject3dToDb(name, scene);
+    const sceneObj = mapObject3dToDb(scene);
     Objects.push(sceneObj);
-    const children = getObjectsFromChildren(scene, name);
+    const children = getObjectsFromChildren(scene);
     if(children?.length){
         Objects.push(...children);
     }
@@ -14,14 +14,14 @@ const getObject3dArray = async (scene: Scene, name: string) =>{
     return Objects
 }
 
-const getObjectsFromChildren = (obj: Object3D | Scene, name: string): ObjectSaveData[] | null => {
+const getObjectsFromChildren = (obj: Object3D | Scene): ObjectSaveData[] | null => {
     const children: ObjectSaveData[] = [];
     if(obj.children.length){
         for(const child of obj.children){
-            if(child.type!=='GridHelper'){
-                children.push(mapObject3dToDb(name, child as CustomObject3D));
+            if(child.userData.allowSave!==false){
+                children.push(mapObject3dToDb(child as CustomObject3D));
                 if(child.children.length){
-                    const nestedChildren = getObjectsFromChildren(child, name)
+                    const nestedChildren = getObjectsFromChildren(child)
                     if(nestedChildren!==null){
                         children.push(...nestedChildren);
                     }

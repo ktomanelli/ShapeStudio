@@ -5,29 +5,19 @@ import {sceneStore} from './../zustand'
 import { Event } from 'three';
 
 const CameraControls = ()=>{
-  const {active, setActive,activePosition, setActivePosition, setActiveScale, setActiveRotation, setActiveQuaternion, renderer, transformMode}=sceneStore()
+  const {active, setActive, renderer, transformMode}=sceneStore()
   const [dragging, setDragging] = useState(false);
   
-  const transform = useRef()
-
-  // useFrame((state)=>{
-  //   if(transform.current){
-  //     const controls = transform.current
-  //     if(active){
-  //       if(dragging){
-  //         setActive(controls.object)
-  //       }
-  //         controls.attach(active)
-  //         const callback = event => (orbit.current.enabled = !event.value)
-  //         controls.addEventListener("dragging-changed", callback)
-  //         return () => controls.removeEventListener("dragging-changed", callback)
-  //     }else{
-  //       controls.detach()
-  //     }
-  //   }
-  // })
-
+  const handleBeforeRender = (renderer:any, scene:any, camera:any, geometry:any, material:any, group:any)=> {
+    console.log('HELLO')
+    console.log(geometry)
+    console.log(material)
+    console.log(group)
+    // if(e)e.target.enabled = false;
+  }
   const handleObjectChange:((e?: Event) => void) = (e) => {
+    // console.log('TRANSFORMCONTROLS',e)
+    // console.log('TARGET', e?.target)
     if(dragging){
       setActive(active);
     }
@@ -37,7 +27,7 @@ const CameraControls = ()=>{
     <>
     {Object.keys(renderer).length > 0  && 
       <>
-        {Object.keys(active).length && <TransformControls onObjectChange={handleObjectChange} onMouseDown={()=>setDragging(true)} onMouseUp={()=>setDragging(false)} object={active} mode={transformMode}/>}
+        {Object.keys(active).length && <TransformControls onBeforeRender={handleBeforeRender} onObjectChange={handleObjectChange} onMouseDown={()=>setDragging(true)} onMouseUp={()=>setDragging(false)} object={active} mode={transformMode} userData={{allowSave:false}}/>}
         <OrbitControls enablePan={!dragging} enableZoom={!dragging} enableRotate={!dragging}/>
       </>
     }

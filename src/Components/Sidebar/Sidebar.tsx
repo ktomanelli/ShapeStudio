@@ -4,7 +4,7 @@ import { SketchPicker } from 'react-color';
 import {sceneStore} from './../../zustand'
 
 const SideBar=()=>{
-    const {active, activePosition, activeScale, activeRotation, activeQuaternion} = sceneStore()
+    const {active} = sceneStore()
     const [objColor,setObjColor] = useState('#fff')    
     
     const handleChangeComplete = (color:{hex:string}) => {

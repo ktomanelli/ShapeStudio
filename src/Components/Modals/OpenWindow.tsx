@@ -7,31 +7,39 @@ import {userStore,sceneStore} from '../../zustand'
 import BACKEND_URL from '../../config'
 import { Scene } from 'three';
 import { buildScenes } from '../../Functions/buildScenes';
+import { ProjectFromDb } from '../../Types/Project';
 // import { mapObject3dFromDb } from '../../Mappers/threeObjectMapper';
 
 const loader = new THREE.ObjectLoader();
 
 const OpenWindow =(props: any)=>{
-    const {scenes,setScenes} = userStore();
+    const {projects, setProjects} = userStore();
     const {setLoaded} = sceneStore();
 
     const [selected,setSelected]=useState({name: '',id: ''})
 
     useEffect(()=>{
-        fetch(`${BACKEND_URL}/objects`,{
+        fetch(`${BACKEND_URL}/projects`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
         })
         .then(r=>r.json())
-        .then(data=>{
-            setScenes(buildScenes(data))
+        .then((data: ProjectFromDb[])=>{
+            console.log(data)
+            const projects = data.map(project=>({
+                id: project.id,
+                name: project.name,
+                scenes: buildScenes(project.three_objects),
+                fileSchema: project.file_schema
+            }))
+            setProjects(projects)
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const loadScene=()=>{
-        fetch(`${BACKEND_URL}/objects/load/${selected.id}`,{
+        fetch(`${BACKEND_URL}/projects/load/${selected.id}`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`
             }
@@ -50,16 +58,16 @@ const OpenWindow =(props: any)=>{
         loadScene()
     }
     const handleChange=(e: FormEvent<HTMLInputElement>)=>{
-        scenes.forEach(scene=>{
-            if(scene.save_name===(e.target as HTMLTextAreaElement).value){
-                setSelected({name:(e.target as HTMLTextAreaElement).value, id: scene.uuid})
+        projects.forEach(scene=>{
+            if(scene.name===(e.target as HTMLTextAreaElement).value){
+                setSelected({name:(e.target as HTMLTextAreaElement).value, id: scene.id})
             }else{
                 setSelected({name:(e.target as HTMLTextAreaElement).value, id:''})
             }
         })
     }
     const displaySceneCards=()=>{
-        return scenes.map(scene=><SceneCard key={scene.uuid} selected={selected} setSelected={setSelected} scene={scene} />)
+        return projects.map(scene=><SceneCard key={scene.id} selected={selected} setSelected={setSelected} scene={scene} />)
     }
     const handleClick=()=>{
         props.setOpenModal({open:false,body:null})

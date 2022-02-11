@@ -70,7 +70,7 @@ const Scene = (props: any)=>{
 
     return (
         <>
-            <gridHelper args={[100, 100]}/>
+            <gridHelper args={[100, 100]} userData={{allowSave:false}}/>
             {newShapes.length && <Shapes/>}
         </>
     )

@@ -3,7 +3,6 @@ import { CustomObject3D } from "../Types/CustomObject3D";
 import { CustomScene } from "../Types/CustomScene";
 
 export type ObjectSaveData = {
-    save_name: string,
     object_type: string, 
     id: string, 
     name: string, 
@@ -36,6 +35,12 @@ export type ObjectSaveData = {
     autoUpdate?: boolean;
     background?: null | Color | Texture;
     environment?: null | Texture;
+
+    //todo: add camera specific keys to backend
+    matrixWorldInverse?: Matrix4;
+    projectionMatrix?: Matrix4;
+    projectionMatrixInverse?: Matrix4;
+
 }
 
 export type ObjectFromDb = {
@@ -66,9 +71,8 @@ export type ObjectFromDb = {
     visible: boolean;
 }
 
-export const mapObject3dToDb = (name: string, obj: CustomObject3D|Scene): ObjectSaveData => (
+export const mapObject3dToDb = (obj: CustomObject3D|Scene): ObjectSaveData => (
     {
-        save_name: name,
         object_type: obj.type, 
         id: obj.uuid, 
         name: obj.name, 

@@ -12,7 +12,7 @@ import AboutWindow from '../Modals/AboutWindow';
 import Notices from '../Modals/Notices';
 
 const MenuBar=()=>{
-  const {user, setScenes, setObjects, clearUserStore} = userStore()
+  const {user, setProjects, setObjects, clearUserStore} = userStore()
   const {
     loaded,
     scene,
@@ -42,7 +42,7 @@ const MenuBar=()=>{
         const blob = await screenshot(renderer,scene,camera);
         fd.append('scene[scene_string]',JSON.stringify(scene.toJSON()))
         fd.append('scene[screenshot]', blob)
-          fetch(`${BACKEND_URL}/objects/${loaded.id}`,{
+          fetch(`${BACKEND_URL}/projects/${loaded.id}`,{
               method:'PATCH',
               headers:{
                 Authorization:`Bearer ${localStorage.token}`,
@@ -51,7 +51,7 @@ const MenuBar=()=>{
               body:fd
           }).then(r=>{
               setOpenModal({open:false, body: ''})
-              fetch(`${BACKEND_URL}/objects`,{
+              fetch(`${BACKEND_URL}/projects`,{
                 headers:{
                   Authorization:`Bearer ${localStorage.token}`,
                 }

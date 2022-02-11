@@ -8,20 +8,25 @@ import {userStore,sceneStore} from './../../zustand'
 import { getObject3dArray } from '../../Functions/getObject3dArray';
 import { screenshot } from '../../Functions/screenshot';
 import { buildScenes } from '../../Functions/buildScenes';
+import { CustomObject3D } from '../../Types/CustomObject3D';
+import { ProjectFromDb } from '../../Types/Project';
 
 
 const SaveWindow=(props: any)=>{
-    const {scenes,setScenes} = userStore()
-    const {renderer,scene,camera} = sceneStore()
+    const {projects, setProjects} = userStore()
+    const {renderer, scene, camera, setActive} = sceneStore()
     
     const [selected,setSelected]=useState({name:'',id:''})
 
     const saveAs=async(name: string)=>{
         const blob: Blob = await screenshot(renderer,scene,camera)
-        const three_objects = await getObject3dArray(scene, name);
+        const file_schema = projects.find(p=>p.id===selected.id)?.fileSchema
+        const project = {name, file_schema}
+        const three_objects = await getObject3dArray(scene);
+        scene.children.forEach(i=>console.log(i))
         try{
-            const saveResp = await axios.post(`${BACKEND_URL}/objects/save`, {
-                payload:{three_objects}
+            const saveResp = await axios.post(`${BACKEND_URL}/projects`, {
+                payload:{project, three_objects}
             },{
                 headers:{
                     Authorization:`Bearer ${localStorage.token}`,
@@ -50,12 +55,19 @@ const SaveWindow=(props: any)=>{
         }
 
         try{
-            const getScenesResp = await axios.get(`${BACKEND_URL}/objects`,{
+            const getScenesResp = await axios.get(`${BACKEND_URL}/projects`,{
                 headers:{
                     Authorization:`Bearer ${localStorage.token}`
                 }  
             }) 
-            setScenes(buildScenes(getScenesResp.data));
+            console.log(getScenesResp.data)
+            const projects = getScenesResp.data.map((project: ProjectFromDb)=>({
+                id: project.id,
+                name: project.name,
+                scenes: buildScenes(project.three_objects),
+                fileSchema: project.file_schema
+            }))
+            setProjects(projects)        
         }catch(e){
             console.log('error retrieving objects')
         }
@@ -67,10 +79,10 @@ const SaveWindow=(props: any)=>{
  
     }
     const handleChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event)=>{
-        if(scenes.length>0){
-            scenes.forEach(scene=>{
-                if(scene.save_name===event.target.value){
-                    setSelected({name: event.target.value, id: scene.uuid})
+        if(projects.length>0){
+            projects.forEach(project=>{
+                if(project.name===event.target.value){
+                    setSelected({name: event.target.value, id: project.id})
                 }else{
                     setSelected({name:event.target.value, id:''})
                 }
@@ -82,7 +94,7 @@ const SaveWindow=(props: any)=>{
         
     }
     const displaySceneCards=()=>{
-        return scenes.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
+        return projects.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
     }
     const handleClick=()=>{
         props.setOpenModal({open:false,body:null})

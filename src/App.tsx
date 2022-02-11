@@ -14,7 +14,7 @@ const App=()=>{
   const {
     user,
     setUser,
-    setScenes,
+    setProjects,
     setObjects
   } = userStore()
   const {active,deleteObj,setDeleteObj,setTransformMode} = sceneStore()
@@ -40,7 +40,7 @@ const App=()=>{
               }
           })
           console.log('before fetch for objects')
-          fetch(`${BACKEND_URL}/objects`,{
+          fetch(`${BACKEND_URL}/projects`,{
             headers:{
                 Authorization:`Bearer ${localStorage.token}`,
                 'content-type':'application/json',
@@ -56,7 +56,7 @@ const App=()=>{
             // })
           })
       }
-  },[setUser, setScenes, setObjects]);
+  },[setUser, setProjects, setObjects]);
 
   const handleKeyPress=(e: KeyboardEvent)=>{
     switch(e.key){
