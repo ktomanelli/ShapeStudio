@@ -1,6 +1,6 @@
 import { Object3D, Scene } from "three";
-import { mapObject3dToDb, ObjectSaveData } from "../Mappers/threeObjectMapper";
-import { CustomObject3D } from "../Types/CustomObject3D";
+import { mapObject3dToDb } from "../Mappers/threeObjectMapper";
+import { CustomThreeObject, ThreeObjectToDb } from "../Types/CustomThreeObject";
 
 const getObject3dArray = async (scene: Scene) =>{
     const Objects = [];
@@ -14,12 +14,12 @@ const getObject3dArray = async (scene: Scene) =>{
     return Objects
 }
 
-const getObjectsFromChildren = (obj: Object3D | Scene): ObjectSaveData[] | null => {
-    const children: ObjectSaveData[] = [];
+const getObjectsFromChildren = (obj: Object3D | Scene): ThreeObjectToDb[] | null => {
+    const children: ThreeObjectToDb[] = [];
     if(obj.children.length){
         for(const child of obj.children){
             if(child.userData.allowSave!==false){
-                children.push(mapObject3dToDb(child as CustomObject3D));
+                children.push(mapObject3dToDb(child as CustomThreeObject));
                 if(child.children.length){
                     const nestedChildren = getObjectsFromChildren(child)
                     if(nestedChildren!==null){

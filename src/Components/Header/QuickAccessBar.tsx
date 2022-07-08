@@ -1,15 +1,20 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, useRef } from 'react'
+import { CustomThreeObject } from '../../Types/CustomThreeObject'
 import {sceneStore} from '../../zustand'
+import Box from '../Shapes/Box'
 
 const QuickAccessBar=()=>{
-    const {newShapes,setNewShapes} = sceneStore()
+    const {scene, newShapes, setNewShapes} = sceneStore()
+    const mesh = useRef<CustomThreeObject>();
 
     const handleClick=(e: MouseEvent<HTMLLIElement>)=>{
         const name = e.currentTarget.getAttribute('data-name');
 
         switch(name){
             case 'box':
-                setNewShapes([...newShapes, {name:'box'}])
+                // setNewShapes([...newShapes, {name:'box'}])
+                const box = <Box ref={mesh} size={{l:1,w:1,h:1}} position={[0, 0, 0]}/>
+                scene.add(mesh.current as any)
                 break;
             case 'sphere':
                 setNewShapes([...newShapes, {name:'sphere'}])

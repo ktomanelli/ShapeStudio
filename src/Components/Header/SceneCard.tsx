@@ -1,9 +1,12 @@
 import React, { MouseEvent, useEffect } from 'react'
 import BACKEND_URL from '../../config'
+import { CustomThreeObject } from '../../Types/CustomThreeObject';
 
 const SceneCard=(props: any)=>{
-    console.log('props',props)
-    const url = `${BACKEND_URL}/${props.scene.screenshot}`
+    const urls = props.project.scenes.reduce((acc: string[],current: CustomThreeObject) => {
+        if(current.screenshot) return [...acc, `${BACKEND_URL}/${current.screenshot}`];
+        return acc;
+    },[]);
     useEffect(()=>{
         const oldSelected = document.querySelector('.selectedSave')
         if(oldSelected) oldSelected.classList.remove('selectedSave')
@@ -15,13 +18,13 @@ const SceneCard=(props: any)=>{
     },[props.selected.id])
     const addSelected=(e: MouseEvent<HTMLDivElement>)=>{
         const div = e.currentTarget.closest('div')
-        if(div) props.setSelected({name:props.scene.save_name,id:div.dataset.id})
+        if(div) props.setSelected({name:props.project.name,id:div.dataset.id})
     }
 
     return (
-        <div className='saveIcon' data-id={props.scene.id} onClick={addSelected}>
-            <img src={url} alt='scene screenshot'/>
-            <p>{props.scene.save_name}</p>
+        <div className='saveIcon' data-id={props.project.id} onClick={addSelected}>
+            <img src={urls[0]} alt='scene screenshot'/>
+            <p>{props.project.save_name}</p>
         </div>
     )
 }

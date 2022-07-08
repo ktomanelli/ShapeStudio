@@ -1,83 +1,19 @@
-import { AnimationClip, Color, Euler, FogBase, Layers, Material, Matrix3, Matrix4, Object3D, Quaternion, Scene, Texture, Vector3 } from "three";
-import { CustomObject3D } from "../Types/CustomObject3D";
+import { Object3D, Quaternion, Scene, Vector3 } from "three";
+import { CombinedGeometry } from "../Types/CustomGeometry";
+import { CombinedMaterial } from "../Types/CustomMaterial";
+import { CustomThreeObject, ThreeObjectFromDb, ThreeObjectToDb } from "../Types/CustomThreeObject";
 import { CustomScene } from "../Types/CustomScene";
+import { mapGeometryToDb } from "./geometryMapper";
+import { mapMaterialToDb } from "./materialMapper";
 
-export type ObjectSaveData = {
-    object_type: string, 
-    id: string, 
-    name: string, 
-    parent?: string,
-    matrixAutoUpdate: boolean, 
-    visible: boolean, 
-    castShadow: boolean,  
-    receiveShadow: boolean,
-    frustumCulled: boolean,
-    matrixWorldNeedsUpdate: boolean,
-    renderOrder: number,
-    up: Vector3,
-    position: Vector3,
-    rotation: Vector3,
-    quaternion: number[],
-    scale: Vector3,
-    modelViewMatrix: Matrix4,
-    normalMatrix: Matrix3,
-    matrix: Matrix4,
-    matrixWorld: Matrix4,
-    layers: Layers,
-    userData?: { [key: string]: any },  
-    animations?: AnimationClip[],
-    customDepthMaterial?: Material,
-    customDistanceMaterial?: Material,
-   
-    //todo: add scene specific keys to backend, see values below
-    fog?: FogBase | null;
-    overrideMaterial?: Material | null;
-    autoUpdate?: boolean;
-    background?: null | Color | Texture;
-    environment?: null | Texture;
-
-    //todo: add camera specific keys to backend
-    matrixWorldInverse?: Matrix4;
-    projectionMatrix?: Matrix4;
-    projectionMatrixInverse?: Matrix4;
-
-}
-
-export type ObjectFromDb = {
-    castShadow: boolean;
-    frustumCulled: boolean;
-    id: string;
-    layers: {mask: number};
-    matrix: {elements: number[]};
-    matrixAutoUpdate: boolean;
-    matrixWorld: {elements: number[]};
-    matrixWorldNeedsUpdate: boolean;
-    modelViewMatrix: {elements: number[]};
-    name: string;
-    normalMatrix: {elements: number[]};
-    object_type: string;
-    parent: string;
-    position: {x: number, y: number, z: number};
-    quaternion: number[];
-    receiveShadow: boolean;
-    renderOrder: number;
-    rotation: {x: number, y: number, z: number};
-    save_name: string;
-    scale: {x: number, y: number, z: number};
-    screenshot: string;
-    up: {x: number, y: number, z: number};
-    user: {id: number, email: string, activated: boolean, show_notice: boolean};
-    user_id: number;
-    visible: boolean;
-}
-
-export const mapObject3dToDb = (obj: CustomObject3D|Scene): ObjectSaveData => (
+export const mapObject3dToDb = (obj: CustomThreeObject|Scene): any => (
     {
         object_type: obj.type, 
         id: obj.uuid, 
         name: obj.name, 
         matrixAutoUpdate: obj.matrixAutoUpdate, 
         visible: obj.visible, 
+        parent: obj.parent?.uuid ? { connect: { id: obj.parent.uuid } } : undefined,
         castShadow: obj.castShadow,  
         receiveShadow: obj.receiveShadow,
         frustumCulled: obj.frustumCulled,
@@ -93,31 +29,31 @@ export const mapObject3dToDb = (obj: CustomObject3D|Scene): ObjectSaveData => (
         rotation: obj.rotation.toVector3(),
         quaternion: obj.quaternion.toArray(),
         scale: obj.scale,
-        // userData: obj.userData,  
+        userData: JSON.stringify(obj?.userData),  
         // animations: obj.animations,
-        // customDepthMaterial: obj.customDepthMaterial,
-        // customDistanceMaterial: obj.customDistanceMaterial,
+        // customDepthMaterial: mapMaterialToDb(obj.customDepthMaterial as CombinedMaterial),
+        // customDistanceMaterial: mapMaterialToDb(obj.customDistanceMaterial as CombinedMaterial),
+        material: mapMaterialToDb((obj as CustomThreeObject)?.material as CombinedMaterial),
+        geometry: mapGeometryToDb((obj as CustomThreeObject)?.geometry as CombinedGeometry),
     }
 )
 
-export const mapObject3dFromDb = (obj:ObjectFromDb): CustomObject3D| CustomScene => {
+export const mapObject3dFromDb = (obj:ThreeObjectFromDb): CustomThreeObject| CustomScene => {
     let object;
     switch(obj.object_type) {
         case 'Scene':
             object = new Scene() as CustomScene;
-            console.log('SCREENSHOT', obj)
             object.screenshot = obj.screenshot;
             break;
         case 'Mesh':
         case 'AmbientLight':
         case 'PointLight':
         case 'Object3D':
-            object = new Object3D() as CustomObject3D;
+            object = new Object3D() as CustomThreeObject;
             break;
         default:
             console.log(obj)
             throw new Error('unexpected object type')
-            break;
     }
     if(object){
         object.type= obj.object_type; 
@@ -125,6 +61,7 @@ export const mapObject3dFromDb = (obj:ObjectFromDb): CustomObject3D| CustomScene
         object.name= obj.name;
         object.matrixAutoUpdate= obj.matrixAutoUpdate; 
         object.visible= obj.visible; 
+        object.userData.parent = obj.parent_id
         object.castShadow= obj.castShadow;  
         object.receiveShadow= obj.receiveShadow;
         object.frustumCulled= obj.frustumCulled;

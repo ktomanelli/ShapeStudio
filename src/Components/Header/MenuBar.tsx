@@ -12,7 +12,7 @@ import AboutWindow from '../Modals/AboutWindow';
 import Notices from '../Modals/Notices';
 
 const MenuBar=()=>{
-  const {user, setProjects, setObjects, clearUserStore} = userStore()
+  const {user, setProjects, clearUserStore} = userStore()
   const {
     loaded,
     scene,

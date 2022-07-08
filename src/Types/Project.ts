@@ -1,6 +1,6 @@
 import { AnimationClip, Material } from "three";
-import { ObjectFromDb } from "../Mappers/threeObjectMapper";
 import { CustomScene } from "./CustomScene";
+import { ThreeObjectFromDb } from "./CustomThreeObject";
 import { FileSchema } from "./FileSchema";
 
 export type ProjectFromDb = {
@@ -8,7 +8,7 @@ export type ProjectFromDb = {
     user_id: string; 
     name: string;
     file_schema: FileSchema;
-    three_objects: ObjectFromDb[]
+    three_objects: ThreeObjectFromDb[]
     // assets: null
     // materials: null
 }

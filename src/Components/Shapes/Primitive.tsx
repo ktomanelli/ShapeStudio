@@ -1,12 +1,12 @@
 
 import React, {useState,useRef,useEffect} from 'react'
-import { CustomObject3D } from '../../Types/CustomObject3D'
+import { CustomThreeObject } from '../../Types/CustomThreeObject'
 import {sceneStore} from '../../zustand'
 
  
 const Primitive=(props: any)=>{
     const {deleteObj,setDeleteObj,setActive} = sceneStore()
-    const mesh = useRef<CustomObject3D>()
+    const mesh = useRef<CustomThreeObject>()
     const [show,toggle]=useState(true);
     const handleClick=(e: MouseEvent)=>{
         if(mesh.current) {
@@ -24,7 +24,7 @@ const Primitive=(props: any)=>{
                     return false
                 })
                 if(isPresent){
-                    setActive({} as CustomObject3D)
+                    setActive({} as CustomThreeObject)
                     const tempArr=deleteObj
                     tempArr.splice(tempArr.indexOf(isPresent),1)
                     setDeleteObj([...tempArr])

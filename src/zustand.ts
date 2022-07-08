@@ -1,44 +1,52 @@
 import { Camera } from '@react-three/fiber'
-import { Euler, Quaternion, Scene, Vector3, WebGLRenderer } from 'three'
+import { Scene, WebGLRenderer } from 'three'
 import create from 'zustand'
-import { CustomObject3D } from './Types/CustomObject3D'
-import { Loaded } from './Types/Loaded'
+import { CustomThreeObject } from './Types/CustomThreeObject';
 import { User } from './Types/User'
-import { Object } from './Types/Object'
 import { Project } from './Types/Project'
+import { FileSchema } from './Types/FileSchema'
+import { initialFileSchema } from './Constants/initialFileSchema'
+import { GraphQLClient } from 'graphql-request';
 
 const userStore = create((set: any)=>({
+    gqlClient:{} as GraphQLClient,
+    setGqlClient: (gqlClient:GraphQLClient) => set({gqlClient}),
     user:{} as User,
     setUser: (user: User)=> set({user}),
     projects:[] as Project[],
     setProjects:(projects: Project[])=>set({projects}),
-    objects: [] as Object[],
-    setObjects: (objects: Object[]) => set({objects}),
     clearUserStore: () => {
         set({user: {}});
         set({userScenes: []});
     },    
 }))
+
+const projectStore = create((set: any) => ({
+    project: {} as Project,
+    setProJect: (project: Project) => set({project}),
+    fileSchema: initialFileSchema,
+    setFileSchema: (fileSchema: FileSchema) => set({fileSchema}),
+}))
+
 const sceneStore = create((set: any)=>({
     scene:{} as Scene,
     setScene: (scene: Scene)=>set({scene}),
-    active: {} as CustomObject3D,
-    setActive: (active: CustomObject3D)=>set({
+    active: {} as CustomThreeObject,
+    setActive: (active: CustomThreeObject)=>set({
         active,
     }),
-    fileSchema: {},
-    loaded: {} as Loaded,
-    setLoaded: (loaded: Loaded)=>set({loaded}),
+    loaded: {} as Scene,
+    setLoaded: (loaded: Scene)=>set({loaded}),
     orbit:null,
     setOrbit: (orbit: any)=>set({orbit}),
-    newShapes:[] as {name: string, obj?:CustomObject3D }[],
-    setNewShapes: (newShapes: {name: string, obj?: CustomObject3D}[])=>set({newShapes:[...newShapes]}),
+    newShapes:[] as {name: string, obj?:CustomThreeObject }[],
+    setNewShapes: (newShapes: {name: string, obj?: CustomThreeObject}[])=>set({newShapes:[...newShapes]}),
     transformMode:'translate',
     setTransformMode:(transformMode: string)=>set({transformMode}),
     camera:{} as Camera,
     setCamera: (camera: Camera)=>set({camera}),
-    deleteObj:[] as CustomObject3D[],
-    setDeleteObj: (deleteObj: CustomObject3D[])=>set({deleteObj:[...deleteObj]}),
+    deleteObj:[] as CustomThreeObject[],
+    setDeleteObj: (deleteObj: CustomThreeObject[])=>set({deleteObj:[...deleteObj]}),
     renderer: {} as WebGLRenderer,
     setRenderer: (renderer:WebGLRenderer)=>set({renderer}),
     clearSceneStore: () => {
@@ -52,4 +60,4 @@ const sceneStore = create((set: any)=>({
 }))
 
 
-export {userStore,sceneStore}
+export {userStore, projectStore, sceneStore}

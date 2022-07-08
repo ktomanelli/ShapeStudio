@@ -2,7 +2,7 @@ import React,{ useState,useEffect, ChangeEventHandler } from 'react'
 import TextField from '@material-ui/core/TextField';
 import { Euler, Vector3 } from 'three';
 import { sceneStore } from '../../zustand';
-import { CustomObject3D } from '../../Types/CustomObject3D';
+import { CustomThreeObject } from '../../Types/CustomThreeObject';
 
 type SideBarInputProps = {
     property: 'position' | 'scale' | 'rotation',

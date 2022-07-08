@@ -1,76 +1,106 @@
 import React,{ChangeEventHandler, FormEventHandler, useState} from 'react'
+import { GraphQLClient, gql } from 'graphql-request'
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import SceneCard from '../Header/SceneCard'
 import axios from 'axios'
 import BACKEND_URL from '../../config'
-import {userStore,sceneStore} from './../../zustand'
+import {userStore, projectStore, sceneStore} from './../../zustand'
 import { getObject3dArray } from '../../Functions/getObject3dArray';
 import { screenshot } from '../../Functions/screenshot';
 import { buildScenes } from '../../Functions/buildScenes';
-import { CustomObject3D } from '../../Types/CustomObject3D';
 import { ProjectFromDb } from '../../Types/Project';
+import { buildProjectMutationInput } from '../../Functions/buildProjectMutationInput';
 
 
 const SaveWindow=(props: any)=>{
-    const {projects, setProjects} = userStore()
-    const {renderer, scene, camera, setActive} = sceneStore()
+    const {projects, setProjects, gqlClient} = userStore();
+    const {fileSchema, setFileSchema} = projectStore();
+    const {renderer, scene, camera} = sceneStore();
     
-    const [selected,setSelected]=useState({name:'',id:''})
+    const [selected,setSelected]=useState({name:'',id:''});
 
     const saveAs=async(name: string)=>{
-        const blob: Blob = await screenshot(renderer,scene,camera)
-        const file_schema = projects.find(p=>p.id===selected.id)?.fileSchema
-        const project = {name, file_schema}
+        console.log('file schema before save', fileSchema)
         const three_objects = await getObject3dArray(scene);
-        scene.children.forEach(i=>console.log(i))
-        try{
-            const saveResp = await axios.post(`${BACKEND_URL}/projects`, {
-                payload:{project, three_objects}
-            },{
-                headers:{
-                    Authorization:`Bearer ${localStorage.token}`,
-                    accept:'application/json',
-                    'content-type':'application/json',
-                } 
-            });
-            if(saveResp){
-                console.log(saveResp)
-                const fd = new FormData()
-                fd.append('payload[screenshot]',blob)
-                try{
-                    const screenshotResp = await axios.patch(`${BACKEND_URL}/objects/${scene.uuid}`, fd,{
-                        headers:{
-                            Authorization:`Bearer ${localStorage.token}`,
-                            accept:'application/json',
-                        } 
-                    });
-                    console.log(screenshotResp)
-                } catch(e){
-                    console.log('error uploading screenshot')
+
+        const variables = buildProjectMutationInput(name, fileSchema, three_objects)
+        console.log(variables)
+        const mutation = gql`
+            {
+                mutation CreateProject($data: ProjectCreateInput!) {
+                    createProject(data: $data) {
+                        id
+                        user{
+                            email
+                        }
+                        threeObjects {
+                            id
+                            geometry {
+                                id
+                            }
+                            material {
+                                id
+                            }
+                        }
+                    }
                 }
             }
-        } catch(e){
-            console.log('error saving data')
-        }
+        `;
 
         try{
-            const getScenesResp = await axios.get(`${BACKEND_URL}/projects`,{
-                headers:{
-                    Authorization:`Bearer ${localStorage.token}`
-                }  
-            }) 
-            console.log(getScenesResp.data)
-            const projects = getScenesResp.data.map((project: ProjectFromDb)=>({
-                id: project.id,
-                name: project.name,
-                scenes: buildScenes(project.three_objects),
-                fileSchema: project.file_schema
-            }))
-            setProjects(projects)        
-        }catch(e){
-            console.log('error retrieving objects')
+            const data = await gqlClient.request(mutation, variables)
+            console.log(JSON.stringify(data))
+
+            // const saveResp = await axios.post(`${BACKEND_URL}/projects`, {
+            //     payload:{project, three_objects}
+            // },{
+            //     headers:{
+            //         Authorization:`Bearer ${localStorage.token}`,
+            //         accept:'application/json',
+            //         'content-type':'application/json',
+            //     } 
+            // });
+            // if(saveResp){
+            //     console.log('saving screenshot')
+            //     const savedProject = saveResp.data;
+            //     const blob: Blob = await screenshot(renderer, scene, camera);
+            //     const fd = new FormData()
+            //     fd.append('payload[screenshot]',blob)
+            //     try{
+            //         const screenshotResp = await axios.patch(`${BACKEND_URL}/projects/${savedProject.id}/${scene.uuid}`, fd,{
+            //             headers:{
+            //                 Authorization:`Bearer ${localStorage.token}`,
+            //                 accept:'application/json',
+            //             } 
+            //         });
+            //         console.log('resp from screenshot save',screenshotResp)
+            //     } catch(e){
+            //         console.log('error uploading screenshot')
+            //     }
+            // }
+        } catch(e){
+            console.log('error saving data')
+            console.log(e)
         }
+
+        // try{
+        //     const getScenesResp = await axios.get(`${BACKEND_URL}/projects`,{
+        //         headers:{
+        //             Authorization:`Bearer ${localStorage.token}`
+        //         }  
+        //     }) 
+        //     console.log(getScenesResp.data)
+        //     const projects = getScenesResp.data.map((project: ProjectFromDb)=>({
+        //         id: project.id,
+        //         name: project.name,
+        //         scenes: buildScenes(project.three_objects),
+        //         fileSchema: setFileSchema(project.file_schema)
+        //     }))
+        //     setProjects(projects)        
+        // }catch(e){
+        //     console.log('error retrieving objects')
+        // }
       }
 
     const handleSubmit: FormEventHandler<HTMLFormElement>=(event)=>{
@@ -94,7 +124,8 @@ const SaveWindow=(props: any)=>{
         
     }
     const displaySceneCards=()=>{
-        return projects.map(scene=><SceneCard selected={selected} setSelected={setSelected} scene={scene} />)
+        console.log('projects length', projects.length)
+        return projects.map(project=><SceneCard selected={selected} setSelected={setSelected} project={project} />)
     }
     const handleClick=()=>{
         props.setOpenModal({open:false,body:null})
