@@ -7,14 +7,14 @@ export type GqlGeometryMutation = {
 export type DbGeometry = {
     id: string;
     name: string;
-    object_type: string;
+    objectType: string;
     index: string
-    object_attributes: string;
+    objectAttributes: string;
     morphAttributes: string;
     morphTargetsRelative: boolean;
     groups: Array<{ start: number; count: number; materialIndex?: number | undefined }>;
-    boundingBox: Box3 | null;
-    boundingSphere: Sphere | null;
+    boundingBox: Box3 | undefined;
+    boundingSphere: Sphere | undefined;
     drawRange: { start: number; count: number };
     userData: string;
     parameters: {
@@ -52,7 +52,7 @@ export type DbGeometry = {
 }
 
 export interface CombinedGeometry extends BufferGeometry {
-    parameters: {
+    parameters?: {
         path?: Curve<Vector3>;
         tubularSegments?: number;
         radius?: number;

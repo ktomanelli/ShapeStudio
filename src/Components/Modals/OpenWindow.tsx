@@ -1,58 +1,35 @@
-import React,{useState,useEffect, FormEvent} from 'react'
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import SceneCard from '../Header/SceneCard'
+import React,{useState, FormEvent} from 'react'
 import * as THREE from 'three';
-import {userStore, projectStore, sceneStore} from '../../zustand'
-import BACKEND_URL from '../../config'
-import { Scene } from 'three';
 import { buildScenes } from '../../Functions/buildScenes';
-import { ProjectFromDb } from '../../Types/Project';
-import { initialFileSchema } from '../../Constants/initialFileSchema';
-// import { mapObject3dFromDb } from '../../Mappers/threeObjectMapper';
+import { getProject } from '../../Queries/getProject';
+import {userStore, projectStore, sceneStore} from '../../zustand'
+import ProjectsModal from './ProjectsModal';
 
 const loader = new THREE.ObjectLoader();
 
 const OpenWindow =(props: any)=>{
-    const {projects, setProjects} = userStore();
-    const {setFileSchema} = projectStore();
+    const {projects, gqlClient} = userStore();
+    const {setProject, setFileSchema} = projectStore();
     const {setScene} = sceneStore();
 
     const [selected,setSelected]=useState({name: '',id: ''})
 
-    useEffect(()=>{
-        fetch(`${BACKEND_URL}/projects`,{
-            headers:{
-                Authorization:`Bearer ${localStorage.token}`
-            }
-        })
-        .then(r=>r.json())
-        .then((data: ProjectFromDb[])=>{
-            console.log(data)
-            const projects = data.map(project=>({
-                id: project.id,
-                name: project.name,
-                scenes: buildScenes(project.three_objects),
-                fileSchema: setFileSchema(project.file_schema)
-            }))
-            setProjects(projects)
-        })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-
-    const loadProject=()=>{
-        props.setOpenModal({open:false,body:null})
-        const project = projects.find(p => p.id === selected.id);
-        console.log('selected',project)
-        if(project){
-            if(project.fileSchema)setFileSchema(project.fileSchema);
-            setScene(project.scenes[0]);
+    const loadProject= async()=>{
+        if(selected.id){
+            const data = await getProject(gqlClient, selected.id);
+            const project = data.project;
+            setProject(project);
+            setFileSchema(project.fileSchema);
+            const scenes = buildScenes(project.threeObjects);
+            setScene(scenes[0]);
+            console.log('scene',scenes[0])
         }
+        props.setOpenModal({open:false,body:null})
     }
 
-    const handleSubmit=(e: FormEvent)=>{
+    const handleSubmit = async (e: FormEvent)=>{
         e.preventDefault()
-        loadProject()
+        await loadProject()
     }
     const handleChange=(e: FormEvent<HTMLInputElement>)=>{
         projects.forEach(scene=>{
@@ -63,24 +40,15 @@ const OpenWindow =(props: any)=>{
             }
         })
     }
-    const displaySceneCards=()=>{
-        return projects.map(project=><SceneCard key={project.id} selected={selected} setSelected={setSelected} project={project} />)
-    }
-    const handleClick=()=>{
-        props.setOpenModal({open:false,body:null})
-    }
-    return(
-        <div className='modal'>
-            <div className='xicon' onClick={handleClick}>X</div>
 
-            <div className='sceneCards'>
-            {displaySceneCards()}
-            </div>
-            <form className="openSaveInput" autoComplete='off' onSubmit={handleSubmit}>
-            <TextField id="outlined-basic" placeholder="File Name" onChange={(e)=>handleChange}name='save_name' value={selected.name?selected.name:''}/>
-            <Button type='submit' variant="contained">Open</Button>
-            </form>
-        </div>
+    return(
+        <ProjectsModal
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            selected={selected}
+            setSelected={setSelected}
+            buttonText={'Open'}
+        />
     )
 }
 

@@ -23,7 +23,7 @@ const userStore = create((set: any)=>({
 
 const projectStore = create((set: any) => ({
     project: {} as Project,
-    setProJect: (project: Project) => set({project}),
+    setProject: (project: Project) => set({project}),
     fileSchema: initialFileSchema,
     setFileSchema: (fileSchema: FileSchema) => set({fileSchema}),
 }))

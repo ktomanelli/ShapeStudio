@@ -8,9 +8,8 @@ import SceneManager from './Components/SceneManager'
 import Signin from './Components/Signin'
 import BACKEND_URL from './config'
 import {userStore,sceneStore, projectStore} from './zustand'
-import { ProjectFromDb } from './Types/Project';
-import { buildScenes } from './Functions/buildScenes';
 import { GraphQLClient } from 'graphql-request';
+import { getProjects } from './Queries/getProjects';
 
 const App=()=>{
   const {setFileSchema} = projectStore();
@@ -25,49 +24,24 @@ const App=()=>{
   const [canvasRendered,setCanvasRendered] = useState(false)
 
   useEffect(()=>{
-    const gqlClient = new GraphQLClient('http://localhost:4000/');
-    setGqlClient(gqlClient);
-  },[])
-    //fetch user data
-  //   useEffect(()=>{
-  //     if(localStorage.token){
-  //         fetch(`${BACKEND_URL}/users/stay_logged_in`,{
-  //             headers:{
-  //                 Authorization:`Bearer ${localStorage.token}`,
-  //                 'content-type':'application/json',
-  //                 accept:'application/json'
-  //             }
-  //         })
-  //         .then(r=>r.json())
-  //         .then(data=>{
-  //             if(data.message){
-  //                 alert(data.message)
-  //             }else{
-  //                 localStorage.token = data.token
-  //                 setUser(data)
-  //             }
-  //         })
-  //         fetch(`${BACKEND_URL}/projects`,{
-  //           headers:{
-  //               Authorization:`Bearer ${localStorage.token}`,
-  //               'content-type':'application/json',
-  //               accept:'application/json'
-  //           }
-  //       })
-  //         .then(r=>r.json())
-  //         .then((data: ProjectFromDb[])=>{
-  //           console.log('DATA',data)
-  //           const projects = data.map(project=>({
-  //               id: project.id,
-  //               name: project.name,
-  //               scenes: buildScenes(project.three_objects),
-  //               fileSchema: setFileSchema(project.file_schema)
-  //           }))
-  //           setProjects(projects)
-  //       })
-  //     }
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // },[]);
+    if(BACKEND_URL){
+      const gqlClient = new GraphQLClient(BACKEND_URL);
+      setGqlClient(gqlClient);
+      console.log('gql client set')
+    
+      //todo: reimplement sign in
+
+      // get user / check for token validation
+      
+      try {
+        getProjects(gqlClient, "57fecd45-2622-4188-8972-65f5d5b7c5d0").then(data=>{
+          setProjects(data.projects);
+        });
+      } catch(err){
+        console.log('error getting projects', err);
+      } 
+    }
+  },[]);
 
   const handleKeyPress=(e: KeyboardEvent)=>{
     switch(e.key){

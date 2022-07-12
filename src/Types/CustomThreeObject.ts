@@ -3,6 +3,7 @@ import { CombinedGeometry, DbGeometry } from "./CustomGeometry";
 import { CombinedMaterial, DbMaterial } from "./CustomMaterial";
 
 export interface CustomThreeObject extends Object3D<Event> {
+    project: string;
     screenshot?: string;
     material: CombinedMaterial;
     geometry: CombinedGeometry;
@@ -12,10 +13,11 @@ export interface CustomThreeObject extends Object3D<Event> {
 }
 
 export type ThreeObjectToDb = {
-    object_type: string, 
+    objectType: string, 
     id: string, 
     name: string, 
-    parent_id?: string,
+    project: string,
+    parent?: string,
     matrixAutoUpdate: boolean, 
     visible: boolean, 
     castShadow: boolean,  
@@ -66,8 +68,8 @@ export type ThreeObjectFromDb = {
     modelViewMatrix: {elements: number[]};
     name: string;
     normalMatrix: {elements: number[]};
-    object_type: string;
-    parent_id: string|undefined;
+    objectType: string;
+    parentId: string|undefined;
     position: {x: number, y: number, z: number};
     quaternion: number[];
     receiveShadow: boolean;
@@ -80,4 +82,6 @@ export type ThreeObjectFromDb = {
     user: {id: number, email: string, activated: boolean, show_notice: boolean};
     user_id: number;
     visible: boolean;
+    geometry: DbGeometry;
+    material: DbMaterial;
 }

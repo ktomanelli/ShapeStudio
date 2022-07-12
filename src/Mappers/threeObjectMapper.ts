@@ -1,19 +1,27 @@
-import { Object3D, Quaternion, Scene, Vector3 } from "three";
+import { BufferGeometry, Material, Mesh, Object3D, Quaternion, Scene, Vector3 } from "three";
 import { CombinedGeometry } from "../Types/CustomGeometry";
 import { CombinedMaterial } from "../Types/CustomMaterial";
 import { CustomThreeObject, ThreeObjectFromDb, ThreeObjectToDb } from "../Types/CustomThreeObject";
 import { CustomScene } from "../Types/CustomScene";
-import { mapGeometryToDb } from "./geometryMapper";
-import { mapMaterialToDb } from "./materialMapper";
+import { mapGeometryFromDb, mapGeometryToDb } from "./geometryMapper";
+import { mapMaterialFromDb, mapMaterialToDb } from "./materialMapper";
 
-export const mapObject3dToDb = (obj: CustomThreeObject|Scene): any => (
-    {
-        object_type: obj.type, 
+interface mapObject3dToDBInput {
+    projectId:string,
+    obj: CustomThreeObject|Scene,
+    ignoreProject: boolean,
+}
+
+export const mapObject3dToDb = (input: mapObject3dToDBInput): any => {
+    const {projectId, obj, ignoreProject} = input;
+    
+    return {
+        project: ignoreProject ? undefined :  {connect: {id:projectId}},
+        objectType: obj.type, 
         id: obj.uuid, 
         name: obj.name, 
         matrixAutoUpdate: obj.matrixAutoUpdate, 
         visible: obj.visible, 
-        parent: obj.parent?.uuid ? { connect: { id: obj.parent.uuid } } : undefined,
         castShadow: obj.castShadow,  
         receiveShadow: obj.receiveShadow,
         frustumCulled: obj.frustumCulled,
@@ -35,17 +43,46 @@ export const mapObject3dToDb = (obj: CustomThreeObject|Scene): any => (
         // customDistanceMaterial: mapMaterialToDb(obj.customDistanceMaterial as CombinedMaterial),
         material: mapMaterialToDb((obj as CustomThreeObject)?.material as CombinedMaterial),
         geometry: mapGeometryToDb((obj as CustomThreeObject)?.geometry as CombinedGeometry),
+        children: getObjectsFromChildren(projectId, obj.children)
     }
-)
+}
+
+const getObjectsFromChildren = (projectId: string, children: Object3D[]): {create:ThreeObjectToDb[]} | undefined => {
+    const dbChildren = {create: [] as ThreeObjectToDb[]};
+    if(children.length){
+        for(const child of children){
+            if(child && child?.userData?.allowSave !== false){
+                dbChildren.create.push(mapObject3dToDb({
+                    projectId, 
+                    obj:child as CustomThreeObject, 
+                    ignoreProject:false
+                }));
+            }
+        }
+        return dbChildren;
+    }
+    return undefined;
+}
+
 
 export const mapObject3dFromDb = (obj:ThreeObjectFromDb): CustomThreeObject| CustomScene => {
     let object;
-    switch(obj.object_type) {
+    switch(obj.objectType) {
         case 'Scene':
             object = new Scene() as CustomScene;
             object.screenshot = obj.screenshot;
             break;
         case 'Mesh':
+            let geometry;
+            let material;
+            if(obj.geometry) {
+                geometry = mapGeometryFromDb(obj.geometry)
+            }
+            if(obj.material) {
+                material = mapMaterialFromDb(obj.material);    
+            }
+            object = new Mesh(geometry as BufferGeometry, material as Material);
+            break;
         case 'AmbientLight':
         case 'PointLight':
         case 'Object3D':
@@ -56,12 +93,12 @@ export const mapObject3dFromDb = (obj:ThreeObjectFromDb): CustomThreeObject| Cus
             throw new Error('unexpected object type')
     }
     if(object){
-        object.type= obj.object_type; 
+        object.type= obj.objectType; 
         object.uuid= obj.id; 
         object.name= obj.name;
         object.matrixAutoUpdate= obj.matrixAutoUpdate; 
         object.visible= obj.visible; 
-        object.userData.parent = obj.parent_id
+        object.userData.parent = obj.parentId
         object.castShadow= obj.castShadow;  
         object.receiveShadow= obj.receiveShadow;
         object.frustumCulled= obj.frustumCulled;
@@ -81,7 +118,7 @@ export const mapObject3dFromDb = (obj:ThreeObjectFromDb): CustomThreeObject| Cus
         // object.animations= obj.animations as AnimationClip[];
         // object.customDepthMaterial= obj.customDepthMaterial as Material;
         // object.customDistanceMaterial= obj.customDistanceMaterial as Material;
-        return object;
+        return object as any;
     }
     console.log('object',object)
     throw new Error('Error mapping db object to Three object')

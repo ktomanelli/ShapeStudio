@@ -1,20 +1,30 @@
 import { Scene } from "three";
-import { CustomThreeObject } from "../Types/CustomThreeObject";
+import { generateUUID } from "three/src/math/MathUtils";
+import { mapObject3dToDb } from "../Mappers/threeObjectMapper";
 import { FileSchema } from "../Types/FileSchema";
 import { Project } from "../Types/Project";
 
-const buildProjectMutationInput = (name: String, fileSchema: FileSchema, threeObjects:any ) => {
-    const data = {
-        name,
-        fileSchema,
-        user:{
-            "connect":{"id":"f5fb7b7c-cffb-4ac9-b747-205c2b8ccef7"}
-        },
-        threeObjects: {
-            create: threeObjects
+const buildProjectMutationInput = (project: Project) => {
+    const {id, name, fileSchema, scenes} = project;
+    const threeObjects = scenes.map(scene => mapObject3dToDb({
+        projectId:id,
+        obj:scene,
+        ignoreProject: true
+    }));
+
+    return {
+        data: {
+            "id": id,
+            "name": name,
+            "fileSchema": fileSchema,
+            "user": {
+                "connect": {"id":"57fecd45-2622-4188-8972-65f5d5b7c5d0"}
+            },
+            "threeObjects": {
+                "create": [threeObjects]
+            }
         }
     }
-    return data;
 }
 
 export {buildProjectMutationInput};
